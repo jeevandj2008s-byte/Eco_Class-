@@ -209,7 +209,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0d0c11] text-white relative selection:bg-[#6f5adc]/30 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-transparent text-white relative selection:bg-[#6f5adc]/30 selection:text-white">
       {/* Anime-Style Top Scroll Progress Indicator */}
       <ScrollProgressBar />
 
@@ -235,7 +235,7 @@ export default function App() {
       />
 
       {/* Page Routing with Fluid Transitions & Error Boundary */}
-      <main className="flex-1 w-full">
+      <main className="flex-1 w-full relative z-10">
         <ErrorBoundary>
           <AnimatePresence mode="wait" initial={false}>
             <motion.div

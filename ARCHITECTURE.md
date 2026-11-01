@@ -56,3 +56,4 @@ Bangalore Institute of Technology (BIT) Energy Twin is an institutional microgri
   5. Sports Complex & Amenities
   6. Campus Hostel & Mess
   7. EV Charging & Microgrid Hub
+

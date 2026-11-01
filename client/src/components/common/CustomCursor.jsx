@@ -18,12 +18,36 @@ export default function CustomCursor() {
     let isClicking = false;
     let animId = null;
     let rippleTimeoutId = null;
+    let lastHoverCheck = 0;
+    let lastTarget = null;
 
     const dot = dotRef.current;
     const ring = ringRef.current;
     const ripple = rippleRef.current;
 
     if (!dot || !ring || !ripple) return;
+
+    // Smooth physics lerp loop for the trailing ring (stops when at rest to preserve 100% CPU/GPU)
+    const renderLoop = () => {
+      if (isVisible) {
+        const dx = mouseX - ringX;
+        const dy = mouseY - ringY;
+        ringX += dx * 0.28;
+        ringY += dy * 0.28;
+
+        const scale = isHovering ? 1.35 : isClicking ? 0.85 : 1;
+        ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%) scale(${scale})`;
+
+        // If ring is still catching up, keep looping; otherwise sleep
+        if (Math.abs(dx) > 0.2 || Math.abs(dy) > 0.2) {
+          animId = requestAnimationFrame(renderLoop);
+        } else {
+          animId = null;
+        }
+      } else {
+        animId = null;
+      }
+    };
 
     const onMouseMove = (e) => {
       mouseX = e.clientX;
@@ -40,20 +64,30 @@ export default function CustomCursor() {
       // Direct zero-lag DOM transform for lead dot
       dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%) scale(${isClicking ? 0.75 : 1})`;
 
-      // Check hover on clickable elements
+      // Wake up ring lerp loop if sleeping
+      if (!animId) {
+        animId = requestAnimationFrame(renderLoop);
+      }
+
+      // Throttled check for hover on clickable elements to prevent main thread lockup
+      const now = performance.now();
       const target = e.target;
-      if (target && typeof target.closest === 'function') {
-        const clickable = target.closest('button, a, input, textarea, select, [role="button"], .cursor-pointer');
-        if (clickable && !isHovering) {
-          isHovering = true;
-          ring.style.borderColor = '#006bff';
-          ring.style.backgroundColor = 'rgba(0, 107, 255, 0.12)';
-          ring.style.boxShadow = '0 0 16px rgba(0, 107, 255, 0.4)';
-        } else if (!clickable && isHovering) {
-          isHovering = false;
-          ring.style.borderColor = 'rgba(11, 53, 88, 0.35)';
-          ring.style.backgroundColor = 'transparent';
-          ring.style.boxShadow = 'none';
+      if (target !== lastTarget && (now - lastHoverCheck > 60)) {
+        lastTarget = target;
+        lastHoverCheck = now;
+        if (target && typeof target.closest === 'function') {
+          const clickable = target.closest('button, a, input, textarea, select, [role="button"], .cursor-pointer');
+          if (clickable && !isHovering) {
+            isHovering = true;
+            ring.style.borderColor = '#6f5adc';
+            ring.style.backgroundColor = 'rgba(111, 90, 220, 0.15)';
+            ring.style.boxShadow = '0 0 16px rgba(111, 90, 220, 0.4)';
+          } else if (!clickable && isHovering) {
+            isHovering = false;
+            ring.style.borderColor = 'rgba(255, 255, 255, 0.25)';
+            ring.style.backgroundColor = 'transparent';
+            ring.style.boxShadow = 'none';
+          }
         }
       }
     };
@@ -101,19 +135,7 @@ export default function CustomCursor() {
       isVisible = true;
       dot.style.opacity = '1';
       ring.style.opacity = '1';
-    };
-
-    // Smooth physics lerp loop for the trailing ring (running at display refresh rate)
-    const renderLoop = () => {
-      if (isVisible) {
-        // Lerp 0.22 for silky fluid tracking without sluggishness
-        ringX += (mouseX - ringX) * 0.22;
-        ringY += (mouseY - ringY) * 0.22;
-
-        const scale = isHovering ? 1.4 : isClicking ? 0.85 : 1;
-        ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%) scale(${scale})`;
-      }
-      animId = requestAnimationFrame(renderLoop);
+      if (!animId) animId = requestAnimationFrame(renderLoop);
     };
 
     window.addEventListener('mousemove', onMouseMove, { passive: true });
@@ -121,8 +143,6 @@ export default function CustomCursor() {
     window.addEventListener('mouseup', onMouseUp, { passive: true });
     document.addEventListener('mouseleave', onMouseLeave);
     document.addEventListener('mouseenter', onMouseEnter);
-
-    animId = requestAnimationFrame(renderLoop);
 
     return () => {
       window.removeEventListener('mousemove', onMouseMove);

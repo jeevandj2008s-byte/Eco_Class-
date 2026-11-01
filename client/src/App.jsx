@@ -44,10 +44,10 @@ import { sounds } from './lib/utils.js';
 
 export default function App() {
   const location = useLocation();
-  const { updateTelemetry } = useCampusStore();
-  const { pushEvent } = useIslandStore();
-  const { token } = useAuthStore();
-  const { advanceClockTick } = useSimulationStore();
+  const updateTelemetry = useCampusStore((s) => s.updateTelemetry);
+  const pushEvent = useIslandStore((s) => s.pushEvent);
+  const token = useAuthStore((s) => s.token);
+  const advanceClockTick = useSimulationStore((s) => s.advanceClockTick);
 
   const [isPasskeyOpen, setIsPasskeyOpen] = useState(false);
   const [isCommandOpen, setIsCommandOpen] = useState(false);

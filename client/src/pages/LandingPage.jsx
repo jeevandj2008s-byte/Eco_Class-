@@ -265,14 +265,8 @@ export default function LandingPage() {
               {/* Radial Haze Behind Slabs */}
               <div className="absolute inset-0 bg-gradient-to-tr from-[#4d19b1]/30 via-[#6f5adc]/20 to-[#9ff0ec]/20 blur-3xl rounded-full pointer-events-none" />
 
-              {/* Masked Video Artwork Loop */}
-              <div
-                className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl"
-                style={{
-                  maskImage: 'radial-gradient(circle at center, black 65%, transparent 95%)',
-                  WebkitMaskImage: 'radial-gradient(circle at center, black 65%, transparent 95%)'
-                }}
-              >
+              {/* Masked Video Artwork Loop (Optimized via Hardware Overlay) */}
+              <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl">
                 <video
                   src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/435a4fe7-e43b-4e7c-af78-0be083e73569.mp4"
                   poster="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/782a4a52-4c1e-4471-bb0c-aa232927f4a6.webp"
@@ -280,12 +274,15 @@ export default function LandingPage() {
                   loop
                   muted
                   playsInline
+                  preload="metadata"
                   className="w-full h-full object-cover"
                 />
+                {/* Hardware-accelerated smooth vignette fade to #0d0c11 */}
+                <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_55%,#0d0c11_98%)]" />
               </div>
 
               {/* Floating Glass Card 1: Upper-Left */}
-              <div className="absolute -top-3 -left-3 sm:top-4 sm:-left-6 w-[260px] sm:w-[280px] p-4 rounded-[18px] bg-white/[0.03] border border-white/[0.16] backdrop-blur-md shadow-[0_16px_36px_rgba(0,0,0,0.7),inset_0_1px_1px_rgba(255,255,255,0.12)] animate-float z-20">
+              <div className="absolute -top-3 -left-3 sm:top-4 sm:-left-6 w-[260px] sm:w-[280px] p-4 rounded-[18px] bg-[#131219]/90 border border-white/[0.16] shadow-[0_16px_36px_rgba(0,0,0,0.7),inset_0_1px_1px_rgba(255,255,255,0.12)] animate-float z-20">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-[#9ff0ec]/10 border border-[#9ff0ec]/30 flex items-center justify-center text-[#9ff0ec] shrink-0 shadow-[0_0_12px_rgba(159,240,236,0.3)]">
                     <Activity className="w-5 h-5" />
@@ -302,7 +299,7 @@ export default function LandingPage() {
               </div>
 
               {/* Floating Glass Card 2: Lower-Right */}
-              <div className="absolute -bottom-3 -right-3 sm:bottom-6 sm:-right-6 w-[260px] sm:w-[280px] p-4 rounded-[18px] bg-white/[0.03] border border-white/[0.16] backdrop-blur-md shadow-[0_16px_36px_rgba(0,0,0,0.7),inset_0_1px_1px_rgba(255,255,255,0.12)] animate-float z-20" style={{ animationDelay: '2.5s' }}>
+              <div className="absolute -bottom-3 -right-3 sm:bottom-6 sm:-right-6 w-[260px] sm:w-[280px] p-4 rounded-[18px] bg-[#131219]/90 border border-white/[0.16] shadow-[0_16px_36px_rgba(0,0,0,0.7),inset_0_1px_1px_rgba(255,255,255,0.12)] animate-float z-20" style={{ animationDelay: '2.5s' }}>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-[#6f5adc]/15 border border-[#6f5adc]/35 flex items-center justify-center text-[#9ff0ec] shrink-0 shadow-[0_0_12px_rgba(111,90,220,0.4)]">
                     <ShieldCheck className="w-5 h-5" />
@@ -371,7 +368,7 @@ export default function LandingPage() {
               <Link
                 key={m.to}
                 to={m.to}
-                className={`w-[290px] sm:w-[320px] shrink-0 snap-start min-h-[420px] rounded-[28px] bg-white/[0.025] border ${m.borderColor} backdrop-blur-md shadow-[0_16px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.08)] p-7 sm:p-8 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:border-white/30 group`}
+                className={`w-[290px] sm:w-[320px] shrink-0 snap-start min-h-[420px] rounded-[28px] bg-[#131219]/80 border ${m.borderColor} shadow-[0_16px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.08)] p-7 sm:p-8 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:border-white/30 group`}
               >
                 {/* Top: Brand Logo / Module Identifier */}
                 <div>
@@ -421,7 +418,7 @@ export default function LandingPage() {
       </section>
 
       {/* Institution Tie-In & Statement Strip */}
-      <section className="py-12 border-y border-white/[0.1] bg-white/[0.01] backdrop-blur-sm">
+      <section className="py-12 border-y border-white/[0.1] bg-white/[0.01]">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-6">
             <span className="text-xs font-bold text-[#9ff0ec] uppercase tracking-widest">
@@ -432,19 +429,19 @@ export default function LandingPage() {
             </h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.12] backdrop-blur-md shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
+            <div className="p-5 rounded-2xl bg-[#131219]/70 border border-white/[0.12] shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
               <CheckCircle2 className="w-5 h-5 text-[#9ff0ec] mb-2" />
               <p className="text-xs text-[#d3d3d7] leading-relaxed font-medium">
                 "{institutionData.statements[0]}"
               </p>
             </div>
-            <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.12] backdrop-blur-md shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
+            <div className="p-5 rounded-2xl bg-[#131219]/70 border border-white/[0.12] shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
               <CheckCircle2 className="w-5 h-5 text-[#9ff0ec] mb-2" />
               <p className="text-xs text-[#d3d3d7] leading-relaxed font-medium">
                 "{institutionData.statements[1]}"
               </p>
             </div>
-            <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.12] backdrop-blur-md shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
+            <div className="p-5 rounded-2xl bg-[#131219]/70 border border-white/[0.12] shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
               <CheckCircle2 className="w-5 h-5 text-[#9ff0ec] mb-2" />
               <p className="text-xs text-[#d3d3d7] leading-relaxed font-medium">
                 "{institutionData.statements[3]}"
@@ -471,7 +468,7 @@ export default function LandingPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
           <Link
             to="/campus"
-            className="card-lift p-6 rounded-2xl bg-white/[0.02] border border-white/[0.12] hover:border-[#6f5adc]/60 backdrop-blur-md shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition group block"
+            className="card-lift p-6 rounded-2xl bg-[#131219]/70 border border-white/[0.12] hover:border-[#6f5adc]/60 shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition group block"
           >
             <div className="w-12 h-12 rounded-xl bg-[#6f5adc]/15 border border-[#6f5adc]/30 text-[#9ff0ec] flex items-center justify-center mb-4 group-hover:scale-110 transition shadow-[0_0_15px_rgba(111,90,220,0.3)]">
               <Layers className="w-6 h-6" />
@@ -487,7 +484,7 @@ export default function LandingPage() {
 
           <Link
             to="/control"
-            className="card-lift p-6 rounded-2xl bg-white/[0.02] border border-white/[0.12] hover:border-[#6f5adc]/60 backdrop-blur-md shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition group block"
+            className="card-lift p-6 rounded-2xl bg-[#131219]/70 border border-white/[0.12] hover:border-[#6f5adc]/60 shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition group block"
           >
             <div className="w-12 h-12 rounded-xl bg-[#6f5adc]/15 border border-[#6f5adc]/30 text-[#9ff0ec] flex items-center justify-center mb-4 group-hover:scale-110 transition shadow-[0_0_15px_rgba(111,90,220,0.3)]">
               <Compass className="w-6 h-6" />
@@ -503,7 +500,7 @@ export default function LandingPage() {
 
           <Link
             to="/coach"
-            className="card-lift p-6 rounded-2xl bg-white/[0.02] border border-white/[0.12] hover:border-[#6f5adc]/60 backdrop-blur-md shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition group block"
+            className="card-lift p-6 rounded-2xl bg-[#131219]/70 border border-white/[0.12] hover:border-[#6f5adc]/60 shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition group block"
           >
             <div className="w-12 h-12 rounded-xl bg-[#6f5adc]/15 border border-[#6f5adc]/30 text-[#9ff0ec] flex items-center justify-center mb-4 group-hover:scale-110 transition shadow-[0_0_15px_rgba(111,90,220,0.3)]">
               <Sparkles className="w-6 h-6" />

@@ -209,7 +209,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f8f9fb] text-[#0b3558] relative selection:bg-[#006bff]/20 selection:text-[#0b3558]">
+    <div className="min-h-screen flex flex-col bg-transparent text-white relative selection:bg-[#6f5adc]/30 selection:text-white">
       {/* Anime-Style Top Scroll Progress Indicator */}
       <ScrollProgressBar />
 

@@ -155,15 +155,15 @@ export default function CarbonPage() {
       <div className="p-6 rounded-3xl bg-white border border-[#d4e0ed] shadow-cal-card flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <Leaf className="w-4 h-4 text-[#006bff]" />
-            <span className="text-xs font-bold uppercase tracking-wider text-[#006bff]">
+            <Leaf className="w-4 h-4 text-[#9ff0ec]" />
+            <span className="text-xs font-bold uppercase tracking-wider text-[#9ff0ec]">
               Campus ESG & Carbon Accounting Center
             </span>
           </div>
-          <h1 className="text-2xl font-extrabold text-[#0b3558] mt-1 tracking-tight">
+          <h1 className="text-2xl font-extrabold text-white mt-1 tracking-tight">
             Scope 1, 2, 3 Emissions & Net-Zero 2030 Pathway
           </h1>
-          <p className="text-xs text-[#476788] mt-1">
+          <p className="text-xs text-[#b9b8bb] mt-1">
             Aligned with GHG Protocol • Realtime BESCOM Grid Factor 0.71 kg CO₂e/kWh
           </p>
         </div>
@@ -172,9 +172,9 @@ export default function CarbonPage() {
         <button
           onClick={generateEsgPdf}
           disabled={isGeneratingPdf}
-          className="btn-pop btn-shine px-5 py-3 rounded-lg bg-[#006bff] hover:bg-[#005be0] text-white font-semibold text-xs shadow-cal-btn flex items-center gap-2 disabled:opacity-50"
+          className="btn-pop btn-shine px-5 py-3 rounded-lg bg-gradient-to-r from-[#4d19b1] to-[#6f5adc] hover:from-[#581dc7] hover:to-[#7d68e8] text-white font-semibold text-xs shadow-[0_0_20px_rgba(111,90,220,0.45)] border border-white/20 flex items-center gap-2 disabled:opacity-50"
         >
-          <Download className="w-4 h-4" />
+          <Download className="w-4 h-4 text-[#9ff0ec]" />
           <span>{isGeneratingPdf ? 'Compiling PDF Report...' : 'Download Green Audit PDF'}</span>
         </button>
       </div>

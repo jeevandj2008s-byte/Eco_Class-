@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   Zap,
@@ -42,6 +42,17 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showRoleMenu, setShowRoleMenu] = useState(false);
   const [copiedField, setCopiedField] = useState(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setShowRoleMenu(false);
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const navLinks = [
     { to: '/', label: 'Overview', icon: Activity, desc: 'Campus power KPIs' },

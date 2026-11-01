@@ -14,6 +14,7 @@ import {
   Sliders,
   LifeBuoy,
   Shield,
+  ShieldCheck,
   Info
 } from 'lucide-react';
 import { formatINR, formatCo2 } from '../lib/utils.js';
@@ -35,13 +36,13 @@ export default function LandingPage() {
       label: 'Command Center',
       tag: 'Live Telemetry',
       stat: '142 kW',
-      statColor: 'text-[#0b3558]',
-      borderColor: 'border-[#d4e0ed] hover:border-[#0b3558]',
-      blobColor: 'text-[#0b3558]',
+      statColor: 'text-white',
+      borderColor: 'border-white/[0.12] hover:border-[#6f5adc]/60',
+      blobColor: 'text-[#6f5adc]',
       blobPath: 'M 16,16 C 35,14 55,24 75,20 C 95,16 110,6 126,10 C 138,14 144,26 142,40 C 140,52 126,58 110,58 L 18,58 C 6,58 0,48 0,36 C 0,24 6,18 16,16 Z',
       icon: Activity,
-      iconColor: 'text-[#006bff]',
-      color: 'bg-[#e6f0ff] text-[#006bff]',
+      iconColor: 'text-[#9ff0ec]',
+      color: 'bg-white/[0.04] text-[#9ff0ec]',
       desc: 'Real-time 142 kW microgrid draw, solar generation, and ghost gap monitoring.'
     },
     {
@@ -49,13 +50,13 @@ export default function LandingPage() {
       label: 'BIT Digital Twin',
       tag: 'Campus Map',
       stat: '8 Blocks',
-      statColor: 'text-[#006bff]',
-      borderColor: 'border-[#b8d5ff] hover:border-[#006bff]',
-      blobColor: 'text-[#006bff]',
+      statColor: 'text-[#9ff0ec]',
+      borderColor: 'border-white/[0.12] hover:border-[#9ff0ec]/60',
+      blobColor: 'text-[#4d19b1]',
       blobPath: 'M 18,22 C 32,22 46,26 62,24 C 76,22 88,2 108,2 C 128,2 142,14 142,30 C 142,46 128,56 112,56 L 20,56 C 8,56 0,46 0,34 C 0,22 8,22 18,22 Z',
       icon: Layers,
-      iconColor: 'text-[#006bff]',
-      color: 'bg-[#e6f0ff] text-[#006bff]',
+      iconColor: 'text-[#9ff0ec]',
+      color: 'bg-white/[0.04] text-[#9ff0ec]',
       desc: 'Interactive 8-building twin with thermal heatmaps and device controls.'
     },
     {
@@ -63,13 +64,13 @@ export default function LandingPage() {
       label: 'Vision Lab',
       tag: 'Edge AI & Phone',
       stat: 'Edge AI',
-      statColor: 'text-[#f59e0b]',
-      borderColor: 'border-amber-200 hover:border-amber-400',
-      blobColor: 'text-[#f59e0b]',
+      statColor: 'text-[#bdf7ee]',
+      borderColor: 'border-white/[0.12] hover:border-[#bdf7ee]/60',
+      blobColor: 'text-[#6f5adc]',
       blobPath: 'M 12,32 C 18,18 36,4 62,2 C 90,0 114,12 128,24 C 140,34 142,44 136,54 C 130,58 116,58 100,58 L 22,58 C 8,58 0,48 0,38 C 0,35 6,34 12,32 Z',
       icon: Camera,
-      iconColor: 'text-amber-600',
-      color: 'bg-purple-50 text-purple-700',
+      iconColor: 'text-[#bdf7ee]',
+      color: 'bg-white/[0.04] text-[#bdf7ee]',
       desc: 'COCO-SSD occupancy inference with phone camera wireless pairing.'
     },
     {
@@ -77,13 +78,13 @@ export default function LandingPage() {
       label: 'Automation & Control',
       tag: 'Zero Latency',
       stat: '0 Latency',
-      statColor: 'text-[#d946ef]',
-      borderColor: 'border-fuchsia-200 hover:border-fuchsia-400',
-      blobColor: 'text-[#d946ef]',
+      statColor: 'text-[#6f5adc]',
+      borderColor: 'border-white/[0.12] hover:border-[#6f5adc]/60',
+      blobColor: 'text-[#4d19b1]',
       blobPath: 'M 18,22 C 32,22 46,26 62,24 C 76,22 88,2 108,2 C 128,2 142,14 142,30 C 142,46 128,56 112,56 L 20,56 C 8,56 0,46 0,34 C 0,22 8,22 18,22 Z',
       icon: Sliders,
-      iconColor: 'text-fuchsia-600',
-      color: 'bg-amber-50 text-amber-700',
+      iconColor: 'text-[#6f5adc]',
+      color: 'bg-white/[0.04] text-[#6f5adc]',
       desc: 'Campus Eco switch, load shedding, and 60-second safety undo window.'
     },
     {
@@ -91,13 +92,13 @@ export default function LandingPage() {
       label: 'What-If Simulator',
       tag: 'Zustand Engine',
       stat: '1,000+',
-      statColor: 'text-[#006bff]',
-      borderColor: 'border-blue-200 hover:border-[#006bff]',
-      blobColor: 'text-[#006bff]',
+      statColor: 'text-[#9ff0ec]',
+      borderColor: 'border-white/[0.12] hover:border-[#9ff0ec]/60',
+      blobColor: 'text-[#6f5adc]',
       blobPath: 'M 16,16 C 35,14 55,24 75,20 C 95,16 110,6 126,10 C 138,14 144,26 142,40 C 140,52 126,58 110,58 L 18,58 C 6,58 0,48 0,36 C 0,24 6,18 16,16 Z',
       icon: TrendingDown,
-      iconColor: 'text-[#006bff]',
-      color: 'bg-blue-50 text-blue-700',
+      iconColor: 'text-[#9ff0ec]',
+      color: 'bg-white/[0.04] text-[#9ff0ec]',
       desc: '1,000+ student agents timetable simulation, weather, and tariff models.'
     },
     {
@@ -105,13 +106,13 @@ export default function LandingPage() {
       label: 'Carbon ESG Passport',
       tag: 'Green Audit',
       stat: 'Scope 2',
-      statColor: 'text-[#10b981]',
-      borderColor: 'border-emerald-200 hover:border-emerald-400',
-      blobColor: 'text-[#10b981]',
+      statColor: 'text-emerald-400',
+      borderColor: 'border-white/[0.12] hover:border-emerald-400/60',
+      blobColor: 'text-[#4d19b1]',
       blobPath: 'M 12,32 C 18,18 36,4 62,2 C 90,0 114,12 128,24 C 140,34 142,44 136,54 C 130,58 116,58 100,58 L 22,58 C 8,58 0,48 0,38 C 0,35 6,34 12,32 Z',
       icon: Zap,
-      iconColor: 'text-emerald-600',
-      color: 'bg-emerald-50 text-emerald-700',
+      iconColor: 'text-emerald-400',
+      color: 'bg-white/[0.04] text-emerald-400',
       desc: 'Scope 2 emission tracker, green badges, and 1-click PDF ESG export.'
     },
     {
@@ -119,13 +120,13 @@ export default function LandingPage() {
       label: 'Aura AI Energy Coach',
       tag: 'Google Gemini',
       stat: 'Gemini AI',
-      statColor: 'text-[#ec4899]',
-      borderColor: 'border-pink-200 hover:border-pink-400',
-      blobColor: 'text-[#ec4899]',
+      statColor: 'text-[#bdf7ee]',
+      borderColor: 'border-white/[0.12] hover:border-[#bdf7ee]/60',
+      blobColor: 'text-[#6f5adc]',
       blobPath: 'M 18,22 C 32,22 46,26 62,24 C 76,22 88,2 108,2 C 128,2 142,14 142,30 C 142,46 128,56 112,56 L 20,56 C 8,56 0,46 0,34 C 0,22 8,22 18,22 Z',
       icon: Sparkles,
-      iconColor: 'text-pink-600',
-      color: 'bg-pink-50 text-pink-700',
+      iconColor: 'text-[#bdf7ee]',
+      color: 'bg-white/[0.04] text-[#bdf7ee]',
       desc: 'Ground truth campus telemetry conversational AI with actionable fixes.'
     },
     {
@@ -133,13 +134,13 @@ export default function LandingPage() {
       label: 'Incident Helpdesk',
       tag: 'Crowdsourced',
       stat: '3-Tap',
-      statColor: 'text-[#eab308]',
-      borderColor: 'border-yellow-200 hover:border-yellow-400',
-      blobColor: 'text-[#eab308]',
+      statColor: 'text-amber-400',
+      borderColor: 'border-white/[0.12] hover:border-amber-400/60',
+      blobColor: 'text-[#4d19b1]',
       blobPath: 'M 12,32 C 18,18 36,4 62,2 C 90,0 114,12 128,24 C 140,34 142,44 136,54 C 130,58 116,58 100,58 L 22,58 C 8,58 0,48 0,38 C 0,35 6,34 12,32 Z',
       icon: LifeBuoy,
-      iconColor: 'text-yellow-600',
-      color: 'bg-yellow-50 text-yellow-700',
+      iconColor: 'text-amber-400',
+      color: 'bg-white/[0.04] text-amber-400',
       desc: '3-tap waste reporting, SLA tracking, and technician dispatch kanban.'
     },
     {
@@ -147,13 +148,13 @@ export default function LandingPage() {
       label: 'Admin & HOD Console',
       tag: 'Access Governance',
       stat: 'Passkey',
-      statColor: 'text-[#6366f1]',
-      borderColor: 'border-indigo-200 hover:border-indigo-400',
-      blobColor: 'text-[#6366f1]',
+      statColor: 'text-[#6f5adc]',
+      borderColor: 'border-white/[0.12] hover:border-[#6f5adc]/60',
+      blobColor: 'text-[#4d19b1]',
       blobPath: 'M 16,16 C 35,14 55,24 75,20 C 95,16 110,6 126,10 C 138,14 144,26 142,40 C 140,52 126,58 110,58 L 18,58 C 6,58 0,48 0,36 C 0,24 6,18 16,16 Z',
       icon: Shield,
-      iconColor: 'text-indigo-600',
-      color: 'bg-indigo-50 text-indigo-700',
+      iconColor: 'text-[#6f5adc]',
+      color: 'bg-white/[0.04] text-[#6f5adc]',
       desc: 'Passkey PIN security, role simulation, and immutable audit logs.'
     },
     {
@@ -161,97 +162,164 @@ export default function LandingPage() {
       label: 'About BIT & Team',
       tag: 'Institutional',
       stat: 'BIT 2026',
-      statColor: 'text-[#0b3558]',
-      borderColor: 'border-slate-200 hover:border-slate-400',
-      blobColor: 'text-[#0b3558]',
+      statColor: 'text-white',
+      borderColor: 'border-white/[0.12] hover:border-white/40',
+      blobColor: 'text-[#6f5adc]',
       blobPath: 'M 18,22 C 32,22 46,26 62,24 C 76,22 88,2 108,2 C 128,2 142,14 142,30 C 142,46 128,56 112,56 L 20,56 C 8,56 0,46 0,34 C 0,22 8,22 18,22 Z',
       icon: Info,
-      iconColor: 'text-slate-600',
-      color: 'bg-slate-100 text-slate-700',
+      iconColor: 'text-[#b9b8bb]',
+      color: 'bg-white/[0.04] text-white',
       desc: 'Institutional vision, engineering roadmap, and white-label setup.'
     }
   ];
 
   return (
-    <div className="relative w-full overflow-hidden bg-[#f8f9fb]">
-      {/* Decorative Blobs (Coral Magenta & Sky Cyan behind hero) */}
-      <div className="blob-magenta top-12 left-1/4 -translate-x-1/2" />
-      <div className="blob-cyan top-28 right-12" />
+    <div className="relative w-full overflow-hidden bg-[#0d0c11] text-white">
+      {/* Decorative Ambient Glow Orbs */}
+      <div className="blob-magenta top-8 left-1/4 -translate-x-1/2 opacity-70" />
+      <div className="blob-cyan top-20 right-10 opacity-60" />
 
-      {/* Hero Section */}
-      <section className="min-h-[75vh] flex flex-col items-center justify-center text-center px-4 pt-12 pb-16 max-w-6xl mx-auto relative z-10">
-        {/* Hackathon Badge */}
-        <div className="badge-live-pulse inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#e6f0ff] border border-[#d4e0ed] text-[#004eba] text-xs font-semibold mb-6 shadow-cal-sm">
-          <Sparkles className="w-3.5 h-3.5 text-[#006bff]" />
-          <span>BIT Hackathon 2026 • AI-Powered Campus Microgrid Digital Twin</span>
-        </div>
-
-        {/* Hero Title */}
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] text-[#0b3558] max-w-4xl">
-          Sustainable Energy.
-          <br />
-          <span className="text-[#006bff] text-shimmer">
-            Reimagined in Real-Time.
-          </span>
-        </h1>
-
-        <p className="mt-6 text-sm sm:text-lg text-[#476788] max-w-2xl leading-relaxed">
-          AuraSync creates a living digital twin of <span className="text-[#0b3558] font-semibold">{institutionData.institutionName}</span>.
-          Uniting computer vision occupancy, synthetic IoT telemetry, and GenAI coaching to bust energy ghosts campus-wide.
-        </p>
-
-        {/* Primary CTAs */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-          <Link
-            to="/dashboard"
-            className="btn-pop btn-shine flex items-center gap-2 px-6 py-3.5 rounded-lg bg-[#006bff] hover:bg-[#005be0] text-white font-semibold text-sm shadow-cal-btn"
-          >
-            <Activity className="w-4 h-4" />
-            <span>Launch Command Center</span>
-            <ArrowRight className="w-4 h-4 ml-1" />
-          </Link>
-          <Link
-            to="/campus"
-            className="btn-pop flex items-center gap-2 px-6 py-3.5 rounded-lg bg-white hover:bg-[#f0f3f8] text-[#0b3558] font-semibold text-sm border border-[#d4e0ed] shadow-cal-sm"
-          >
-            <Layers className="w-4 h-4 text-[#006bff]" />
-            <span>Explore BIT Campus Map</span>
-          </Link>
-          <Link
-            to="/coach"
-            className="btn-pop flex items-center gap-2 px-6 py-3.5 rounded-lg bg-white hover:bg-[#f0f3f8] text-[#0b3558] font-semibold text-sm border border-[#d4e0ed] shadow-cal-sm"
-          >
-            <Sparkles className="w-4 h-4 text-[#006bff]" />
-            <span>Ask Aura AI</span>
-          </Link>
-        </div>
-
-        {/* Projected Campus Impact Counters */}
-        <div className="mt-14 w-full max-w-4xl grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="card-lift p-5 rounded-2xl bg-white border border-[#d4e0ed] shadow-cal-card text-center">
-            <div className="text-2xl sm:text-3xl font-mono font-bold text-[#0b3558]">
-              {formatINR(1250000)}
+      {/* Hero Section: 2-Column Landscape Strata Infrastructure Layout */}
+      <section className="min-h-[85vh] lg:min-h-[880px] flex items-center px-4 sm:px-6 lg:px-12 pt-10 pb-16 max-w-[1720px] mx-auto relative z-10">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          
+          {/* Left Column: Headlines, Subline, CTAs & Stats */}
+          <div className="lg:col-span-7 flex flex-col items-start text-left">
+            {/* Hackathon Status Pill */}
+            <div className="badge-live-pulse inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.16] text-[#bdf7ee] text-xs font-semibold mb-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] backdrop-blur-md">
+              <Sparkles className="w-3.5 h-3.5 text-[#9ff0ec]" />
+              <span>BIT Hackathon 2026 • AI-Powered Campus Microgrid Digital Twin</span>
             </div>
-            <div className="text-xs text-[#476788] mt-1 font-medium">Annual Projected Savings</div>
-          </div>
-          <div className="card-lift p-5 rounded-2xl bg-white border border-[#d4e0ed] shadow-cal-card text-center">
-            <div className="text-2xl sm:text-3xl font-mono font-bold text-[#006bff]">
-              {formatCo2(94200)}
+
+            {/* 3-Line Headline fading from white to soft grey */}
+            <h1 className="text-4xl sm:text-6xl lg:text-[72px] font-display font-medium tracking-tight leading-[1.08] text-white max-w-2xl">
+              <span className="block bg-gradient-to-r from-white via-white to-[#d3d3d7] bg-clip-text text-transparent">Sustainable Energy.</span>
+              <span className="block bg-gradient-to-r from-white via-white to-[#b9b8bb] bg-clip-text text-transparent">Reimagined in</span>
+              <span className="block bg-gradient-to-r from-white via-[#9ff0ec] to-[#6f5adc] bg-clip-text text-transparent">Real-Time.</span>
+            </h1>
+
+            {/* Subline in light grey */}
+            <p className="mt-6 text-sm sm:text-base lg:text-lg text-[#d3d3d7] max-w-xl leading-relaxed font-normal">
+              AuraSync creates a living digital twin of <span className="text-white font-semibold">{institutionData.institutionName}</span>.
+              Uniting computer vision occupancy, synthetic IoT telemetry, and GenAI coaching to bust energy ghosts campus-wide.
+            </p>
+
+            {/* Action Buttons: Violet Gradient Primary + Dark Glass Secondary */}
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <Link
+                to="/dashboard"
+                className="btn-pop btn-shine flex items-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#4d19b1] to-[#6f5adc] hover:from-[#581dc7] hover:to-[#7d68e8] text-white font-semibold text-sm shadow-[0_0_25px_rgba(111,90,220,0.5)] border border-white/20"
+              >
+                <Activity className="w-4 h-4 text-[#9ff0ec]" />
+                <span>Launch Command Center</span>
+                <ArrowRight className="w-4 h-4 ml-1" />
+              </Link>
+              <Link
+                to="/campus"
+                className="btn-pop flex items-center gap-2 px-7 py-3.5 rounded-full bg-white/[0.03] hover:bg-white/[0.08] text-white font-semibold text-sm border border-white/[0.16] backdrop-blur-md shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)]"
+              >
+                <Layers className="w-4 h-4 text-[#9ff0ec]" />
+                <span>Explore BIT Campus Map</span>
+              </Link>
+              <Link
+                to="/coach"
+                className="btn-pop flex items-center gap-2 px-5 py-3.5 rounded-full bg-white/[0.03] hover:bg-white/[0.08] text-[#d3d3d7] hover:text-white font-semibold text-sm border border-white/[0.12] backdrop-blur-md"
+              >
+                <Sparkles className="w-4 h-4 text-[#6f5adc]" />
+                <span>Ask Aura AI</span>
+              </Link>
             </div>
-            <div className="text-xs text-[#476788] mt-1 font-medium">CO₂ Avoided Yearly</div>
-          </div>
-          <div className="card-lift p-5 rounded-2xl bg-white border border-[#d4e0ed] shadow-cal-card text-center">
-            <div className="text-2xl sm:text-3xl font-mono font-bold text-[#0b3558]">
-              260 kWp
+
+            {/* Projected Campus Impact Stats Row */}
+            <div className="mt-12 pt-8 border-t border-white/[0.1] w-full grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="pr-4 border-r border-white/[0.1]">
+                <div className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
+                  {formatINR(1250000)}
+                </div>
+                <div className="text-xs text-[#b9b8bb] mt-1 font-normal">Annual Projected Savings</div>
+              </div>
+              <div className="px-2 sm:px-4 border-r border-white/[0.1]">
+                <div className="text-2xl sm:text-3xl font-display font-bold text-[#9ff0ec] tracking-tight">
+                  {formatCo2(94200)}
+                </div>
+                <div className="text-xs text-[#b9b8bb] mt-1 font-normal">CO₂ Avoided Yearly</div>
+              </div>
+              <div className="px-2 sm:px-4 border-r border-white/[0.1]">
+                <div className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
+                  260 kWp
+                </div>
+                <div className="text-xs text-[#b9b8bb] mt-1 font-normal">Rooftop Solar Modeled</div>
+              </div>
+              <div className="pl-4">
+                <div className="text-2xl sm:text-3xl font-display font-bold text-[#bdf7ee] tracking-tight">
+                  84 / 100
+                </div>
+                <div className="text-xs text-[#b9b8bb] mt-1 font-normal">Green Campus Score</div>
+              </div>
             </div>
-            <div className="text-xs text-[#476788] mt-1 font-medium">Rooftop Solar Modeled</div>
           </div>
-          <div className="card-lift p-5 rounded-2xl bg-white border border-[#d4e0ed] shadow-cal-card text-center">
-            <div className="text-2xl sm:text-3xl font-mono font-bold text-emerald-600">
-              84 / 100
+
+          {/* Right Column: Square Artwork Area with Floating Glass Cards */}
+          <div className="lg:col-span-5 relative flex items-center justify-center">
+            <div className="relative w-full aspect-square max-w-[540px] mx-auto flex items-center justify-center">
+              {/* Radial Haze Behind Slabs */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#4d19b1]/30 via-[#6f5adc]/20 to-[#9ff0ec]/20 blur-3xl rounded-full pointer-events-none" />
+
+              {/* Masked Video Artwork Loop */}
+              <div
+                className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl"
+                style={{
+                  maskImage: 'radial-gradient(circle at center, black 65%, transparent 95%)',
+                  WebkitMaskImage: 'radial-gradient(circle at center, black 65%, transparent 95%)'
+                }}
+              >
+                <video
+                  src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/435a4fe7-e43b-4e7c-af78-0be083e73569.mp4"
+                  poster="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/782a4a52-4c1e-4471-bb0c-aa232927f4a6.webp"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Floating Glass Card 1: Upper-Left */}
+              <div className="absolute -top-3 -left-3 sm:top-4 sm:-left-6 w-[260px] sm:w-[280px] p-4 rounded-[18px] bg-white/[0.03] border border-white/[0.16] backdrop-blur-md shadow-[0_16px_36px_rgba(0,0,0,0.7),inset_0_1px_1px_rgba(255,255,255,0.12)] animate-float z-20">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-[#9ff0ec]/10 border border-[#9ff0ec]/30 flex items-center justify-center text-[#9ff0ec] shrink-0 shadow-[0_0_12px_rgba(159,240,236,0.3)]">
+                    <Activity className="w-5 h-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-[#bdf7ee] block">
+                      Campus Telemetry
+                    </span>
+                    <p className="text-xs font-semibold text-white leading-snug truncate">
+                      BIT Digital Twin: Live 8-Block Telemetry
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Floating Glass Card 2: Lower-Right */}
+              <div className="absolute -bottom-3 -right-3 sm:bottom-6 sm:-right-6 w-[260px] sm:w-[280px] p-4 rounded-[18px] bg-white/[0.03] border border-white/[0.16] backdrop-blur-md shadow-[0_16px_36px_rgba(0,0,0,0.7),inset_0_1px_1px_rgba(255,255,255,0.12)] animate-float z-20" style={{ animationDelay: '2.5s' }}>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-[#6f5adc]/15 border border-[#6f5adc]/35 flex items-center justify-center text-[#9ff0ec] shrink-0 shadow-[0_0_12px_rgba(111,90,220,0.4)]">
+                    <ShieldCheck className="w-5 h-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-[#bdf7ee] block">
+                      Automated Defense
+                    </span>
+                    <p className="text-xs font-semibold text-white leading-snug truncate">
+                      Zero-Latency: 60s Ghost Load Shedding
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="text-xs text-[#476788] mt-1 font-medium">Green Campus Score</div>
           </div>
+
         </div>
       </section>
 
@@ -260,13 +328,15 @@ export default function LandingPage() {
         {/* Header with Title on Left and Carousel Controls on Right */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
           <div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0b3558] tracking-tight leading-[1.15]">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight leading-[1.15]">
               Explore All Campus<br />
-              Energy Twin Systems
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#bdf7ee] to-[#9ff0ec]">
+                Energy Twin Systems
+              </span>
             </h2>
-            <p className="mt-3 text-xs sm:text-sm text-[#476788] flex items-center gap-1.5 font-medium">
+            <p className="mt-3 text-xs sm:text-sm text-[#b9b8bb] flex items-center gap-1.5 font-normal">
               <span>Click any module below to open its dedicated view with live simulated telemetry and controls</span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#006bff]" />
+              <ArrowRight className="w-3.5 h-3.5 text-[#9ff0ec]" />
             </p>
           </div>
 
@@ -275,14 +345,14 @@ export default function LandingPage() {
             <button
               onClick={() => scrollCarousel('left')}
               aria-label="Previous modules"
-              className="w-10 h-10 rounded-full border border-[#d4e0ed] bg-white hover:bg-[#f0f3f8] flex items-center justify-center text-[#0b3558] shadow-cal-sm transition-all hover:scale-105 active:scale-95"
+              className="w-10 h-10 rounded-full border border-white/[0.16] bg-white/[0.04] hover:bg-white/[0.1] flex items-center justify-center text-white backdrop-blur-md shadow-lg transition-all hover:scale-105 active:scale-95"
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
             <button
               onClick={() => scrollCarousel('right')}
               aria-label="Next modules"
-              className="w-10 h-10 rounded-full border border-[#d4e0ed] bg-white hover:bg-[#f0f3f8] flex items-center justify-center text-[#0b3558] shadow-cal-sm transition-all hover:scale-105 active:scale-95"
+              className="w-10 h-10 rounded-full border border-white/[0.16] bg-white/[0.04] hover:bg-white/[0.1] flex items-center justify-center text-white backdrop-blur-md shadow-lg transition-all hover:scale-105 active:scale-95"
             >
               <ArrowRight className="w-4 h-4" />
             </button>
@@ -301,18 +371,20 @@ export default function LandingPage() {
               <Link
                 key={m.to}
                 to={m.to}
-                className={`w-[290px] sm:w-[320px] shrink-0 snap-start min-h-[420px] rounded-[28px] bg-white border ${m.borderColor} shadow-cal-card hover:shadow-cal-card p-7 sm:p-8 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:-translate-y-1.5 group`}
+                className={`w-[290px] sm:w-[320px] shrink-0 snap-start min-h-[420px] rounded-[28px] bg-white/[0.025] border ${m.borderColor} backdrop-blur-md shadow-[0_16px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.08)] p-7 sm:p-8 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:border-white/30 group`}
               >
                 {/* Top: Brand Logo / Module Identifier */}
                 <div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
-                      <Icon className={`w-5 h-5 ${m.iconColor}`} />
-                      <span className="font-extrabold text-sm tracking-tight text-[#0b3558] uppercase">
+                      <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.1] flex items-center justify-center">
+                        <Icon className={`w-4 h-4 ${m.iconColor}`} />
+                      </div>
+                      <span className="font-extrabold text-sm tracking-tight text-white uppercase">
                         {m.label}
                       </span>
                     </div>
-                    <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-[#f0f3f8] text-[#476788] border border-[#d4e0ed]">
+                    <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-white/[0.04] text-[#9ff0ec] border border-white/[0.12]">
                       {m.tag}
                     </span>
                   </div>
@@ -322,7 +394,7 @@ export default function LandingPage() {
                     <div className={`text-5xl font-black tracking-tight ${m.statColor}`}>
                       {m.stat}
                     </div>
-                    <p className="mt-3 text-xs sm:text-sm text-[#476788] leading-relaxed font-normal">
+                    <p className="mt-3 text-xs sm:text-sm text-[#d3d3d7] leading-relaxed font-normal">
                       {m.desc}
                     </p>
                   </div>
@@ -332,7 +404,7 @@ export default function LandingPage() {
                 <div className="relative inline-flex items-center mt-auto self-start">
                   <svg
                     viewBox="0 0 150 60"
-                    className={`w-[136px] h-[52px] ${m.blobColor} transition-transform duration-300 group-hover:scale-105`}
+                    className={`w-[136px] h-[52px] ${m.blobColor} transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]`}
                     fill="currentColor"
                   >
                     <path d={m.blobPath} />
@@ -349,32 +421,32 @@ export default function LandingPage() {
       </section>
 
       {/* Institution Tie-In & Statement Strip */}
-      <section className="py-12 border-y border-[#d4e0ed] bg-white">
+      <section className="py-12 border-y border-white/[0.1] bg-white/[0.01] backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-6">
-            <span className="text-xs font-bold text-[#004eba] uppercase tracking-widest">
+            <span className="text-xs font-bold text-[#9ff0ec] uppercase tracking-widest">
               Bangalore Institute of Technology
             </span>
-            <h3 className="text-lg sm:text-xl font-bold text-[#0b3558] mt-1">
+            <h3 className="text-lg sm:text-xl font-bold text-white mt-1">
               Fostering Sustainable Educational Ecosystems
             </h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-5 rounded-2xl bg-[#f8f9fb] border border-[#d4e0ed] shadow-cal-sm">
-              <CheckCircle2 className="w-5 h-5 text-[#006bff] mb-2" />
-              <p className="text-xs text-[#0b3558] leading-relaxed font-medium">
+            <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.12] backdrop-blur-md shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
+              <CheckCircle2 className="w-5 h-5 text-[#9ff0ec] mb-2" />
+              <p className="text-xs text-[#d3d3d7] leading-relaxed font-medium">
                 "{institutionData.statements[0]}"
               </p>
             </div>
-            <div className="p-5 rounded-2xl bg-[#f8f9fb] border border-[#d4e0ed] shadow-cal-sm">
-              <CheckCircle2 className="w-5 h-5 text-[#006bff] mb-2" />
-              <p className="text-xs text-[#0b3558] leading-relaxed font-medium">
+            <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.12] backdrop-blur-md shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
+              <CheckCircle2 className="w-5 h-5 text-[#9ff0ec] mb-2" />
+              <p className="text-xs text-[#d3d3d7] leading-relaxed font-medium">
                 "{institutionData.statements[1]}"
               </p>
             </div>
-            <div className="p-5 rounded-2xl bg-[#f8f9fb] border border-[#d4e0ed] shadow-cal-sm">
-              <CheckCircle2 className="w-5 h-5 text-[#006bff] mb-2" />
-              <p className="text-xs text-[#0b3558] leading-relaxed font-medium">
+            <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.12] backdrop-blur-md shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
+              <CheckCircle2 className="w-5 h-5 text-[#9ff0ec] mb-2" />
+              <p className="text-xs text-[#d3d3d7] leading-relaxed font-medium">
                 "{institutionData.statements[3]}"
               </p>
             </div>
@@ -387,11 +459,11 @@ export default function LandingPage() {
         <div className="blob-cyan -bottom-10 -left-10" />
 
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="text-xs font-bold text-[#004eba] uppercase tracking-widest">Core Innovations</span>
-          <h2 className="text-3xl font-bold text-[#0b3558] mt-2">
+          <span className="text-xs font-bold text-[#bdf7ee] uppercase tracking-widest">Core Innovations</span>
+          <h2 className="text-3xl font-bold text-white mt-2">
             Engineered for Campus Net-Zero Goals
           </h2>
-          <p className="text-sm text-[#476788] mt-2">
+          <p className="text-sm text-[#d3d3d7] mt-2">
             Fully simulated with progressive hardware support for physical smart meters, relays, and IP cameras.
           </p>
         </div>
@@ -399,48 +471,48 @@ export default function LandingPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
           <Link
             to="/campus"
-            className="card-lift p-6 rounded-2xl bg-white border border-[#d4e0ed] hover:border-[#006bff] shadow-cal-card transition group block"
+            className="card-lift p-6 rounded-2xl bg-white/[0.02] border border-white/[0.12] hover:border-[#6f5adc]/60 backdrop-blur-md shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition group block"
           >
-            <div className="w-12 h-12 rounded-xl bg-[#e6f0ff] text-[#006bff] flex items-center justify-center mb-4 group-hover:scale-110 transition shadow-cal-sm">
+            <div className="w-12 h-12 rounded-xl bg-[#6f5adc]/15 border border-[#6f5adc]/30 text-[#9ff0ec] flex items-center justify-center mb-4 group-hover:scale-110 transition shadow-[0_0_15px_rgba(111,90,220,0.3)]">
               <Layers className="w-6 h-6" />
             </div>
-            <h4 className="text-base font-bold text-[#0b3558] group-hover:text-[#006bff] transition">Full-Scale BIT Campus Map</h4>
-            <p className="text-xs text-[#476788] mt-2 leading-relaxed">
+            <h4 className="text-base font-bold text-white group-hover:text-[#9ff0ec] transition">Full-Scale BIT Campus Map</h4>
+            <p className="text-xs text-[#d3d3d7] mt-2 leading-relaxed">
               Models BIT Main Block, Administration Block, Engineering Block A, Engineering Block B, Sports Court, Hostel, and EV Charging Hub.
             </p>
-            <span className="text-xs text-[#006bff] font-bold mt-4 inline-flex items-center gap-1">
+            <span className="text-xs text-[#9ff0ec] font-bold mt-4 inline-flex items-center gap-1">
               Launch Campus Map <ArrowRight className="w-3.5 h-3.5" />
             </span>
           </Link>
 
           <Link
             to="/control"
-            className="card-lift p-6 rounded-2xl bg-white border border-[#d4e0ed] hover:border-[#006bff] shadow-cal-card transition group block"
+            className="card-lift p-6 rounded-2xl bg-white/[0.02] border border-white/[0.12] hover:border-[#6f5adc]/60 backdrop-blur-md shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition group block"
           >
-            <div className="w-12 h-12 rounded-xl bg-[#e6f0ff] text-[#006bff] flex items-center justify-center mb-4 group-hover:scale-110 transition shadow-cal-sm">
+            <div className="w-12 h-12 rounded-xl bg-[#6f5adc]/15 border border-[#6f5adc]/30 text-[#9ff0ec] flex items-center justify-center mb-4 group-hover:scale-110 transition shadow-[0_0_15px_rgba(111,90,220,0.3)]">
               <Compass className="w-6 h-6" />
             </div>
-            <h4 className="text-base font-bold text-[#0b3558] group-hover:text-[#006bff] transition">Ghost Twin Technology</h4>
-            <p className="text-xs text-[#476788] mt-2 leading-relaxed">
+            <h4 className="text-base font-bold text-white group-hover:text-[#9ff0ec] transition">Ghost Twin Technology</h4>
+            <p className="text-xs text-[#d3d3d7] mt-2 leading-relaxed">
               Compares Real vs Ghost ideal consumption to isolate 8 deterministic energy ghosts: empty room ACs, continuous geysers, and idling projectors.
             </p>
-            <span className="text-xs text-[#006bff] font-bold mt-4 inline-flex items-center gap-1">
+            <span className="text-xs text-[#9ff0ec] font-bold mt-4 inline-flex items-center gap-1">
               Open Control Center <ArrowRight className="w-3.5 h-3.5" />
             </span>
           </Link>
 
           <Link
             to="/coach"
-            className="card-lift p-6 rounded-2xl bg-white border border-[#d4e0ed] hover:border-[#006bff] shadow-cal-card transition group block"
+            className="card-lift p-6 rounded-2xl bg-white/[0.02] border border-white/[0.12] hover:border-[#6f5adc]/60 backdrop-blur-md shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition group block"
           >
-            <div className="w-12 h-12 rounded-xl bg-[#e6f0ff] text-[#006bff] flex items-center justify-center mb-4 group-hover:scale-110 transition shadow-cal-sm">
+            <div className="w-12 h-12 rounded-xl bg-[#6f5adc]/15 border border-[#6f5adc]/30 text-[#9ff0ec] flex items-center justify-center mb-4 group-hover:scale-110 transition shadow-[0_0_15px_rgba(111,90,220,0.3)]">
               <Sparkles className="w-6 h-6" />
             </div>
-            <h4 className="text-base font-bold text-[#0b3558] group-hover:text-[#006bff] transition">Aura AI Energy Coach</h4>
-            <p className="text-xs text-[#476788] mt-2 leading-relaxed">
+            <h4 className="text-base font-bold text-white group-hover:text-[#9ff0ec] transition">Aura AI Energy Coach</h4>
+            <p className="text-xs text-[#d3d3d7] mt-2 leading-relaxed">
               Google Gemini-backed advisor with offline fallback generating ranked quantified advice in Indian Rupees (₹) and kg CO₂ across CFO, Eco, and Student personas.
             </p>
-            <span className="text-xs text-[#006bff] font-bold mt-4 inline-flex items-center gap-1">
+            <span className="text-xs text-[#9ff0ec] font-bold mt-4 inline-flex items-center gap-1">
               Chat with Aura AI <ArrowRight className="w-3.5 h-3.5" />
             </span>
           </Link>
@@ -448,9 +520,9 @@ export default function LandingPage() {
       </section>
 
       {/* Credit Banner */}
-      <section className="py-8 bg-white border-t border-[#d4e0ed] text-center px-4">
-        <p className="text-xs text-[#476788] font-medium">
-          Built with ❤️ by <span className="font-bold text-[#0b3558]">[YOUR TEAM NAME], BIT</span> • [BIT ADDRESS]
+      <section className="py-8 bg-[#0d0c11]/80 border-t border-white/[0.1] text-center px-4">
+        <p className="text-xs text-[#b9b8bb] font-medium">
+          Built with ❤️ by <span className="font-bold text-white">[YOUR TEAM NAME], BIT</span> • [BIT ADDRESS]
         </p>
       </section>
     </div>

@@ -25,17 +25,17 @@ export default function LivingCanvas() {
       aria-hidden="true"
       className="fixed inset-0 pointer-events-none overflow-hidden -z-10 select-none"
     >
-      {/* Soft Ambient Floating Orbs */}
+      {/* Soft Ambient Floating Orbs (Violet & Teal Accents) */}
       <div
-        className="living-orb-1 absolute -top-32 -left-32 w-96 h-96 rounded-full bg-gradient-to-tr from-[#006bff]/10 to-[#0099ff]/15 blur-3xl"
+        className="living-orb-1 absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full bg-gradient-to-tr from-[#4d19b1]/20 to-[#6f5adc]/25 blur-[100px]"
         style={{ transform: 'translate3d(0,0,0)' }}
       />
       <div
-        className="living-orb-2 absolute top-1/3 -right-32 w-80 h-80 rounded-full bg-gradient-to-bl from-[#e55cff]/10 to-[#006bff]/10 blur-3xl"
+        className="living-orb-2 absolute top-1/3 -right-32 w-[480px] h-[480px] rounded-full bg-gradient-to-bl from-[#9ff0ec]/15 to-[#6f5adc]/20 blur-[100px]"
         style={{ transform: 'translate3d(0,0,0)' }}
       />
       <div
-        className="living-orb-1 absolute -bottom-32 left-1/4 w-[420px] h-[420px] rounded-full bg-gradient-to-tr from-[#0099ff]/10 to-transparent blur-3xl"
+        className="living-orb-1 absolute -bottom-32 left-1/4 w-[540px] h-[540px] rounded-full bg-gradient-to-tr from-[#6f5adc]/15 to-transparent blur-[120px]"
         style={{ transform: 'translate3d(0,0,0)' }}
       />
 
@@ -43,7 +43,7 @@ export default function LivingCanvas() {
       {particles.map((p) => (
         <span
           key={p.id}
-          className="sparkle-particle absolute rounded-full bg-[#006bff]/30"
+          className="sparkle-particle absolute rounded-full bg-[#9ff0ec]/40 shadow-[0_0_8px_rgba(159,240,236,0.6)]"
           style={{
             top: p.top,
             left: p.left,

@@ -25,10 +25,10 @@
   --motion-dist-md: 24px;
   --motion-dist-lg: 48px;
 
-  /* Brand Kinetic Accents */
-  --motion-glow: rgba(0, 107, 255, 0.28);
-  --motion-glow-intense: rgba(0, 107, 255, 0.42);
-  --motion-gradient: linear-gradient(135deg, #006bff 0%, #0099ff 100%);
+  /* Brand Kinetic Accents (Strata Dark Violet & Teal) */
+  --motion-glow: rgba(111, 90, 220, 0.45);
+  --motion-glow-intense: rgba(159, 240, 236, 0.55);
+  --motion-gradient: linear-gradient(135deg, #4d19b1 0%, #6f5adc 50%, #9ff0ec 100%);
 }
 
 /* =========================================================================
@@ -100,11 +100,11 @@
 .text-shimmer {
   background: linear-gradient(
     90deg,
-    #0b3558 0%,
-    #006bff 35%,
-    #0099ff 50%,
-    #006bff 65%,
-    #0b3558 100%
+    #ffffff 0%,
+    #9ff0ec 30%,
+    #6f5adc 50%,
+    #9ff0ec 70%,
+    #ffffff 100%
   );
   background-size: 250% 100%;
   -webkit-background-clip: text;
@@ -193,11 +193,11 @@
 
 .card-lift:hover {
   transform: translateY(-4px);
-  border-color: rgba(0, 107, 255, 0.32) !important;
+  border-color: rgba(111, 90, 220, 0.45) !important;
   box-shadow:
-    0 16px 32px -8px rgba(71, 103, 136, 0.12),
-    0 4px 12px -2px rgba(71, 103, 136, 0.08),
-    0 0 0 1px rgba(0, 107, 255, 0.18) !important;
+    0 20px 40px -10px rgba(0, 0, 0, 0.7),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.15),
+    0 0 20px rgba(111, 90, 220, 0.3) !important;
 }
 
 /* Floating Idle Breathing Animation for special hero or spotlight cards */

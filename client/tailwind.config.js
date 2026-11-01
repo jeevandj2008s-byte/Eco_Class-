@@ -1,4 +1,4 @@
-/** @type {import('tailwindcss').Config} */
+﻿/** @type {import('tailwindcss').Config} */
 export default {
   content: [
     "./index.html",
@@ -8,100 +8,81 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Strata Dark AI Infrastructure System Tokens
-        strata: {
-          bg: '#0d0c11',
-          surface: '#131219',
-          ink: '#ffffff',
-          nav: '#b9b8bb',
-          muted: '#d3d3d7',
-          wordmark: '#bdbdc1',
-          teal: '#9ff0ec',
-          kicker: '#bdf7ee',
-          logo: '#bcbcbf',
-          violet: '#6f5adc',
-          violetDark: '#4d19b1',
-          hairline: 'rgba(255, 255, 255, 0.16)',
-          border: 'rgba(255, 255, 255, 0.12)'
-        },
+        // Calendly Design System Tokens
         ink: {
-          DEFAULT: '#ffffff',
-          navy: '#ffffff',
-          hover: '#d3d3d7',
-          light: '#b9b8bb'
+          DEFAULT: '#0b3558',
+          navy: '#0b3558',
+          hover: '#08253e',
+          light: '#134975'
         },
         signal: {
-          DEFAULT: '#6f5adc',
-          blue: '#6f5adc',
-          hover: '#826ff0',
-          active: '#5b44c8'
+          DEFAULT: '#006bff',
+          blue: '#006bff',
+          hover: '#005be0',
+          active: '#004ec2'
         },
         slate: {
-          gray: '#d3d3d7',
-          muted: '#b9b8bb'
+          gray: '#476788',
+          muted: '#5e7d9c'
         },
         mist: {
-          DEFAULT: '#b9b8bb',
-          gray: '#b9b8bb'
+          DEFAULT: '#a6bbd1',
+          gray: '#a6bbd1'
         },
         cloud: {
-          DEFAULT: '#0d0c11',
-          canvas: '#0d0c11'
+          DEFAULT: '#f8f9fb',
+          canvas: '#f8f9fb'
         },
         paper: {
-          DEFAULT: '#131219',
-          card: '#131219'
+          DEFAULT: '#ffffff',
+          card: '#ffffff'
         },
         pebble: {
-          DEFAULT: 'rgba(255, 255, 255, 0.04)',
-          hover: 'rgba(255, 255, 255, 0.08)'
+          DEFAULT: '#f0f3f8',
+          hover: '#e5ebf3'
         },
         hairline: {
-          DEFAULT: 'rgba(255, 255, 255, 0.16)',
-          border: 'rgba(255, 255, 255, 0.12)'
+          DEFAULT: '#d4e0ed',
+          border: '#d4e0ed'
         },
         carbon: '#0a0a0a',
         coral: {
-          magenta: '#6f5adc'
+          magenta: '#e55cff'
         },
         sky: {
-          cyan: '#9ff0ec'
+          cyan: '#0099ff'
         },
         cobalt: {
-          DEFAULT: '#9ff0ec',
-          deep: '#6f5adc'
+          DEFAULT: '#004eba',
+          deep: '#004eba'
         },
         // Semantic bridge aliases
         aura: {
-          dark: '#0d0c11',
-          card: '#131219',
-          border: 'rgba(255, 255, 255, 0.12)',
-          primary: '#6f5adc',
-          cyan: '#9ff0ec',
+          dark: '#0b3558',
+          card: '#ffffff',
+          border: '#d4e0ed',
+          primary: '#006bff',
+          cyan: '#0099ff',
           amber: '#f59e0b',
           rose: '#f43f5e',
-          purple: '#6f5adc'
+          purple: '#e55cff'
         }
       },
       borderRadius: {
         'card': '24px',
-        'product': '18px',
-        'btn': '9999px',
-        'input': '12px',
+        'product': '16px',
+        'btn': '8px',
+        'input': '8px',
         'badge': '9999px'
       },
       boxShadow: {
-        'strata-glow': '0 0 25px rgba(111, 90, 220, 0.45)',
-        'strata-teal': '0 0 20px rgba(159, 240, 236, 0.35)',
-        'strata-card': 'inset 0 1px 1px 0 rgba(255, 255, 255, 0.08), 0 12px 32px -4px rgba(0, 0, 0, 0.6)',
-        'cal-sm': '0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08)',
-        'cal-card': '0 12px 32px -4px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08)',
-        'cal-btn': '0 0 25px rgba(111, 90, 220, 0.45)',
-        'cal-product': '0 12px 32px -4px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08)'
+        'cal-sm': 'rgba(71, 103, 136, 0.04) 0px 4px 5px 0px, rgba(71, 103, 136, 0.03) 0px 4px 10px 0px, rgba(71, 103, 136, 0.05) 0px 10px 20px 0px',
+        'cal-card': 'rgba(71, 103, 136, 0.04) 0px 4px 5px 0px, rgba(71, 103, 136, 0.03) 0px 8px 15px 0px, rgba(71, 103, 136, 0.08) 0px 30px 50px 0px',
+        'cal-btn': 'rgba(71, 103, 136, 0.04) 0px 4px 5px 0px, rgba(71, 103, 136, 0.03) 0px 8px 15px 0px, rgba(71, 103, 136, 0.06) 0px 15px 30px 0px',
+        'cal-product': 'rgba(71, 103, 136, 0.04) 0px 4px 5px 0px, rgba(71, 103, 136, 0.03) 0px 8px 15px 0px, rgba(71, 103, 136, 0.08) 0px 30px 50px 0px'
       },
       fontFamily: {
-        sans: ['Inter', 'DM Sans', 'system-ui', '-apple-system', 'sans-serif'],
-        display: ['DM Sans', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['Manrope', 'Gilroy', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace']
       },
       animation: {

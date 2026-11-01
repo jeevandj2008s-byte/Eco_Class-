@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   Zap,
@@ -69,11 +69,11 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
   ];
 
   const roleLabels = {
-    admin: { title: 'Principal (Demo Principal)', color: 'bg-amber-500/10 text-amber-300 border-amber-500/30' },
-    hod: { title: 'HOD (Demo HOD)', color: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30' },
-    staff: { title: 'Faculty / Staff', color: 'bg-blue-500/10 text-blue-300 border-blue-500/30' },
-    student: { title: 'Student (AIML)', color: 'bg-purple-500/10 text-purple-300 border-purple-500/30' },
-    worker: { title: 'Technician / Worker', color: 'bg-orange-500/10 text-orange-300 border-orange-500/30' }
+    admin: { title: 'Principal (Demo Principal)', color: 'bg-amber-50 text-amber-800 border-amber-200' },
+    hod: { title: 'HOD (Demo HOD)', color: 'bg-emerald-50 text-emerald-800 border-emerald-200' },
+    staff: { title: 'Faculty / Staff', color: 'bg-blue-50 text-blue-800 border-blue-200' },
+    student: { title: 'Student (AIML)', color: 'bg-purple-50 text-purple-800 border-purple-200' },
+    worker: { title: 'Technician / Worker', color: 'bg-orange-50 text-orange-800 border-orange-200' }
   };
 
   const closeMobile = () => setMobileMenuOpen(false);
@@ -90,30 +90,30 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
   return (
     <header className={`sticky top-0 z-40 w-full transition-all duration-300 px-3 sm:px-6 ${
       isScrolled
-        ? 'bg-[#0d0c11]/85 shadow-[0_12px_32px_-4px_rgba(0,0,0,0.8)] border-b border-white/[0.12] backdrop-blur-md py-2.5'
-        : 'bg-[#0d0c11]/60 border-b border-white/[0.08] backdrop-blur-sm py-3'
+        ? 'bg-white/95 shadow-cal-card border-b border-[#d4e0ed] backdrop-blur-md py-2'
+        : 'bg-white/90 border-b border-[#d4e0ed]/80 shadow-cal-sm backdrop-blur-sm py-2.5'
     }`}>
       <div className="w-full max-w-[1720px] mx-auto flex items-center justify-between gap-2 lg:gap-4">
         {/* Logo and Institution Badge */}
         <Link to="/" onClick={closeMobile} className="flex items-center gap-2.5 group shrink-0">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#4d19b1] to-[#6f5adc] p-0.5 shadow-[0_0_20px_rgba(111,90,220,0.5)] group-hover:scale-105 transition-transform flex items-center justify-center border border-white/20">
+          <div className="w-9 h-9 rounded-xl bg-[#006bff] p-0.5 shadow-cal-sm group-hover:scale-105 transition-transform flex items-center justify-center">
             <Zap className="w-5 h-5 text-white fill-white/20" />
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-1.5">
-              <span className="font-bold text-sm tracking-tight text-white group-hover:text-white transition">
+              <span className="font-bold text-sm tracking-tight text-[#0b3558]">
                 AuraSync
               </span>
-              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-[#9ff0ec]/15 text-[#9ff0ec] border border-[#9ff0ec]/30 font-semibold shadow-[0_0_10px_rgba(159,240,236,0.3)]">
+              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-[#e6f0ff] text-[#004eba] border border-[#d4e0ed] font-semibold">
                 BIT
               </span>
             </div>
-            <span className="text-[10px] text-[#b9b8bb] font-medium hidden sm:inline">Energy Twin • [YOUR TEAM NAME], BIT</span>
+            <span className="text-[10px] text-[#476788] font-medium hidden sm:inline">Energy Twin • [YOUR TEAM NAME], BIT</span>
           </div>
         </Link>
 
-        {/* Navigation Items (Responsive Horizontal Glass Bar) */}
-        <nav className="hidden xl:flex items-center gap-1 bg-white/[0.02] p-1 rounded-full border border-white/[0.12] backdrop-blur-md overflow-x-auto max-w-[650px] 2xl:max-w-none shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]">
+        {/* Navigation Items (Responsive Horizontal Bar) */}
+        <nav className="hidden xl:flex items-center gap-1 bg-[#f0f3f8] p-1 rounded-xl border border-[#d4e0ed] overflow-x-auto max-w-[650px] 2xl:max-w-none">
           {navLinks.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.to || (item.to !== '/' && location.pathname.startsWith(item.to));
@@ -121,13 +121,13 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
               <Link
                 key={item.to}
                 to={item.to}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
                   isActive
-                    ? 'bg-gradient-to-r from-[#4d19b1]/60 to-[#6f5adc]/60 text-white shadow-[0_0_15px_rgba(111,90,220,0.4)] border border-white/20'
-                    : 'text-[#b9b8bb] hover:text-white hover:bg-white/[0.05]'
+                    ? 'bg-white text-[#006bff] shadow-cal-sm border border-[#d4e0ed]'
+                    : 'text-[#476788] hover:text-[#0b3558] hover:bg-white/60'
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#9ff0ec]' : 'text-[#b9b8bb]'}`} />
+                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#006bff]' : 'text-[#476788]'}`} />
                 <span>{item.label}</span>
               </Link>
             );
@@ -135,13 +135,13 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
         </nav>
 
         {/* Live Campus Telemetry Pill (Desktop) */}
-        <div className="hidden 2xl:flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-white/[0.02] border border-white/[0.12] backdrop-blur-md text-xs shrink-0 badge-live-pulse shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]">
+        <div className="hidden 2xl:flex items-center gap-3 px-3 py-1.5 rounded-lg bg-[#f0f3f8] border border-[#d4e0ed] text-xs shrink-0 badge-live-pulse">
           <div className="flex items-center gap-1.5 font-mono">
-            <span className="w-2 h-2 rounded-full bg-[#9ff0ec] animate-pulse shadow-[0_0_8px_#9ff0ec]" />
-            <span className="text-white font-bold">{formatKw(telemetry?.campus?.totalRealKw || 142)}</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-[#0b3558] font-bold">{formatKw(telemetry?.campus?.totalRealKw || 142)}</span>
           </div>
-          <span className="text-white/20">|</span>
-          <div className="text-[11px] text-[#9ff0ec] font-mono font-semibold">
+          <span className="text-[#d4e0ed]">|</span>
+          <div className="text-[11px] text-[#006bff] font-mono font-semibold">
             {formatINR(telemetry?.savingsTracker?.savedTodayRs || 4850)} saved
           </div>
         </div>
@@ -151,7 +151,7 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
           {/* Quick Report Issue Button */}
           <button
             onClick={onOpenReportModal}
-            className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#4d19b1] to-[#6f5adc] hover:from-[#581dc7] hover:to-[#7d68e8] text-white font-semibold text-xs shadow-[0_0_20px_rgba(111,90,220,0.45)] border border-white/20 btn-pop btn-shine"
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#006bff] hover:bg-[#005be0] text-white font-semibold text-xs shadow-cal-btn btn-pop btn-shine"
           >
             <PlusCircle className="w-3.5 h-3.5" />
             <span>Report Waste</span>
@@ -160,101 +160,101 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
           {/* Command Palette Trigger */}
           <button
             onClick={onOpenCommandPalette}
-            className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.16] text-[#b9b8bb] hover:text-white text-xs transition backdrop-blur-md"
+            className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#f0f3f8] hover:bg-white border border-[#d4e0ed] text-[#476788] hover:text-[#0b3558] text-xs transition"
             title="Command Palette (Ctrl+K)"
           >
-            <Command className="w-3.5 h-3.5 text-[#9ff0ec]" />
-            <span className="font-mono text-[10px] bg-white/10 border border-white/20 px-1 py-0.2 rounded text-white">⌘K</span>
+            <Command className="w-3.5 h-3.5" />
+            <span className="font-mono text-[10px] bg-white border border-[#d4e0ed] px-1 py-0.2 rounded text-[#0b3558]">⌘K</span>
           </button>
 
           {/* User Credentials Badge & Dropdown */}
           <div className="relative">
             <button
               onClick={() => setShowRoleMenu(!showRoleMenu)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.16] text-left transition backdrop-blur-md group shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]"
+              className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-white hover:bg-[#f0f3f8] border border-[#d4e0ed] text-left transition shadow-cal-sm group"
               title="Click to view credentials and session details"
             >
               {/* User Avatar Circle */}
-              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#4d19b1] to-[#6f5adc] flex items-center justify-center font-bold text-white text-[10px] shrink-0 border border-white/20 shadow-[0_0_10px_rgba(111,90,220,0.4)]">
+              <div className="w-7 h-7 rounded-lg bg-[#006bff] flex items-center justify-center font-bold text-white text-[10px] shrink-0">
                 {user?.name ? user.name.slice(0, 2).toUpperCase() : 'AU'}
               </div>
 
               {/* User Name & Role Pill */}
               <div className="flex flex-col min-w-0 pr-1">
                 <div className="flex items-center gap-1.5">
-                  <span className="font-bold text-xs text-white truncate max-w-[110px] sm:max-w-[150px]">
+                  <span className="font-bold text-xs text-[#0b3558] truncate max-w-[110px] sm:max-w-[150px]">
                     {user?.name || 'Demo HOD'}
                   </span>
-                  <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded-full border uppercase font-extrabold ${roleStyle.color}`}>
+                  <span className={`text-[9px] font-mono px-1 py-0.2 rounded border uppercase font-extrabold ${roleStyle.color}`}>
                     {user?.role || 'HOD'}
                   </span>
                 </div>
-                <span className="text-[10px] text-[#b9b8bb] font-mono truncate max-w-[140px] sm:max-w-[180px] hidden sm:block">
+                <span className="text-[10px] text-[#476788] font-mono truncate max-w-[140px] sm:max-w-[180px] hidden sm:block">
                   {user?.email || 'hod.aiml@aurasync.demo'}
                 </span>
               </div>
 
-              <ChevronDown className="w-3.5 h-3.5 text-[#b9b8bb] group-hover:text-white transition shrink-0" />
+              <ChevronDown className="w-3.5 h-3.5 text-[#476788] group-hover:text-[#0b3558] transition shrink-0" />
             </button>
 
             {/* Comprehensive Credentials Card Modal / Dropdown */}
             {showRoleMenu && (
-              <div className="absolute right-0 mt-2 w-80 rounded-2xl bg-[#131219]/95 border border-white/[0.16] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-xl z-50 animate-in fade-in zoom-in-95 duration-150 text-white">
+              <div className="absolute right-0 mt-2 w-80 rounded-2xl bg-white border border-[#d4e0ed] p-4 shadow-cal-card z-50 animate-in fade-in zoom-in-95 duration-150">
                 {/* Header: Verified Session */}
-                <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/[0.12]">
-                  <div className="flex items-center gap-1 text-[11px] font-bold text-[#9ff0ec]">
+                <div className="flex items-center justify-between pb-2 mb-2 border-b border-[#d4e0ed]">
+                  <div className="flex items-center gap-1 text-[11px] font-bold text-[#006bff]">
                     <ShieldCheck className="w-4 h-4" />
                     <span>Logged In Session</span>
                   </div>
-                  <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-[#9ff0ec]/10 text-[#9ff0ec] border border-[#9ff0ec]/30">
+                  <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-[#e6f0ff] text-[#004eba] border border-[#d4e0ed]">
                     BIT Campus
                   </span>
                 </div>
 
                 {/* Full Credentials Box */}
-                <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.1] space-y-2 text-xs">
+                <div className="p-3 rounded-xl bg-[#f8f9fb] border border-[#d4e0ed] space-y-2 text-xs">
                   <div>
-                    <span className="text-[10px] uppercase font-bold text-[#b9b8bb] block">Name:</span>
-                    <span className="font-bold text-white text-xs block">{user?.name}</span>
+                    <span className="text-[10px] uppercase font-bold text-[#476788] block">Name:</span>
+                    <span className="font-bold text-[#0b3558] text-xs block">{user?.name}</span>
                   </div>
 
                   <div>
-                    <span className="text-[10px] uppercase font-bold text-[#b9b8bb] block">College Email:</span>
-                    <div className="flex items-center justify-between gap-1 font-mono text-[11px] text-[#9ff0ec]">
+                    <span className="text-[10px] uppercase font-bold text-[#476788] block">College Email:</span>
+                    <div className="flex items-center justify-between gap-1 font-mono text-[11px] text-[#006bff]">
                       <span className="truncate">{user?.email}</span>
                       <button
                         onClick={() => handleCopy(user?.email, 'email')}
-                        className="p-1 rounded bg-white/10 hover:bg-white/20 border border-white/20 text-[#d3d3d7] hover:text-white shrink-0"
+                        className="p-1 rounded bg-white hover:bg-[#e5ebf3] border border-[#d4e0ed] text-[#476788] hover:text-[#0b3558] shrink-0"
                         title="Copy email"
                       >
-                        {copiedField === 'email' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                        {copiedField === 'email' ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
                       </button>
                     </div>
                   </div>
 
                   <div>
-                    <span className="text-[10px] uppercase font-bold text-[#b9b8bb] block">Department:</span>
-                    <span className="text-[#d3d3d7] text-[11px] block">{user?.department}</span>
+                    <span className="text-[10px] uppercase font-bold text-[#476788] block">Department:</span>
+                    <span className="text-[#476788] text-[11px] block">{user?.department}</span>
                   </div>
 
-                  <div className="flex items-center justify-between pt-1 border-t border-white/[0.1] text-[10px]">
-                    <span className="text-[#b9b8bb]">Default Passkey:</span>
-                    <span className="font-mono font-bold text-[#9ff0ec] bg-white/10 border border-white/20 px-1.5 py-0.2 rounded">123456</span>
+                  <div className="flex items-center justify-between pt-1 border-t border-[#d4e0ed] text-[10px]">
+                    <span className="text-[#476788]">Default Passkey:</span>
+                    <span className="font-mono font-bold text-[#0b3558] bg-white border border-[#d4e0ed] px-1.5 py-0.2 rounded">123456</span>
                   </div>
                 </div>
 
                 {/* Demo Role Switcher Chips */}
                 <div className="mt-3 space-y-1.5">
-                  <div className="text-[10px] uppercase tracking-wider text-[#b9b8bb] font-bold">
+                  <div className="text-[10px] uppercase tracking-wider text-[#476788] font-bold">
                     Switch Demo Persona:
                   </div>
                   <div className="grid grid-cols-2 gap-1.5">
                     {[
-                      { role: 'admin', label: 'Principal', bg: 'hover:bg-amber-500/20 hover:text-amber-300' },
-                      { role: 'hod', label: 'HOD AIML', bg: 'hover:bg-emerald-500/20 hover:text-emerald-300' },
-                      { role: 'staff', label: 'Faculty', bg: 'hover:bg-blue-500/20 hover:text-blue-300' },
-                      { role: 'student', label: 'Student', bg: 'hover:bg-purple-500/20 hover:text-purple-300' },
-                      { role: 'worker', label: 'Technician', bg: 'hover:bg-orange-500/20 hover:text-orange-300' }
+                      { role: 'admin', label: 'Principal', bg: 'hover:bg-amber-50 hover:text-amber-900' },
+                      { role: 'hod', label: 'HOD AIML', bg: 'hover:bg-emerald-50 hover:text-emerald-900' },
+                      { role: 'staff', label: 'Faculty', bg: 'hover:bg-blue-50 hover:text-blue-900' },
+                      { role: 'student', label: 'Student', bg: 'hover:bg-purple-50 hover:text-purple-900' },
+                      { role: 'worker', label: 'Technician', bg: 'hover:bg-orange-50 hover:text-orange-900' }
                     ].map((item) => (
                       <button
                         key={item.role}
@@ -263,8 +263,8 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
                           setShowRoleMenu(false);
                           sounds.playChime('chime');
                         }}
-                        className={`px-2 py-1.5 rounded-lg text-left text-xs font-semibold border border-white/[0.12] bg-white/[0.02] transition ${item.bg} ${
-                          user?.role === item.role ? 'border-[#6f5adc] bg-[#6f5adc]/20 text-[#9ff0ec]' : 'text-white'
+                        className={`px-2 py-1.5 rounded-lg text-left text-xs font-semibold border border-[#d4e0ed] bg-[#f8f9fb] transition ${item.bg} ${
+                          user?.role === item.role ? 'border-[#006bff] bg-blue-50/60 text-[#006bff]' : 'text-[#0b3558]'
                         }`}
                       >
                         {item.label}
@@ -274,11 +274,11 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
                 </div>
 
                 {/* Logout / Switch Account Button */}
-                <div className="mt-3 pt-2 border-t border-white/[0.12] flex items-center justify-between">
+                <div className="mt-3 pt-2 border-t border-[#d4e0ed] flex items-center justify-between">
                   <Link
                     to="/login"
                     onClick={() => setShowRoleMenu(false)}
-                    className="text-xs text-[#9ff0ec] hover:underline font-semibold"
+                    className="text-xs text-[#006bff] hover:underline font-semibold"
                   >
                     Switch Account...
                   </Link>
@@ -287,7 +287,7 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
                       logout();
                       setShowRoleMenu(false);
                     }}
-                    className="flex items-center gap-1 text-xs text-rose-400 hover:text-rose-300 font-semibold"
+                    className="flex items-center gap-1 text-xs text-rose-600 hover:text-rose-700 font-semibold"
                   >
                     <LogOut className="w-3.5 h-3.5" />
                     <span>Reset</span>
@@ -300,7 +300,7 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
           {/* Mobile Menu Hamburger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="xl:hidden p-2 rounded-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.16] text-white"
+            className="xl:hidden p-2 rounded-lg bg-white hover:bg-[#f0f3f8] border border-[#d4e0ed] text-[#0b3558]"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -310,14 +310,14 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="xl:hidden mt-2 p-3 rounded-2xl bg-[#131219]/95 border border-white/[0.16] shadow-[0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-xl space-y-2 animate-in fade-in slide-in-from-top-2 text-white">
+        <div className="xl:hidden mt-2 p-3 rounded-2xl bg-white border border-[#d4e0ed] shadow-cal-card space-y-2 animate-in fade-in slide-in-from-top-2">
           {/* Mobile Telemetry Summary */}
-          <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.12] flex items-center justify-between text-xs font-mono">
-            <div className="flex items-center gap-1.5 text-white font-bold">
-              <span className="w-2 h-2 rounded-full bg-[#9ff0ec] animate-pulse shadow-[0_0_8px_#9ff0ec]" />
+          <div className="p-2.5 rounded-xl bg-[#f8f9fb] border border-[#d4e0ed] flex items-center justify-between text-xs font-mono">
+            <div className="flex items-center gap-1.5 text-[#0b3558] font-bold">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>{formatKw(telemetry?.campus?.totalRealKw || 142)} Live Draw</span>
             </div>
-            <span className="text-[#9ff0ec] font-semibold">
+            <span className="text-[#006bff] font-semibold">
               {formatINR(telemetry?.savingsTracker?.savedTodayRs || 4850)} saved
             </span>
           </div>
@@ -333,27 +333,27 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
                   onClick={closeMobile}
                   className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-semibold transition ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#4d19b1]/60 to-[#6f5adc]/60 text-white border border-white/20'
-                      : 'bg-white/[0.02] text-white hover:bg-white/[0.06] border border-white/[0.08]'
+                      ? 'bg-[#e6f0ff] text-[#006bff] border border-[#d4e0ed]'
+                      : 'bg-[#f8f9fb] text-[#0b3558] hover:bg-[#f0f3f8]'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#9ff0ec]' : 'text-[#b9b8bb]'}`} />
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#006bff]' : 'text-[#476788]'}`} />
                   <div className="flex flex-col">
                     <span>{item.label}</span>
-                    <span className="text-[9px] text-[#b9b8bb] font-normal">{item.desc}</span>
+                    <span className="text-[9px] text-[#476788] font-normal">{item.desc}</span>
                   </div>
                 </Link>
               );
             })}
           </div>
 
-          <div className="pt-2 border-t border-white/[0.12] flex items-center justify-between gap-2">
+          <div className="pt-2 border-t border-[#d4e0ed] flex items-center justify-between gap-2">
             <button
               onClick={() => {
                 closeMobile();
                 onOpenReportModal();
               }}
-              className="flex-1 py-2 rounded-full bg-gradient-to-r from-[#4d19b1] to-[#6f5adc] text-white text-xs font-bold text-center shadow-[0_0_20px_rgba(111,90,220,0.45)] border border-white/20"
+              className="flex-1 py-2 rounded-lg bg-[#006bff] text-white text-xs font-bold text-center shadow-cal-btn"
             >
               Report Waste
             </button>
@@ -362,7 +362,7 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
                 closeMobile();
                 onOpenCommandPalette();
               }}
-              className="px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.16] text-white text-xs font-semibold hover:bg-white/[0.08]"
+              className="px-3 py-2 rounded-lg bg-[#f0f3f8] border border-[#d4e0ed] text-[#0b3558] text-xs font-semibold"
             >
               ⌘K Search
             </button>

@@ -27,19 +27,23 @@ export default function CustomCursor() {
 
     if (!dot || !ring || !ripple) return;
 
-    // Smooth physics lerp loop for the trailing ring (stops when at rest to preserve 100% CPU/GPU)
+    // High performance rAF loop for both lead dot and smooth follower ring
     const renderLoop = () => {
       if (isVisible) {
+        // Fast direct transform for lead dot
+        dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%) scale(${isClicking ? 0.75 : 1})`;
+
+        // Smooth physics lerp loop for the trailing ring
         const dx = mouseX - ringX;
         const dy = mouseY - ringY;
-        ringX += dx * 0.28;
-        ringY += dy * 0.28;
+        ringX += dx * 0.32;
+        ringY += dy * 0.32;
 
         const scale = isHovering ? 1.35 : isClicking ? 0.85 : 1;
         ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%) scale(${scale})`;
 
         // If ring is still catching up, keep looping; otherwise sleep
-        if (Math.abs(dx) > 0.2 || Math.abs(dy) > 0.2) {
+        if (Math.abs(dx) > 0.15 || Math.abs(dy) > 0.15) {
           animId = requestAnimationFrame(renderLoop);
         } else {
           animId = null;
@@ -61,18 +65,14 @@ export default function CustomCursor() {
         ringY = mouseY;
       }
 
-      // Direct zero-lag DOM transform for lead dot
-      dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%) scale(${isClicking ? 0.75 : 1})`;
-
-      // Wake up ring lerp loop if sleeping
       if (!animId) {
         animId = requestAnimationFrame(renderLoop);
       }
 
-      // Throttled check for hover on clickable elements to prevent main thread lockup
+      // Throttled check for hover on clickable elements (every 80ms)
       const now = performance.now();
       const target = e.target;
-      if (target !== lastTarget && (now - lastHoverCheck > 60)) {
+      if (target !== lastTarget && (now - lastHoverCheck > 80)) {
         lastTarget = target;
         lastHoverCheck = now;
         if (target && typeof target.closest === 'function') {
@@ -94,9 +94,9 @@ export default function CustomCursor() {
 
     const onMouseDown = (e) => {
       isClicking = true;
-      dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%) scale(0.65)`;
+      if (!animId) animId = requestAnimationFrame(renderLoop);
 
-      // Trigger transient expanding ripple animation that NEVER gets stuck
+      // Trigger transient expanding ripple
       if (ripple) {
         if (rippleTimeoutId) clearTimeout(rippleTimeoutId);
 
@@ -105,7 +105,6 @@ export default function CustomCursor() {
         ripple.style.opacity = '0.9';
         ripple.style.display = 'block';
 
-        // Force browser reflow to apply instant reset before animation
         void ripple.offsetWidth;
 
         ripple.style.transition = 'transform 320ms cubic-bezier(0.16, 1, 0.3, 1), opacity 320ms ease-out';
@@ -122,7 +121,7 @@ export default function CustomCursor() {
 
     const onMouseUp = () => {
       isClicking = false;
-      dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%) scale(1)`;
+      if (!animId) animId = requestAnimationFrame(renderLoop);
     };
 
     const onMouseLeave = () => {
@@ -135,7 +134,6 @@ export default function CustomCursor() {
       isVisible = true;
       dot.style.opacity = '1';
       ring.style.opacity = '1';
-      if (!animId) animId = requestAnimationFrame(renderLoop);
     };
 
     window.addEventListener('mousemove', onMouseMove, { passive: true });
@@ -145,37 +143,48 @@ export default function CustomCursor() {
     document.addEventListener('mouseenter', onMouseEnter);
 
     return () => {
+      if (animId) cancelAnimationFrame(animId);
+      if (rippleTimeoutId) clearTimeout(rippleTimeoutId);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mouseup', onMouseUp);
       document.removeEventListener('mouseleave', onMouseLeave);
       document.removeEventListener('mouseenter', onMouseEnter);
-      if (animId) cancelAnimationFrame(animId);
-      if (rippleTimeoutId) clearTimeout(rippleTimeoutId);
     };
   }, []);
 
   return (
     <>
-      {/* 1. Precise Lead Dot: follows mouse instantly */}
+      {/* Precision Lead Dot */}
       <div
         ref={dotRef}
         aria-hidden="true"
-        className="fixed top-0 left-0 pointer-events-none z-[999999] w-2 h-2 rounded-full bg-[#006bff] shadow-[0_0_8px_rgba(0,107,255,0.5)] opacity-0 transition-opacity duration-150 hidden md:block will-change-transform"
+        className="fixed top-0 left-0 w-2 h-2 rounded-full bg-[#9ff0ec] pointer-events-none z-[99999] opacity-0 shadow-[0_0_8px_#9ff0ec] will-change-transform"
+        style={{
+          transform: 'translate3d(-100px, -100px, 0) translate(-50%, -50%)',
+          transition: 'opacity 0.2s ease'
+        }}
       />
 
-      {/* 2. Smooth Fluid Trailing Ring: lerps seamlessly without lag */}
+      {/* Trailing Physics Ring */}
       <div
         ref={ringRef}
         aria-hidden="true"
-        className="fixed top-0 left-0 pointer-events-none z-[999998] w-8 h-8 rounded-full border border-[#006bff]/50 opacity-0 transition-[border-color,background-color,box-shadow] duration-150 hidden md:block will-change-transform"
+        className="fixed top-0 left-0 w-7 h-7 rounded-full border border-white/25 pointer-events-none z-[99998] opacity-0 will-change-transform"
+        style={{
+          transform: 'translate3d(-100px, -100px, 0) translate(-50%, -50%)',
+          transition: 'opacity 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease'
+        }}
       />
 
-      {/* 3. Click Ripple: Only blooms on click, never gets stuck */}
+      {/* Anime Transient Click Ripple */}
       <div
         ref={rippleRef}
         aria-hidden="true"
-        className="fixed top-0 left-0 pointer-events-none z-[999997] w-8 h-8 rounded-full border-2 border-[#006bff] bg-[#006bff]/20 hidden"
+        className="fixed top-0 left-0 w-8 h-8 rounded-full border-2 border-[#9ff0ec] pointer-events-none z-[99997] hidden will-change-transform"
+        style={{
+          transform: 'translate3d(-100px, -100px, 0) translate(-50%, -50%) scale(0.3)'
+        }}
       />
     </>
   );

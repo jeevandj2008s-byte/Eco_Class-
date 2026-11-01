@@ -1,0 +1,2284 @@
+{
+  "users": [
+    {
+      "id": "usr-admin-1",
+      "name": "Demo Principal",
+      "email": "admin@aurasync.demo",
+      "passwordHash": "$2a$12$EAhyexdet1twuyreHNU9i.K.RuYJZD1bjIY.UAfkxRSZ7jJJhqgTW",
+      "role": "admin",
+      "department": "Campus Administration",
+      "passKeyHash": "$2a$12$t50oFiDYWUm/1Ue8IQ3e4edGwWCdrp6Z4sOhf/wq6TDCjk1BAyPhO",
+      "twoFAEnabled": true,
+      "approvalStatus": "approved",
+      "failedAttempts": 0,
+      "lockUntil": null,
+      "createdAt": "2026-10-31T17:30:06.396Z",
+      "lastLogin": "2026-10-31T17:51:04.224Z"
+    },
+    {
+      "id": "usr-hod-1",
+      "name": "Demo HOD",
+      "email": "hod.aiml@aurasync.demo",
+      "passwordHash": "$2a$12$alar7GTG2BDkSRr.NpDEo.8Q7PelrZuIqxK8.5uxroRoE8uxe5l7G",
+      "role": "hod",
+      "department": "Computer Science and Engineering (AIML)",
+      "passKeyHash": "$2a$12$t50oFiDYWUm/1Ue8IQ3e4edGwWCdrp6Z4sOhf/wq6TDCjk1BAyPhO",
+      "twoFAEnabled": true,
+      "approvalStatus": "approved",
+      "failedAttempts": 0,
+      "lockUntil": null,
+      "createdAt": "2026-10-31T17:30:06.399Z"
+    },
+    {
+      "id": "usr-staff-1",
+      "name": "Demo Faculty",
+      "email": "faculty@aurasync.demo",
+      "passwordHash": "$2a$12$0UOEPuZBoJ7NNhdN70bPse4FgSlvuJrgFEFzHEhHpF.m3JXFWiJ0a",
+      "role": "staff",
+      "department": "Computer Science and Engineering (AIML)",
+      "passKeyHash": "$2a$12$t50oFiDYWUm/1Ue8IQ3e4edGwWCdrp6Z4sOhf/wq6TDCjk1BAyPhO",
+      "twoFAEnabled": false,
+      "approvalStatus": "approved",
+      "failedAttempts": 0,
+      "lockUntil": null,
+      "createdAt": "2026-10-31T17:30:06.399Z"
+    },
+    {
+      "id": "usr-student-1",
+      "name": "Demo Student (USN: [DEMO USN])",
+      "email": "student@aurasync.demo",
+      "passwordHash": "$2a$12$1DidSyryc5Hh4.ORJIurIuvG/lwcmoe94opw41o6HYyArMYgfL.um",
+      "role": "student",
+      "department": "Computer Science and Engineering (AIML)",
+      "passKeyHash": "$2a$12$t50oFiDYWUm/1Ue8IQ3e4edGwWCdrp6Z4sOhf/wq6TDCjk1BAyPhO",
+      "twoFAEnabled": false,
+      "approvalStatus": "approved",
+      "failedAttempts": 0,
+      "lockUntil": null,
+      "createdAt": "2026-10-31T17:30:06.399Z"
+    },
+    {
+      "id": "usr-worker-1",
+      "name": "Worker 1 (Lead Electrician)",
+      "email": "worker@aurasync.demo",
+      "passwordHash": "$2a$12$EeAYNBr3pao.wqXBHQNKwuPD6AN54kZ6pgFqnklXkWFpcufHBjEmC",
+      "role": "worker",
+      "department": "Campus Facilities & Maintenance",
+      "workerSkill": "Electrician",
+      "shift": "Morning (07:00 - 15:30)",
+      "passKeyHash": "$2a$12$t50oFiDYWUm/1Ue8IQ3e4edGwWCdrp6Z4sOhf/wq6TDCjk1BAyPhO",
+      "twoFAEnabled": false,
+      "approvalStatus": "approved",
+      "failedAttempts": 0,
+      "lockUntil": null,
+      "createdAt": "2026-10-31T17:30:06.399Z"
+    }
+  ],
+  "tickets": [
+    {
+      "ticketId": "AS-2026-000101",
+      "category": "Garbage and Waste",
+      "subcategory": "Overflowing Bin",
+      "title": "Overflowing bin near BIT Block 2 cafeteria courtyard",
+      "description": "The segregated dry waste bin is overflowing. Needs immediate clearing.",
+      "locationRef": {
+        "buildingId": "bit-block-central",
+        "floor": 0,
+        "roomId": "b2-court",
+        "pin3D": {
+          "x": 72,
+          "y": 1,
+          "z": 25
+        }
+      },
+      "urgency": "high",
+      "status": "assigned",
+      "reporterId": "usr-student-1",
+      "reporterName": "Demo Student",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-3",
+      "slaDueAt": "2026-10-31T19:30:06.400Z",
+      "media": [
+        {
+          "url": "https://images.unsplash.com/photo-1605600659908-0ef719419d41?w=600&auto=format&fit=crop&q=80",
+          "type": "image"
+        }
+      ],
+      "beforeMedia": [
+        {
+          "url": "https://images.unsplash.com/photo-1605600659908-0ef719419d41?w=600&auto=format&fit=crop&q=80"
+        }
+      ],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-31T16:30:06.400Z",
+          "note": "Ticket submitted via Mobile Quick-Report"
+        },
+        {
+          "status": "assigned",
+          "byUserId": "usr-hod-1",
+          "at": "2026-10-31T17:00:06.400Z",
+          "note": "Smart-assigned to Worker 3 (Housekeeping)"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000102",
+      "category": "Energy Waste",
+      "subcategory": "Ghost Load",
+      "title": "Lab 204 AC running with 0 occupants for 35 minutes",
+      "description": "Computer Lab 204 has 2.0T Split AC running at 18C while room is locked and empty. Energy Ghost alert triggered.",
+      "locationRef": {
+        "buildingId": "bit-main",
+        "floor": 2,
+        "roomId": "bit-204",
+        "pin3D": {
+          "x": -45,
+          "y": 12,
+          "z": 42
+        }
+      },
+      "urgency": "high",
+      "status": "in_progress",
+      "reporterId": "usr-admin-1",
+      "reporterName": "Aura AI Auto-Detector",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-1",
+      "slaDueAt": "2026-10-31T18:30:06.400Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "system",
+          "at": "2026-10-31T16:50:06.400Z",
+          "note": "Energy Ghost correlation detected: Power 1950W, Occupancy 0"
+        },
+        {
+          "status": "in_progress",
+          "byUserId": "w-1",
+          "at": "2026-10-31T17:15:06.400Z",
+          "note": "Technician en route to verify and isolate relay"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000103",
+      "category": "Lifts and Elevators",
+      "subcategory": "Stuck Door Fault",
+      "title": "BIT Block 2 Central Lift door sensor intermittent jam",
+      "description": "Ground floor lift doors reopen repeatedly before closing. Causing delay for staff and students.",
+      "locationRef": {
+        "buildingId": "bit-block-central",
+        "floor": 0,
+        "roomId": "b2-atrium",
+        "pin3D": {
+          "x": 0,
+          "y": 1,
+          "z": -48
+        }
+      },
+      "urgency": "high",
+      "status": "assigned",
+      "reporterId": "usr-staff-1",
+      "reporterName": "Demo Faculty",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-4",
+      "slaDueAt": "2026-10-31T20:30:06.400Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-staff-1",
+          "at": "2026-10-31T16:00:06.400Z",
+          "note": "Ticket logged from Staff Portal"
+        },
+        {
+          "status": "assigned",
+          "byUserId": "usr-hod-1",
+          "at": "2026-10-31T16:30:06.400Z",
+          "note": "Assigned to Worker 4 (Lift Technician)"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000104",
+      "category": "Cleanliness",
+      "subcategory": "Classroom floor spill",
+      "title": "Beverage spill in Seminar Hall 101",
+      "description": "Routine maintenance ticket for Beverage spill in Seminar Hall 101.",
+      "locationRef": {
+        "buildingId": "bit-block-central",
+        "floor": 0,
+        "roomId": "bit-block-central-f0"
+      },
+      "urgency": "low",
+      "status": "closed",
+      "reporterId": "usr-student-1",
+      "reporterName": "Demo Student",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-5",
+      "slaDueAt": "2026-10-31T19:30:06.400Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": 5,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-31T13:30:06.400Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000105",
+      "category": "Energy Waste",
+      "subcategory": "Projector left on",
+      "title": "Auditorium projector left idling on blank screen",
+      "description": "Routine maintenance ticket for Auditorium projector left idling on blank screen.",
+      "locationRef": {
+        "buildingId": "bit-main",
+        "floor": 1,
+        "roomId": "bit-main-f1"
+      },
+      "urgency": "normal",
+      "status": "new",
+      "reporterId": "usr-staff-1",
+      "reporterName": "Demo Faculty",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-6",
+      "slaDueAt": "2026-10-31T20:00:06.400Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-31T12:30:06.400Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000106",
+      "category": "HVAC and Cooling",
+      "subcategory": "Thermostat set too low",
+      "title": "Main Admin block AC running at 19C causing excessive draw",
+      "description": "Routine maintenance ticket for Main Admin block AC running at 19C causing excessive draw.",
+      "locationRef": {
+        "buildingId": "bit-main",
+        "floor": 2,
+        "roomId": "bit-main-f2"
+      },
+      "urgency": "normal",
+      "status": "assigned",
+      "reporterId": "usr-student-1",
+      "reporterName": "Demo Student",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-7",
+      "slaDueAt": "2026-10-31T20:30:06.400Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-31T11:30:06.401Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000107",
+      "category": "Lighting and Illumination",
+      "subcategory": "Corridor lights on in daylight",
+      "title": "Perimeter corridor 40W tubes on during noon sunshine",
+      "description": "Routine maintenance ticket for Perimeter corridor 40W tubes on during noon sunshine.",
+      "locationRef": {
+        "buildingId": "bit-block-east",
+        "floor": 3,
+        "roomId": "bit-block-east-f3"
+      },
+      "urgency": "low",
+      "status": "in_progress",
+      "reporterId": "usr-staff-1",
+      "reporterName": "Demo Faculty",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-8",
+      "slaDueAt": "2026-10-31T21:00:06.401Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-31T10:30:06.401Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000108",
+      "category": "Water and Plumbing",
+      "subcategory": "Washroom tap leak",
+      "title": "Ground floor washroom tap leaking continuously",
+      "description": "Routine maintenance ticket for Ground floor washroom tap leaking continuously.",
+      "locationRef": {
+        "buildingId": "bit-mechanical",
+        "floor": 0,
+        "roomId": "bit-mechanical-f0"
+      },
+      "urgency": "high",
+      "status": "resolved",
+      "reporterId": "usr-student-1",
+      "reporterName": "Demo Student",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-9",
+      "slaDueAt": "2026-10-31T21:30:06.401Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-31T09:30:06.401Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000109",
+      "category": "Safety and Security",
+      "subcategory": "Extinguisher pin missing",
+      "title": "2nd Floor Fire Extinguisher inspection seal cut",
+      "description": "Routine maintenance ticket for 2nd Floor Fire Extinguisher inspection seal cut.",
+      "locationRef": {
+        "buildingId": "bit-main",
+        "floor": 1,
+        "roomId": "bit-main-f1"
+      },
+      "urgency": "high",
+      "status": "closed",
+      "reporterId": "usr-staff-1",
+      "reporterName": "Demo Faculty",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-10",
+      "slaDueAt": "2026-10-31T22:00:06.401Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": 5,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-31T08:30:06.401Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000110",
+      "category": "Cleanliness",
+      "subcategory": "Classroom floor spill",
+      "title": "Beverage spill in Seminar Hall 101",
+      "description": "Routine maintenance ticket for Beverage spill in Seminar Hall 101.",
+      "locationRef": {
+        "buildingId": "bit-block-central",
+        "floor": 2,
+        "roomId": "bit-block-central-f2"
+      },
+      "urgency": "low",
+      "status": "new",
+      "reporterId": "usr-student-1",
+      "reporterName": "Demo Student",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-11",
+      "slaDueAt": "2026-10-31T22:30:06.401Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-31T07:30:06.401Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000111",
+      "category": "Energy Waste",
+      "subcategory": "Projector left on",
+      "title": "Auditorium projector left idling on blank screen",
+      "description": "Routine maintenance ticket for Auditorium projector left idling on blank screen.",
+      "locationRef": {
+        "buildingId": "bit-main",
+        "floor": 3,
+        "roomId": "bit-main-f3"
+      },
+      "urgency": "normal",
+      "status": "assigned",
+      "reporterId": "usr-staff-1",
+      "reporterName": "Demo Faculty",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-12",
+      "slaDueAt": "2026-10-31T23:00:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-31T06:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000112",
+      "category": "HVAC and Cooling",
+      "subcategory": "Thermostat set too low",
+      "title": "Main Admin block AC running at 19C causing excessive draw",
+      "description": "Routine maintenance ticket for Main Admin block AC running at 19C causing excessive draw.",
+      "locationRef": {
+        "buildingId": "bit-main",
+        "floor": 0,
+        "roomId": "bit-main-f0"
+      },
+      "urgency": "normal",
+      "status": "in_progress",
+      "reporterId": "usr-student-1",
+      "reporterName": "Demo Student",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-1",
+      "slaDueAt": "2026-10-31T23:30:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-31T05:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000113",
+      "category": "Lighting and Illumination",
+      "subcategory": "Corridor lights on in daylight",
+      "title": "Perimeter corridor 40W tubes on during noon sunshine",
+      "description": "Routine maintenance ticket for Perimeter corridor 40W tubes on during noon sunshine.",
+      "locationRef": {
+        "buildingId": "bit-block-east",
+        "floor": 1,
+        "roomId": "bit-block-east-f1"
+      },
+      "urgency": "low",
+      "status": "resolved",
+      "reporterId": "usr-staff-1",
+      "reporterName": "Demo Faculty",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-2",
+      "slaDueAt": "2026-11-01T00:00:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-31T04:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000114",
+      "category": "Water and Plumbing",
+      "subcategory": "Washroom tap leak",
+      "title": "Ground floor washroom tap leaking continuously",
+      "description": "Routine maintenance ticket for Ground floor washroom tap leaking continuously.",
+      "locationRef": {
+        "buildingId": "bit-mechanical",
+        "floor": 2,
+        "roomId": "bit-mechanical-f2"
+      },
+      "urgency": "high",
+      "status": "closed",
+      "reporterId": "usr-student-1",
+      "reporterName": "Demo Student",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-3",
+      "slaDueAt": "2026-11-01T00:30:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": 5,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-31T03:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000115",
+      "category": "Safety and Security",
+      "subcategory": "Extinguisher pin missing",
+      "title": "2nd Floor Fire Extinguisher inspection seal cut",
+      "description": "Routine maintenance ticket for 2nd Floor Fire Extinguisher inspection seal cut.",
+      "locationRef": {
+        "buildingId": "bit-main",
+        "floor": 3,
+        "roomId": "bit-main-f3"
+      },
+      "urgency": "high",
+      "status": "new",
+      "reporterId": "usr-staff-1",
+      "reporterName": "Demo Faculty",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-4",
+      "slaDueAt": "2026-11-01T01:00:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-31T02:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000116",
+      "category": "Cleanliness",
+      "subcategory": "Classroom floor spill",
+      "title": "Beverage spill in Seminar Hall 101",
+      "description": "Routine maintenance ticket for Beverage spill in Seminar Hall 101.",
+      "locationRef": {
+        "buildingId": "bit-block-central",
+        "floor": 0,
+        "roomId": "bit-block-central-f0"
+      },
+      "urgency": "low",
+      "status": "assigned",
+      "reporterId": "usr-student-1",
+      "reporterName": "Demo Student",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-5",
+      "slaDueAt": "2026-11-01T01:30:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-31T01:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000117",
+      "category": "Energy Waste",
+      "subcategory": "Projector left on",
+      "title": "Auditorium projector left idling on blank screen",
+      "description": "Routine maintenance ticket for Auditorium projector left idling on blank screen.",
+      "locationRef": {
+        "buildingId": "bit-main",
+        "floor": 1,
+        "roomId": "bit-main-f1"
+      },
+      "urgency": "normal",
+      "status": "in_progress",
+      "reporterId": "usr-staff-1",
+      "reporterName": "Demo Faculty",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-6",
+      "slaDueAt": "2026-11-01T02:00:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-31T00:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000118",
+      "category": "HVAC and Cooling",
+      "subcategory": "Thermostat set too low",
+      "title": "Main Admin block AC running at 19C causing excessive draw",
+      "description": "Routine maintenance ticket for Main Admin block AC running at 19C causing excessive draw.",
+      "locationRef": {
+        "buildingId": "bit-main",
+        "floor": 2,
+        "roomId": "bit-main-f2"
+      },
+      "urgency": "normal",
+      "status": "resolved",
+      "reporterId": "usr-student-1",
+      "reporterName": "Demo Student",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-7",
+      "slaDueAt": "2026-11-01T02:30:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T23:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000119",
+      "category": "Lighting and Illumination",
+      "subcategory": "Corridor lights on in daylight",
+      "title": "Perimeter corridor 40W tubes on during noon sunshine",
+      "description": "Routine maintenance ticket for Perimeter corridor 40W tubes on during noon sunshine.",
+      "locationRef": {
+        "buildingId": "bit-block-east",
+        "floor": 3,
+        "roomId": "bit-block-east-f3"
+      },
+      "urgency": "low",
+      "status": "closed",
+      "reporterId": "usr-staff-1",
+      "reporterName": "Demo Faculty",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-8",
+      "slaDueAt": "2026-11-01T03:00:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": 5,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T22:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000120",
+      "category": "Water and Plumbing",
+      "subcategory": "Washroom tap leak",
+      "title": "Ground floor washroom tap leaking continuously",
+      "description": "Routine maintenance ticket for Ground floor washroom tap leaking continuously.",
+      "locationRef": {
+        "buildingId": "bit-mechanical",
+        "floor": 0,
+        "roomId": "bit-mechanical-f0"
+      },
+      "urgency": "high",
+      "status": "new",
+      "reporterId": "usr-student-1",
+      "reporterName": "Demo Student",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-9",
+      "slaDueAt": "2026-11-01T03:30:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T21:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000121",
+      "category": "Safety and Security",
+      "subcategory": "Extinguisher pin missing",
+      "title": "2nd Floor Fire Extinguisher inspection seal cut",
+      "description": "Routine maintenance ticket for 2nd Floor Fire Extinguisher inspection seal cut.",
+      "locationRef": {
+        "buildingId": "bit-main",
+        "floor": 1,
+        "roomId": "bit-main-f1"
+      },
+      "urgency": "high",
+      "status": "assigned",
+      "reporterId": "usr-staff-1",
+      "reporterName": "Demo Faculty",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-10",
+      "slaDueAt": "2026-11-01T04:00:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T20:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000122",
+      "category": "Cleanliness",
+      "subcategory": "Classroom floor spill",
+      "title": "Beverage spill in Seminar Hall 101",
+      "description": "Routine maintenance ticket for Beverage spill in Seminar Hall 101.",
+      "locationRef": {
+        "buildingId": "bit-block-central",
+        "floor": 2,
+        "roomId": "bit-block-central-f2"
+      },
+      "urgency": "low",
+      "status": "in_progress",
+      "reporterId": "usr-student-1",
+      "reporterName": "Demo Student",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-11",
+      "slaDueAt": "2026-11-01T04:30:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T19:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000123",
+      "category": "Energy Waste",
+      "subcategory": "Projector left on",
+      "title": "Auditorium projector left idling on blank screen",
+      "description": "Routine maintenance ticket for Auditorium projector left idling on blank screen.",
+      "locationRef": {
+        "buildingId": "bit-main",
+        "floor": 3,
+        "roomId": "bit-main-f3"
+      },
+      "urgency": "normal",
+      "status": "resolved",
+      "reporterId": "usr-staff-1",
+      "reporterName": "Demo Faculty",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-12",
+      "slaDueAt": "2026-11-01T05:00:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T18:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000124",
+      "category": "HVAC and Cooling",
+      "subcategory": "Thermostat set too low",
+      "title": "Main Admin block AC running at 19C causing excessive draw",
+      "description": "Routine maintenance ticket for Main Admin block AC running at 19C causing excessive draw.",
+      "locationRef": {
+        "buildingId": "bit-main",
+        "floor": 0,
+        "roomId": "bit-main-f0"
+      },
+      "urgency": "normal",
+      "status": "closed",
+      "reporterId": "usr-student-1",
+      "reporterName": "Demo Student",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-1",
+      "slaDueAt": "2026-11-01T05:30:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": 5,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T17:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000125",
+      "category": "Lighting and Illumination",
+      "subcategory": "Corridor lights on in daylight",
+      "title": "Perimeter corridor 40W tubes on during noon sunshine",
+      "description": "Routine maintenance ticket for Perimeter corridor 40W tubes on during noon sunshine.",
+      "locationRef": {
+        "buildingId": "bit-block-east",
+        "floor": 1,
+        "roomId": "bit-block-east-f1"
+      },
+      "urgency": "low",
+      "status": "new",
+      "reporterId": "usr-staff-1",
+      "reporterName": "Demo Faculty",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-2",
+      "slaDueAt": "2026-11-01T06:00:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T16:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000126",
+      "category": "Water and Plumbing",
+      "subcategory": "Washroom tap leak",
+      "title": "Ground floor washroom tap leaking continuously",
+      "description": "Routine maintenance ticket for Ground floor washroom tap leaking continuously.",
+      "locationRef": {
+        "buildingId": "bit-mechanical",
+        "floor": 2,
+        "roomId": "bit-mechanical-f2"
+      },
+      "urgency": "high",
+      "status": "assigned",
+      "reporterId": "usr-student-1",
+      "reporterName": "Demo Student",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-3",
+      "slaDueAt": "2026-11-01T06:30:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T15:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000127",
+      "category": "Safety and Security",
+      "subcategory": "Extinguisher pin missing",
+      "title": "2nd Floor Fire Extinguisher inspection seal cut",
+      "description": "Routine maintenance ticket for 2nd Floor Fire Extinguisher inspection seal cut.",
+      "locationRef": {
+        "buildingId": "bit-main",
+        "floor": 3,
+        "roomId": "bit-main-f3"
+      },
+      "urgency": "high",
+      "status": "in_progress",
+      "reporterId": "usr-staff-1",
+      "reporterName": "Demo Faculty",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-4",
+      "slaDueAt": "2026-11-01T07:00:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T14:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000128",
+      "category": "Cleanliness",
+      "subcategory": "Classroom floor spill",
+      "title": "Beverage spill in Seminar Hall 101",
+      "description": "Routine maintenance ticket for Beverage spill in Seminar Hall 101.",
+      "locationRef": {
+        "buildingId": "bit-block-central",
+        "floor": 0,
+        "roomId": "bit-block-central-f0"
+      },
+      "urgency": "low",
+      "status": "resolved",
+      "reporterId": "usr-student-1",
+      "reporterName": "Demo Student",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-5",
+      "slaDueAt": "2026-11-01T07:30:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T13:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000129",
+      "category": "Energy Waste",
+      "subcategory": "Projector left on",
+      "title": "Auditorium projector left idling on blank screen",
+      "description": "Routine maintenance ticket for Auditorium projector left idling on blank screen.",
+      "locationRef": {
+        "buildingId": "bit-main",
+        "floor": 1,
+        "roomId": "bit-main-f1"
+      },
+      "urgency": "normal",
+      "status": "closed",
+      "reporterId": "usr-staff-1",
+      "reporterName": "Demo Faculty",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-6",
+      "slaDueAt": "2026-11-01T08:00:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": 5,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T12:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000130",
+      "category": "HVAC and Cooling",
+      "subcategory": "Thermostat set too low",
+      "title": "Main Admin block AC running at 19C causing excessive draw",
+      "description": "Routine maintenance ticket for Main Admin block AC running at 19C causing excessive draw.",
+      "locationRef": {
+        "buildingId": "bit-main",
+        "floor": 2,
+        "roomId": "bit-main-f2"
+      },
+      "urgency": "normal",
+      "status": "new",
+      "reporterId": "usr-student-1",
+      "reporterName": "Demo Student",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-7",
+      "slaDueAt": "2026-11-01T08:30:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T11:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000131",
+      "category": "Lighting and Illumination",
+      "subcategory": "Corridor lights on in daylight",
+      "title": "Perimeter corridor 40W tubes on during noon sunshine",
+      "description": "Routine maintenance ticket for Perimeter corridor 40W tubes on during noon sunshine.",
+      "locationRef": {
+        "buildingId": "bit-block-east",
+        "floor": 3,
+        "roomId": "bit-block-east-f3"
+      },
+      "urgency": "low",
+      "status": "assigned",
+      "reporterId": "usr-staff-1",
+      "reporterName": "Demo Faculty",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-8",
+      "slaDueAt": "2026-11-01T09:00:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T10:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000132",
+      "category": "Water and Plumbing",
+      "subcategory": "Washroom tap leak",
+      "title": "Ground floor washroom tap leaking continuously",
+      "description": "Routine maintenance ticket for Ground floor washroom tap leaking continuously.",
+      "locationRef": {
+        "buildingId": "bit-mechanical",
+        "floor": 0,
+        "roomId": "bit-mechanical-f0"
+      },
+      "urgency": "high",
+      "status": "in_progress",
+      "reporterId": "usr-student-1",
+      "reporterName": "Demo Student",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-9",
+      "slaDueAt": "2026-11-01T09:30:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T09:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000133",
+      "category": "Safety and Security",
+      "subcategory": "Extinguisher pin missing",
+      "title": "2nd Floor Fire Extinguisher inspection seal cut",
+      "description": "Routine maintenance ticket for 2nd Floor Fire Extinguisher inspection seal cut.",
+      "locationRef": {
+        "buildingId": "bit-main",
+        "floor": 1,
+        "roomId": "bit-main-f1"
+      },
+      "urgency": "high",
+      "status": "resolved",
+      "reporterId": "usr-staff-1",
+      "reporterName": "Demo Faculty",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-10",
+      "slaDueAt": "2026-11-01T10:00:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T08:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000134",
+      "category": "Cleanliness",
+      "subcategory": "Classroom floor spill",
+      "title": "Beverage spill in Seminar Hall 101",
+      "description": "Routine maintenance ticket for Beverage spill in Seminar Hall 101.",
+      "locationRef": {
+        "buildingId": "bit-block-central",
+        "floor": 2,
+        "roomId": "bit-block-central-f2"
+      },
+      "urgency": "low",
+      "status": "closed",
+      "reporterId": "usr-student-1",
+      "reporterName": "Demo Student",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-11",
+      "slaDueAt": "2026-11-01T10:30:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": 5,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T07:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000135",
+      "category": "Energy Waste",
+      "subcategory": "Projector left on",
+      "title": "Auditorium projector left idling on blank screen",
+      "description": "Routine maintenance ticket for Auditorium projector left idling on blank screen.",
+      "locationRef": {
+        "buildingId": "bit-main",
+        "floor": 3,
+        "roomId": "bit-main-f3"
+      },
+      "urgency": "normal",
+      "status": "new",
+      "reporterId": "usr-staff-1",
+      "reporterName": "Demo Faculty",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-12",
+      "slaDueAt": "2026-11-01T11:00:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T06:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000136",
+      "category": "HVAC and Cooling",
+      "subcategory": "Thermostat set too low",
+      "title": "Main Admin block AC running at 19C causing excessive draw",
+      "description": "Routine maintenance ticket for Main Admin block AC running at 19C causing excessive draw.",
+      "locationRef": {
+        "buildingId": "bit-main",
+        "floor": 0,
+        "roomId": "bit-main-f0"
+      },
+      "urgency": "normal",
+      "status": "assigned",
+      "reporterId": "usr-student-1",
+      "reporterName": "Demo Student",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-1",
+      "slaDueAt": "2026-11-01T11:30:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T05:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000137",
+      "category": "Lighting and Illumination",
+      "subcategory": "Corridor lights on in daylight",
+      "title": "Perimeter corridor 40W tubes on during noon sunshine",
+      "description": "Routine maintenance ticket for Perimeter corridor 40W tubes on during noon sunshine.",
+      "locationRef": {
+        "buildingId": "bit-block-east",
+        "floor": 1,
+        "roomId": "bit-block-east-f1"
+      },
+      "urgency": "low",
+      "status": "in_progress",
+      "reporterId": "usr-staff-1",
+      "reporterName": "Demo Faculty",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-2",
+      "slaDueAt": "2026-11-01T12:00:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T04:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000138",
+      "category": "Water and Plumbing",
+      "subcategory": "Washroom tap leak",
+      "title": "Ground floor washroom tap leaking continuously",
+      "description": "Routine maintenance ticket for Ground floor washroom tap leaking continuously.",
+      "locationRef": {
+        "buildingId": "bit-mechanical",
+        "floor": 2,
+        "roomId": "bit-mechanical-f2"
+      },
+      "urgency": "high",
+      "status": "resolved",
+      "reporterId": "usr-student-1",
+      "reporterName": "Demo Student",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-3",
+      "slaDueAt": "2026-11-01T12:30:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T03:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000139",
+      "category": "Safety and Security",
+      "subcategory": "Extinguisher pin missing",
+      "title": "2nd Floor Fire Extinguisher inspection seal cut",
+      "description": "Routine maintenance ticket for 2nd Floor Fire Extinguisher inspection seal cut.",
+      "locationRef": {
+        "buildingId": "bit-main",
+        "floor": 3,
+        "roomId": "bit-main-f3"
+      },
+      "urgency": "high",
+      "status": "closed",
+      "reporterId": "usr-staff-1",
+      "reporterName": "Demo Faculty",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-4",
+      "slaDueAt": "2026-11-01T13:00:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": 5,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T02:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    },
+    {
+      "ticketId": "AS-2026-000140",
+      "category": "Cleanliness",
+      "subcategory": "Classroom floor spill",
+      "title": "Beverage spill in Seminar Hall 101",
+      "description": "Routine maintenance ticket for Beverage spill in Seminar Hall 101.",
+      "locationRef": {
+        "buildingId": "bit-block-central",
+        "floor": 0,
+        "roomId": "bit-block-central-f0"
+      },
+      "urgency": "low",
+      "status": "new",
+      "reporterId": "usr-student-1",
+      "reporterName": "Demo Student",
+      "anonymous": false,
+      "assignedHodId": "usr-hod-1",
+      "assignedWorkerId": "w-5",
+      "slaDueAt": "2026-11-01T13:30:06.402Z",
+      "media": [],
+      "beforeMedia": [],
+      "afterMedia": [],
+      "rating": null,
+      "timeline": [
+        {
+          "status": "new",
+          "byUserId": "usr-student-1",
+          "at": "2026-10-30T01:30:06.402Z",
+          "note": "Ticket submitted via Helpdesk"
+        }
+      ]
+    }
+  ],
+  "workers": [
+    {
+      "id": "w-1",
+      "name": "Worker 1 (Electrician)",
+      "skill": "Electrician",
+      "phone": "[ADD PHONE]",
+      "shift": "Morning",
+      "workload": 2,
+      "availability": "available",
+      "rating": 4.8
+    },
+    {
+      "id": "w-2",
+      "name": "Worker 2 (Plumber)",
+      "skill": "Plumber",
+      "phone": "[ADD PHONE]",
+      "shift": "Morning",
+      "workload": 1,
+      "availability": "available",
+      "rating": 4.9
+    },
+    {
+      "id": "w-3",
+      "name": "Worker 3 (Housekeeping)",
+      "skill": "Housekeeping",
+      "phone": "[ADD PHONE]",
+      "shift": "Morning",
+      "workload": 3,
+      "availability": "busy",
+      "rating": 4.7
+    },
+    {
+      "id": "w-4",
+      "name": "Worker 4 (Lift Technician)",
+      "skill": "Lift Technician",
+      "phone": "[ADD PHONE]",
+      "shift": "General",
+      "workload": 1,
+      "availability": "available",
+      "rating": 4.9
+    },
+    {
+      "id": "w-5",
+      "name": "Worker 5 (Housekeeping)",
+      "skill": "Housekeeping",
+      "phone": "[ADD PHONE]",
+      "shift": "Morning",
+      "workload": 1,
+      "availability": "available",
+      "rating": 4.6
+    },
+    {
+      "id": "w-6",
+      "name": "Worker 6 (HVAC Specialist)",
+      "skill": "HVAC Specialist",
+      "phone": "[ADD PHONE]",
+      "shift": "General",
+      "workload": 2,
+      "availability": "available",
+      "rating": 4.8
+    },
+    {
+      "id": "w-7",
+      "name": "Worker 7 (Gardener & Waste)",
+      "skill": "Gardener & Waste",
+      "phone": "[ADD PHONE]",
+      "shift": "Morning",
+      "workload": 0,
+      "availability": "available",
+      "rating": 4.5
+    },
+    {
+      "id": "w-8",
+      "name": "Worker 8 (Electrician)",
+      "skill": "Electrician",
+      "phone": "[ADD PHONE]",
+      "shift": "Evening",
+      "workload": 1,
+      "availability": "available",
+      "rating": 4.7
+    },
+    {
+      "id": "w-9",
+      "name": "Worker 9 (Carpenter & Civil)",
+      "skill": "Carpenter & Civil",
+      "phone": "[ADD PHONE]",
+      "shift": "Morning",
+      "workload": 2,
+      "availability": "busy",
+      "rating": 4.4
+    },
+    {
+      "id": "w-10",
+      "name": "Worker 10 (Housekeeping)",
+      "skill": "Housekeeping",
+      "phone": "[ADD PHONE]",
+      "shift": "Evening",
+      "workload": 1,
+      "availability": "available",
+      "rating": 4.8
+    },
+    {
+      "id": "w-11",
+      "name": "Worker 11 (IT & AV Tech)",
+      "skill": "IT & AV Tech",
+      "phone": "[ADD PHONE]",
+      "shift": "General",
+      "workload": 3,
+      "availability": "busy",
+      "rating": 4.9
+    },
+    {
+      "id": "w-12",
+      "name": "Worker 12 (Security Supervisor)",
+      "skill": "Security Supervisor",
+      "phone": "[ADD PHONE]",
+      "shift": "Night",
+      "workload": 0,
+      "availability": "available",
+      "rating": 4.9
+    }
+  ],
+  "lifts": [
+    {
+      "id": "lift-main-1",
+      "buildingId": "bit-main",
+      "name": "BIT Main Block Elevator A",
+      "capacityKg": 680,
+      "currentFloor": 1,
+      "status": "running",
+      "faultCode": "NORMAL",
+      "energyKwh": 14.8,
+      "tripsToday": 84,
+      "emergencyTrapped": false
+    },
+    {
+      "id": "lift-main-2",
+      "buildingId": "bit-main",
+      "name": "BIT Main Block Elevator B",
+      "capacityKg": 680,
+      "currentFloor": 3,
+      "status": "idle",
+      "faultCode": "NORMAL",
+      "energyKwh": 12.3,
+      "tripsToday": 71,
+      "emergencyTrapped": false
+    },
+    {
+      "id": "lift-b2-1",
+      "buildingId": "bit-block-central",
+      "name": "BIT Block 2 Central Lift",
+      "capacityKg": 544,
+      "currentFloor": 0,
+      "status": "idle",
+      "faultCode": "NORMAL",
+      "energyKwh": 8.4,
+      "tripsToday": 42,
+      "emergencyTrapped": false
+    },
+    {
+      "id": "lift-mech-1",
+      "buildingId": "bit-mechanical",
+      "name": "Mechanical Bay Freight Lift",
+      "capacityKg": 1000,
+      "currentFloor": 0,
+      "status": "idle",
+      "faultCode": "NORMAL",
+      "energyKwh": 9.1,
+      "tripsToday": 35,
+      "emergencyTrapped": false
+    },
+    {
+      "id": "lift-b3-1",
+      "buildingId": "bit-block-east",
+      "name": "BIT Block 3 North Lift",
+      "capacityKg": 544,
+      "currentFloor": 2,
+      "status": "idle",
+      "faultCode": "NORMAL",
+      "energyKwh": 11.2,
+      "tripsToday": 58,
+      "emergencyTrapped": false
+    },
+    {
+      "id": "lift-gh-1",
+      "buildingId": "bit-guest-house",
+      "name": "Guest House Service Lift",
+      "capacityKg": 400,
+      "currentFloor": 0,
+      "status": "idle",
+      "faultCode": "NORMAL",
+      "energyKwh": 4.5,
+      "tripsToday": 20,
+      "emergencyTrapped": false
+    }
+  ],
+  "bins": [
+    {
+      "id": "bin-001",
+      "buildingId": "bit-main",
+      "locationName": "BIT Main - Zone 1",
+      "type": "dry",
+      "fillPct": 88,
+      "lastEmptied": "2026-10-31T17:30:06.399Z",
+      "capacityLiters": 120
+    },
+    {
+      "id": "bin-002",
+      "buildingId": "bit-block-central",
+      "locationName": "BIT Block 2 - Zone 1",
+      "type": "wet",
+      "fillPct": 44,
+      "lastEmptied": "2026-10-31T16:30:06.399Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-003",
+      "buildingId": "bit-mechanical",
+      "locationName": "Mechanical Block - Zone 1",
+      "type": "plastic",
+      "fillPct": 22,
+      "lastEmptied": "2026-10-31T15:30:06.399Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-004",
+      "buildingId": "bit-block-east",
+      "locationName": "BIT Block 3 - Zone 1",
+      "type": "e-waste",
+      "fillPct": 90,
+      "lastEmptied": "2026-10-31T14:30:06.399Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-005",
+      "buildingId": "bit-block-strip",
+      "locationName": "BIT Block 4 - Zone 1",
+      "type": "dry",
+      "fillPct": 78,
+      "lastEmptied": "2026-10-31T13:30:06.399Z",
+      "capacityLiters": 120
+    },
+    {
+      "id": "bin-006",
+      "buildingId": "bit-parking",
+      "locationName": "Parking Facility - Zone 1",
+      "type": "wet",
+      "fillPct": 62,
+      "lastEmptied": "2026-10-31T12:30:06.399Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-007",
+      "buildingId": "bit-main",
+      "locationName": "BIT Main - Zone 2",
+      "type": "plastic",
+      "fillPct": 39,
+      "lastEmptied": "2026-10-31T11:30:06.399Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-008",
+      "buildingId": "bit-block-central",
+      "locationName": "BIT Block 2 - Zone 2",
+      "type": "e-waste",
+      "fillPct": 43,
+      "lastEmptied": "2026-10-31T10:30:06.399Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-009",
+      "buildingId": "bit-mechanical",
+      "locationName": "Mechanical Block - Zone 2",
+      "type": "dry",
+      "fillPct": 66,
+      "lastEmptied": "2026-10-31T09:30:06.399Z",
+      "capacityLiters": 120
+    },
+    {
+      "id": "bin-010",
+      "buildingId": "bit-block-east",
+      "locationName": "BIT Block 3 - Zone 2",
+      "type": "wet",
+      "fillPct": 65,
+      "lastEmptied": "2026-10-31T08:30:06.399Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-011",
+      "buildingId": "bit-block-strip",
+      "locationName": "BIT Block 4 - Zone 2",
+      "type": "plastic",
+      "fillPct": 94,
+      "lastEmptied": "2026-10-31T07:30:06.399Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-012",
+      "buildingId": "bit-parking",
+      "locationName": "Parking Facility - Zone 2",
+      "type": "e-waste",
+      "fillPct": 39,
+      "lastEmptied": "2026-10-31T06:30:06.399Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-013",
+      "buildingId": "bit-main",
+      "locationName": "BIT Main - Zone 3",
+      "type": "dry",
+      "fillPct": 55,
+      "lastEmptied": "2026-10-31T05:30:06.399Z",
+      "capacityLiters": 120
+    },
+    {
+      "id": "bin-014",
+      "buildingId": "bit-block-central",
+      "locationName": "BIT Block 2 - Zone 3",
+      "type": "wet",
+      "fillPct": 36,
+      "lastEmptied": "2026-10-31T04:30:06.399Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-015",
+      "buildingId": "bit-mechanical",
+      "locationName": "Mechanical Block - Zone 3",
+      "type": "plastic",
+      "fillPct": 91,
+      "lastEmptied": "2026-10-31T03:30:06.399Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-016",
+      "buildingId": "bit-block-east",
+      "locationName": "BIT Block 3 - Zone 3",
+      "type": "e-waste",
+      "fillPct": 82,
+      "lastEmptied": "2026-10-31T02:30:06.399Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-017",
+      "buildingId": "bit-block-strip",
+      "locationName": "BIT Block 4 - Zone 3",
+      "type": "dry",
+      "fillPct": 83,
+      "lastEmptied": "2026-10-31T01:30:06.399Z",
+      "capacityLiters": 120
+    },
+    {
+      "id": "bin-018",
+      "buildingId": "bit-parking",
+      "locationName": "Parking Facility - Zone 3",
+      "type": "wet",
+      "fillPct": 69,
+      "lastEmptied": "2026-10-31T00:30:06.399Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-019",
+      "buildingId": "bit-main",
+      "locationName": "BIT Main - Zone 4",
+      "type": "plastic",
+      "fillPct": 27,
+      "lastEmptied": "2026-10-30T23:30:06.399Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-020",
+      "buildingId": "bit-block-central",
+      "locationName": "BIT Block 2 - Zone 4",
+      "type": "e-waste",
+      "fillPct": 40,
+      "lastEmptied": "2026-10-30T22:30:06.399Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-021",
+      "buildingId": "bit-mechanical",
+      "locationName": "Mechanical Block - Zone 4",
+      "type": "dry",
+      "fillPct": 73,
+      "lastEmptied": "2026-10-30T21:30:06.399Z",
+      "capacityLiters": 120
+    },
+    {
+      "id": "bin-022",
+      "buildingId": "bit-block-east",
+      "locationName": "BIT Block 3 - Zone 4",
+      "type": "wet",
+      "fillPct": 64,
+      "lastEmptied": "2026-10-30T20:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-023",
+      "buildingId": "bit-block-strip",
+      "locationName": "BIT Block 4 - Zone 4",
+      "type": "plastic",
+      "fillPct": 26,
+      "lastEmptied": "2026-10-30T19:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-024",
+      "buildingId": "bit-parking",
+      "locationName": "Parking Facility - Zone 4",
+      "type": "e-waste",
+      "fillPct": 26,
+      "lastEmptied": "2026-10-30T18:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-025",
+      "buildingId": "bit-main",
+      "locationName": "BIT Main - Zone 5",
+      "type": "dry",
+      "fillPct": 74,
+      "lastEmptied": "2026-10-30T17:30:06.400Z",
+      "capacityLiters": 120
+    },
+    {
+      "id": "bin-026",
+      "buildingId": "bit-block-central",
+      "locationName": "BIT Block 2 - Zone 5",
+      "type": "wet",
+      "fillPct": 72,
+      "lastEmptied": "2026-10-30T16:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-027",
+      "buildingId": "bit-mechanical",
+      "locationName": "Mechanical Block - Zone 5",
+      "type": "plastic",
+      "fillPct": 41,
+      "lastEmptied": "2026-10-30T15:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-028",
+      "buildingId": "bit-block-east",
+      "locationName": "BIT Block 3 - Zone 5",
+      "type": "e-waste",
+      "fillPct": 93,
+      "lastEmptied": "2026-10-30T14:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-029",
+      "buildingId": "bit-block-strip",
+      "locationName": "BIT Block 4 - Zone 5",
+      "type": "dry",
+      "fillPct": 57,
+      "lastEmptied": "2026-10-30T13:30:06.400Z",
+      "capacityLiters": 120
+    },
+    {
+      "id": "bin-030",
+      "buildingId": "bit-parking",
+      "locationName": "Parking Facility - Zone 5",
+      "type": "wet",
+      "fillPct": 38,
+      "lastEmptied": "2026-10-30T12:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-031",
+      "buildingId": "bit-main",
+      "locationName": "BIT Main - Zone 6",
+      "type": "plastic",
+      "fillPct": 26,
+      "lastEmptied": "2026-10-30T11:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-032",
+      "buildingId": "bit-block-central",
+      "locationName": "BIT Block 2 - Zone 6",
+      "type": "e-waste",
+      "fillPct": 86,
+      "lastEmptied": "2026-10-30T10:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-033",
+      "buildingId": "bit-mechanical",
+      "locationName": "Mechanical Block - Zone 6",
+      "type": "dry",
+      "fillPct": 72,
+      "lastEmptied": "2026-10-30T09:30:06.400Z",
+      "capacityLiters": 120
+    },
+    {
+      "id": "bin-034",
+      "buildingId": "bit-block-east",
+      "locationName": "BIT Block 3 - Zone 6",
+      "type": "wet",
+      "fillPct": 27,
+      "lastEmptied": "2026-10-30T08:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-035",
+      "buildingId": "bit-block-strip",
+      "locationName": "BIT Block 4 - Zone 6",
+      "type": "plastic",
+      "fillPct": 53,
+      "lastEmptied": "2026-10-30T07:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-036",
+      "buildingId": "bit-parking",
+      "locationName": "Parking Facility - Zone 6",
+      "type": "e-waste",
+      "fillPct": 80,
+      "lastEmptied": "2026-10-30T06:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-037",
+      "buildingId": "bit-main",
+      "locationName": "BIT Main - Zone 7",
+      "type": "dry",
+      "fillPct": 70,
+      "lastEmptied": "2026-10-30T05:30:06.400Z",
+      "capacityLiters": 120
+    },
+    {
+      "id": "bin-038",
+      "buildingId": "bit-block-central",
+      "locationName": "BIT Block 2 - Zone 7",
+      "type": "wet",
+      "fillPct": 26,
+      "lastEmptied": "2026-10-30T04:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-039",
+      "buildingId": "bit-mechanical",
+      "locationName": "Mechanical Block - Zone 7",
+      "type": "plastic",
+      "fillPct": 25,
+      "lastEmptied": "2026-10-30T03:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-040",
+      "buildingId": "bit-block-east",
+      "locationName": "BIT Block 3 - Zone 7",
+      "type": "e-waste",
+      "fillPct": 60,
+      "lastEmptied": "2026-10-30T02:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-041",
+      "buildingId": "bit-block-strip",
+      "locationName": "BIT Block 4 - Zone 7",
+      "type": "dry",
+      "fillPct": 60,
+      "lastEmptied": "2026-10-30T01:30:06.400Z",
+      "capacityLiters": 120
+    },
+    {
+      "id": "bin-042",
+      "buildingId": "bit-parking",
+      "locationName": "Parking Facility - Zone 7",
+      "type": "wet",
+      "fillPct": 64,
+      "lastEmptied": "2026-10-30T00:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-043",
+      "buildingId": "bit-main",
+      "locationName": "BIT Main - Zone 8",
+      "type": "plastic",
+      "fillPct": 37,
+      "lastEmptied": "2026-10-29T23:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-044",
+      "buildingId": "bit-block-central",
+      "locationName": "BIT Block 2 - Zone 8",
+      "type": "e-waste",
+      "fillPct": 67,
+      "lastEmptied": "2026-10-29T22:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-045",
+      "buildingId": "bit-mechanical",
+      "locationName": "Mechanical Block - Zone 8",
+      "type": "dry",
+      "fillPct": 45,
+      "lastEmptied": "2026-10-29T21:30:06.400Z",
+      "capacityLiters": 120
+    },
+    {
+      "id": "bin-046",
+      "buildingId": "bit-block-east",
+      "locationName": "BIT Block 3 - Zone 8",
+      "type": "wet",
+      "fillPct": 34,
+      "lastEmptied": "2026-10-29T20:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-047",
+      "buildingId": "bit-block-strip",
+      "locationName": "BIT Block 4 - Zone 8",
+      "type": "plastic",
+      "fillPct": 32,
+      "lastEmptied": "2026-10-29T19:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-048",
+      "buildingId": "bit-parking",
+      "locationName": "Parking Facility - Zone 8",
+      "type": "e-waste",
+      "fillPct": 38,
+      "lastEmptied": "2026-10-29T18:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-049",
+      "buildingId": "bit-main",
+      "locationName": "BIT Main - Zone 9",
+      "type": "dry",
+      "fillPct": 94,
+      "lastEmptied": "2026-10-29T17:30:06.400Z",
+      "capacityLiters": 120
+    },
+    {
+      "id": "bin-050",
+      "buildingId": "bit-block-central",
+      "locationName": "BIT Block 2 - Zone 9",
+      "type": "wet",
+      "fillPct": 59,
+      "lastEmptied": "2026-10-29T16:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-051",
+      "buildingId": "bit-mechanical",
+      "locationName": "Mechanical Block - Zone 9",
+      "type": "plastic",
+      "fillPct": 57,
+      "lastEmptied": "2026-10-29T15:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-052",
+      "buildingId": "bit-block-east",
+      "locationName": "BIT Block 3 - Zone 9",
+      "type": "e-waste",
+      "fillPct": 84,
+      "lastEmptied": "2026-10-29T14:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-053",
+      "buildingId": "bit-block-strip",
+      "locationName": "BIT Block 4 - Zone 9",
+      "type": "dry",
+      "fillPct": 55,
+      "lastEmptied": "2026-10-29T13:30:06.400Z",
+      "capacityLiters": 120
+    },
+    {
+      "id": "bin-054",
+      "buildingId": "bit-parking",
+      "locationName": "Parking Facility - Zone 9",
+      "type": "wet",
+      "fillPct": 71,
+      "lastEmptied": "2026-10-29T12:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-055",
+      "buildingId": "bit-main",
+      "locationName": "BIT Main - Zone 10",
+      "type": "plastic",
+      "fillPct": 53,
+      "lastEmptied": "2026-10-29T11:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-056",
+      "buildingId": "bit-block-central",
+      "locationName": "BIT Block 2 - Zone 10",
+      "type": "e-waste",
+      "fillPct": 26,
+      "lastEmptied": "2026-10-29T10:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-057",
+      "buildingId": "bit-mechanical",
+      "locationName": "Mechanical Block - Zone 10",
+      "type": "dry",
+      "fillPct": 20,
+      "lastEmptied": "2026-10-29T09:30:06.400Z",
+      "capacityLiters": 120
+    },
+    {
+      "id": "bin-058",
+      "buildingId": "bit-block-east",
+      "locationName": "BIT Block 3 - Zone 10",
+      "type": "wet",
+      "fillPct": 51,
+      "lastEmptied": "2026-10-29T08:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-059",
+      "buildingId": "bit-block-strip",
+      "locationName": "BIT Block 4 - Zone 10",
+      "type": "plastic",
+      "fillPct": 48,
+      "lastEmptied": "2026-10-29T07:30:06.400Z",
+      "capacityLiters": 80
+    },
+    {
+      "id": "bin-060",
+      "buildingId": "bit-parking",
+      "locationName": "Parking Facility - Zone 10",
+      "type": "e-waste",
+      "fillPct": 51,
+      "lastEmptied": "2026-10-29T06:30:06.400Z",
+      "capacityLiters": 80
+    }
+  ],
+  "feedback": [
+    {
+      "id": "fb-001",
+      "userId": "usr-student-1",
+      "userName": "Demo Student",
+      "userRole": "student",
+      "rating": 5,
+      "comment": "The live microgrid dashboard really helps us track real-time campus energy!",
+      "createdAt": "2026-10-30T17:30:06.402Z",
+      "adminReply": "Thank you! We are expanding solar monitoring across all blocks."
+    },
+    {
+      "id": "fb-002",
+      "userId": "usr-staff-1",
+      "userName": "Demo Faculty",
+      "userRole": "staff",
+      "rating": 4,
+      "comment": "Scheduling load shedding before peak hours has trimmed department bills.",
+      "createdAt": "2026-10-29T17:30:06.402Z",
+      "adminReply": "Acknowledged. We are optimizing thermostat setpoints as well."
+    }
+  ],
+  "settings": [
+    {
+      "key": "grid_emission_factor",
+      "name": "Grid Carbon Emission Factor",
+      "category": "ESG & Carbon",
+      "unit": "kg CO₂e/kWh",
+      "scopeAllowed": [
+        "global"
+      ],
+      "defaultValue": 0.71,
+      "globalValue": 0.71,
+      "deptValues": {},
+      "personalValues": {},
+      "min": 0.2,
+      "max": 1.5,
+      "lockedBy": null,
+      "description": "Default CEA baseline for Indian regional power grid."
+    },
+    {
+      "key": "commercial_tariff_inr",
+      "name": "BESCOM HT Commercial Slab Rate",
+      "category": "Financial & Tariffs",
+      "unit": "₹/kWh",
+      "scopeAllowed": [
+        "global"
+      ],
+      "defaultValue": 8.25,
+      "globalValue": 8.25,
+      "deptValues": {},
+      "personalValues": {},
+      "min": 4,
+      "max": 15,
+      "lockedBy": null,
+      "description": "Effective energy charge per unit consumed."
+    },
+    {
+      "key": "standard_ac_setpoint",
+      "name": "Standard AC Setpoint Temperature",
+      "category": "Thermal & Comfort",
+      "unit": "°C",
+      "scopeAllowed": [
+        "global",
+        "department"
+      ],
+      "defaultValue": 24,
+      "globalValue": 24,
+      "deptValues": {
+        "Computer Science and Engineering (AIML)": 24,
+        "Management Studies": 24,
+        "Mechanical Engineering": 25
+      },
+      "personalValues": {},
+      "min": 22,
+      "max": 27,
+      "lockedBy": null,
+      "description": "BEE recommended thermostat sweet spot for energy efficiency."
+    },
+    {
+      "key": "idle_timeout_minutes",
+      "name": "Vacant Room Auto-Off Delay",
+      "category": "Auto-Optimizer",
+      "unit": "Minutes",
+      "scopeAllowed": [
+        "global",
+        "department"
+      ],
+      "defaultValue": 15,
+      "globalValue": 15,
+      "deptValues": {
+        "Computer Science and Engineering (AIML)": 15
+      },
+      "personalValues": {},
+      "min": 5,
+      "max": 60,
+      "lockedBy": null,
+      "description": "Minutes of zero occupancy detected before auto-switching non-critical loads."
+    }
+  ],
+  "auditLogs": [],
+  "controlActions": [],
+  "carbonBudgets": [
+    {
+      "scopeId": "campus-global",
+      "scopeName": "BIT Campus Total",
+      "period": "October 2026",
+      "capKg": 120000,
+      "usedKg": 84210,
+      "warningThresholdPct": 70
+    },
+    {
+      "scopeId": "dept-aiml",
+      "scopeName": "CSE (AIML) Department",
+      "period": "October 2026",
+      "capKg": 28000,
+      "usedKg": 19450,
+      "warningThresholdPct": 70
+    },
+    {
+      "scopeId": "dept-main",
+      "scopeName": "BIT Main Block",
+      "period": "October 2026",
+      "capKg": 45000,
+      "usedKg": 31200,
+      "warningThresholdPct": 70
+    },
+    {
+      "scopeId": "dept-mech",
+      "scopeName": "Mechanical Engineering",
+      "period": "October 2026",
+      "capKg": 22000,
+      "usedKg": 16800,
+      "warningThresholdPct": 70
+    },
+    {
+      "scopeId": "block-central",
+      "scopeName": "BIT Block 2",
+      "period": "October 2026",
+      "capKg": 25000,
+      "usedKg": 16760,
+      "warningThresholdPct": 70
+    }
+  ],
+  "carbonPassports": []
+}

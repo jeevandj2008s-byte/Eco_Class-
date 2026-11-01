@@ -1,0 +1,361 @@
+/**
+ * BIT AuraSync Motion System Tokens & Kinetic Effects
+ * Style: Snappy, anime-inspired, lively, high-polish light theme
+ * Preserves 100% of accessibility via prefers-reduced-motion
+ */
+
+:root {
+  /* Durations */
+  --motion-dur-instant: 120ms;
+  --motion-dur-fast: 200ms;
+  --motion-dur-base: 350ms;
+  --motion-dur-slow: 600ms;
+  --motion-dur-hero: 900ms;
+
+  /* Easings */
+  --motion-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);    /* Anime pop / overshoot */
+  --motion-ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);     /* Snappy entrance */
+  --motion-ease-soft: cubic-bezier(0.4, 0, 0.2, 1);          /* Fluid idle loops */
+
+  /* Stagger */
+  --motion-stagger-step: 75ms;
+
+  /* Distances */
+  --motion-dist-sm: 12px;
+  --motion-dist-md: 24px;
+  --motion-dist-lg: 48px;
+
+  /* Brand Kinetic Accents */
+  --motion-glow: rgba(0, 107, 255, 0.28);
+  --motion-glow-intense: rgba(0, 107, 255, 0.42);
+  --motion-gradient: linear-gradient(135deg, #006bff 0%, #0099ff 100%);
+}
+
+/* =========================================================================
+   1. LIVING AMBIENT ORBS & PARTICLES
+   ========================================================================= */
+
+@keyframes orbFloat {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(25px, -35px) scale(1.08);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.94);
+  }
+}
+
+@keyframes orbPulse {
+  0%, 100% {
+    opacity: 0.28;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.48;
+    transform: scale(1.12);
+  }
+}
+
+@keyframes sparkleTwinkle {
+  0%, 100% {
+    opacity: 0.15;
+    transform: translateY(0) scale(0.85);
+  }
+  50% {
+    opacity: 0.85;
+    transform: translateY(-8px) scale(1.15);
+  }
+}
+
+.living-orb-1 {
+  animation: orbFloat 18s var(--motion-ease-soft) infinite;
+  will-change: transform;
+}
+
+.living-orb-2 {
+  animation: orbFloat 24s var(--motion-ease-soft) infinite reverse;
+  will-change: transform;
+}
+
+.sparkle-particle {
+  animation: sparkleTwinkle 4s var(--motion-ease-soft) infinite;
+  will-change: transform, opacity;
+}
+
+/* =========================================================================
+   2. TEXT & HEADING SHIMMER
+   ========================================================================= */
+
+@keyframes textShimmerWave {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    #0b3558 0%,
+    #006bff 35%,
+    #0099ff 50%,
+    #006bff 65%,
+    #0b3558 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textShimmerWave 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  display: inline-block;
+}
+
+/* =========================================================================
+   3. BUTTON INTERACTION POLISH (POP, SHINE, LIFT)
+   ========================================================================= */
+
+.btn-pop {
+  position: relative;
+  transition:
+    transform var(--motion-dur-fast) var(--motion-ease-spring),
+    box-shadow var(--motion-dur-fast) var(--motion-ease-out-expo),
+    background-color var(--motion-dur-fast) ease,
+    border-color var(--motion-dur-fast) ease !important;
+  will-change: transform;
+}
+
+.btn-pop:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 24px -4px var(--motion-glow) !important;
+}
+
+.btn-pop:active {
+  transform: translateY(1px) scale(0.97) !important;
+  box-shadow: 0 2px 8px -2px var(--motion-glow) !important;
+}
+
+/* Diagonal Light Shine Sweep across primary buttons */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shine::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -80%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 100%
+  );
+  transform: rotate(25deg);
+  pointer-events: none;
+  transition: transform 0.75s var(--motion-ease-out-expo);
+  opacity: 0;
+}
+
+.btn-shine:hover::after {
+  opacity: 1;
+  transform: translateX(380%) rotate(25deg);
+}
+
+/* Icon Spin / Bounce on button hover */
+.btn-pop:hover .icon-bounce {
+  transform: translateY(-2px) scale(1.15);
+  transition: transform var(--motion-dur-fast) var(--motion-ease-spring);
+}
+
+.icon-spin-hover:hover {
+  transform: rotate(180deg) scale(1.1);
+  transition: transform var(--motion-dur-slow) var(--motion-ease-spring);
+}
+
+/* =========================================================================
+   4. CARDS & ELEVATED TILES (LIFT, TILT, GLOW BORDER)
+   ========================================================================= */
+
+.card-lift {
+  transition:
+    transform var(--motion-dur-base) var(--motion-ease-spring),
+    box-shadow var(--motion-dur-base) var(--motion-ease-out-expo),
+    border-color var(--motion-dur-fast) ease !important;
+  will-change: transform, box-shadow;
+}
+
+.card-lift:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 107, 255, 0.32) !important;
+  box-shadow:
+    0 16px 32px -8px rgba(71, 103, 136, 0.12),
+    0 4px 12px -2px rgba(71, 103, 136, 0.08),
+    0 0 0 1px rgba(0, 107, 255, 0.18) !important;
+}
+
+/* Floating Idle Breathing Animation for special hero or spotlight cards */
+@keyframes floatSubtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.card-float-subtle {
+  animation: floatSubtle 5s var(--motion-ease-soft) infinite;
+  will-change: transform;
+}
+
+/* =========================================================================
+   5. ORCHESTRATED ENTRANCE ANIMATIONS (STAGGER)
+   ========================================================================= */
+
+@keyframes animeEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.enter-fade-up {
+  animation: animeEntrance var(--motion-dur-base) var(--motion-ease-spring) both;
+}
+
+.stagger-1 { animation-delay: calc(1 * var(--motion-stagger-step)); }
+.stagger-2 { animation-delay: calc(2 * var(--motion-stagger-step)); }
+.stagger-3 { animation-delay: calc(3 * var(--motion-stagger-step)); }
+.stagger-4 { animation-delay: calc(4 * var(--motion-stagger-step)); }
+.stagger-5 { animation-delay: calc(5 * var(--motion-stagger-step)); }
+.stagger-6 { animation-delay: calc(6 * var(--motion-stagger-step)); }
+
+/* =========================================================================
+   6. STATUS PILLS, BADGES & BREATHING GLOW
+   ========================================================================= */
+
+@keyframes badgeBreathe {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(0, 107, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(0, 107, 255, 0);
+  }
+}
+
+.badge-live-pulse {
+  animation: badgeBreathe 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes liveDotRadar {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 107, 255, 0.6);
+  }
+  70% {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 8px rgba(0, 107, 255, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 107, 255, 0);
+  }
+}
+
+.live-dot-pulse {
+  animation: liveDotRadar 2s infinite;
+}
+
+/* =========================================================================
+   7. SCROLL PROGRESS BAR (HAIRLINE SIGNAL BLUE)
+   ========================================================================= */
+
+.scroll-progress-line {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--motion-gradient);
+  z-index: 9999;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 10px rgba(0, 107, 255, 0.6);
+  pointer-events: none;
+}
+
+/* Animated Underlines on Interactive Links */
+.link-anime {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.link-anime::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--motion-dur-fast) var(--motion-ease-out-expo);
+}
+
+.link-anime:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* =========================================================================
+   8. ACCESSIBILITY: PREFERS-REDUCED-MOTION
+   ========================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .text-shimmer {
+    background: none !important;
+    -webkit-text-fill-color: initial !important;
+    color: #0b3558 !important;
+    animation: none !important;
+  }
+
+  .btn-shine::after {
+    display: none !important;
+  }
+
+  .card-lift:hover {
+    transform: none !important;
+  }
+
+  .btn-pop:hover,
+  .btn-pop:active {
+    transform: none !important;
+  }
+
+  .living-orb-1,
+  .living-orb-2,
+  .sparkle-particle,
+  .card-float-subtle {
+    animation: none !important;
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "institutionName": "Bangalore Institute of Technology",
+  "shortName": "BIT",
+  "productName": "AuraSync Energy Twin for Bangalore Institute of Technology (BIT)",
+  "addressLines": [
+    "K.R. Road",
+    "V.V. Puram"
+  ],
+  "city": "Bengaluru",
+  "state": "Karnataka",
+  "pincode": "560004",
+  "country": "India",
+  "location": "K.R. Road, V.V. Puram, Bengaluru, Karnataka - 560004, India",
+  "fullAddress": "Bangalore Institute of Technology, K.R. Road, V.V. Puram, Bengaluru, Karnataka - 560004, India",
+  "approxCoordinates": {
+    "lat": 12.9552,
+    "lng": 77.5743
+  },
+  "developedBy": "[YOUR TEAM NAME], BIT",
+  "phone": "[ADD PHONE]",
+  "email": "[ADD BIT INFO HERE]",
+  "foundingYear": "[ADD BIT INFO HERE]",
+  "principal": "Demo Principal",
+  "gridEmissionFactor": 0.71,
+  "defaultTariffPerKwh": 8.25,
+  "sanctionedDemandKva": 750,
+  "assumedLabelNote": "Assumed. Edit in Settings with your actual BESCOM bill.",
+  "statements": [
+    "Bangalore Institute of Technology, K.R. Road, V.V. Puram, Bengaluru - 560004.",
+    "Smart microgrid telemetry helps track, isolate, and eliminate campus energy ghosts.",
+    "Optimizing cooling setpoints to 24°C significantly trims peak HVAC compressor draw.",
+    "Solar self-consumption directly mitigates institutional Scope 2 electricity emissions.",
+    "Timely preventive maintenance of campus lifts, HVAC, and lighting maximizes efficiency.",
+    "Every unit of energy conserved empowers verifiable campus environmental governance."
+  ],
+  "departments": [
+    "Computer Science and Engineering (AIML)",
+    "Computer Science and Engineering",
+    "Information Science and Engineering",
+    "Mechanical Engineering",
+    "Civil Engineering",
+    "Electronics and Communication Engineering",
+    "Electrical and Electronics Engineering",
+    "Management Studies",
+    "Campus Facilities & Maintenance"
+  ],
+  "name": "Bangalore Institute of Technology",
+  "address": "Bangalore Institute of Technology, K.R. Road, V.V. Puram, Bengaluru, Karnataka - 560004, India"
+}

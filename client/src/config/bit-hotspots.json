@@ -1,0 +1,564 @@
+{
+  "campus": {
+    "name": "Bangalore Institute of Technology",
+    "shortName": "BIT",
+    "location": "K.R. Road, V.V. Puram, Bengaluru, Karnataka - 560004, India",
+    "center": [
+      77.5743,
+      12.9552
+    ],
+    "zoom": 17.5,
+    "bearing": -15,
+    "pitch": 50,
+    "canvas": {
+      "width": 832,
+      "height": 767,
+      "aspectRatio": 1.0847
+    },
+    "caption": "Schematic layout traced from public map data; not to scale.",
+    "note": "Demo data - replace with BIT meter readings"
+  },
+  "landmarks": [
+    {
+      "id": "lm-kuvempu",
+      "name": "Kuvempu Kalakshetra",
+      "coords": [
+        48.92,
+        24.38
+      ]
+    },
+    {
+      "id": "lm-chaitra",
+      "name": "Chaitra Kote",
+      "coords": [
+        37.86,
+        39.37
+      ]
+    },
+    {
+      "id": "lm-pink-tree",
+      "name": "BIT Pink Tree",
+      "coords": [
+        35.34,
+        96.22
+      ]
+    }
+  ],
+  "decorative": {
+    "waterChannel": [
+      [
+        7.5,
+        30
+      ],
+      [
+        42,
+        29.5
+      ],
+      [
+        42,
+        52.5
+      ],
+      [
+        53,
+        53
+      ],
+      [
+        53,
+        94
+      ],
+      [
+        7.5,
+        94
+      ]
+    ],
+    "roads": [
+      {
+        "id": "road-top",
+        "name": "Campus Perimeter Road",
+        "path": [
+          [
+            0,
+            5
+          ],
+          [
+            100,
+            5
+          ]
+        ]
+      }
+    ]
+  },
+  "buildings": [
+    {
+      "id": "bit-main",
+      "name": "Bangalore Institute of Technology",
+      "shortName": "BIT Main Block",
+      "label": "Bangalore Institute of Technology",
+      "floors": 6,
+      "height": 21,
+      "baselineKw": 85,
+      "solarCapacityKw": 60,
+      "department": "Academic & Campus Administration",
+      "illustrative": true,
+      "openTickets": 1,
+      "percentagePolygon": [
+        [
+          9.62,
+          32.59
+        ],
+        [
+          40.62,
+          32.2
+        ],
+        [
+          40.62,
+          55.02
+        ],
+        [
+          51.44,
+          55.28
+        ],
+        [
+          51.44,
+          91.92
+        ],
+        [
+          9.62,
+          91.92
+        ]
+      ],
+      "holes": [
+        [
+          [
+            19.71,
+            47.85
+          ],
+          [
+            35.82,
+            47.85
+          ],
+          [
+            35.82,
+            58.28
+          ],
+          [
+            40.02,
+            58.28
+          ],
+          [
+            40.02,
+            76.92
+          ],
+          [
+            19.83,
+            76.92
+          ]
+        ]
+      ],
+      "devices": [
+        {
+          "id": "dev-m101-ac",
+          "name": "Administrative Office AC",
+          "type": "HVAC",
+          "state": "on",
+          "kw": 3.2
+        },
+        {
+          "id": "dev-m102-lgt",
+          "name": "Classroom 102 LED Grid",
+          "type": "Lighting",
+          "state": "on",
+          "kw": 1.1
+        },
+        {
+          "id": "dev-m204-ac",
+          "name": "Computer Lab 204 AC",
+          "type": "HVAC",
+          "state": "on",
+          "kw": 4.5,
+          "anomaly": "empty_room_cooling"
+        },
+        {
+          "id": "dev-aud-prj",
+          "name": "Main Auditorium Projector",
+          "type": "AV",
+          "state": "on",
+          "kw": 2.2
+        }
+      ]
+    },
+    {
+      "id": "bit-block-central",
+      "name": "BIT Block 2",
+      "shortName": "BIT Block 2",
+      "label": "BIT Block 2",
+      "labelSource": "unlabeled on map",
+      "editable": true,
+      "floors": 4,
+      "height": 14,
+      "baselineKw": 42,
+      "solarCapacityKw": 25,
+      "department": "Academic Block 2",
+      "illustrative": true,
+      "openTickets": 0,
+      "percentagePolygon": [
+        [
+          42.91,
+          32.86
+        ],
+        [
+          44.83,
+          32.86
+        ],
+        [
+          44.83,
+          27.38
+        ],
+        [
+          53.49,
+          27.38
+        ],
+        [
+          53.49,
+          33.64
+        ],
+        [
+          66.71,
+          32.07
+        ],
+        [
+          66.71,
+          26.86
+        ],
+        [
+          70.31,
+          26.86
+        ],
+        [
+          70.67,
+          51.63
+        ],
+        [
+          64.9,
+          52.67
+        ],
+        [
+          42.91,
+          52.67
+        ]
+      ],
+      "holes": [],
+      "devices": [
+        {
+          "id": "dev-b2-ac1",
+          "name": "Seminar Hall AC",
+          "type": "HVAC",
+          "state": "on",
+          "kw": 3.8
+        },
+        {
+          "id": "dev-b2-lgt1",
+          "name": "Central Foyer Lighting",
+          "type": "Lighting",
+          "state": "on",
+          "kw": 1.5
+        }
+      ]
+    },
+    {
+      "id": "bit-mechanical",
+      "name": "BIT Mechanical Engineering Block",
+      "shortName": "BIT Mechanical",
+      "label": "BIT Mechanical Engineering Block",
+      "floors": 4,
+      "height": 14,
+      "baselineKw": 48,
+      "solarCapacityKw": 35,
+      "department": "Mechanical Engineering Workshop",
+      "illustrative": true,
+      "openTickets": 2,
+      "percentagePolygon": [
+        [
+          75.96,
+          7.43
+        ],
+        [
+          94.95,
+          7.43
+        ],
+        [
+          94.95,
+          28.29
+        ],
+        [
+          75.96,
+          28.29
+        ]
+      ],
+      "holes": [],
+      "devices": [
+        {
+          "id": "dev-mech-cnc",
+          "name": "CNC Workshop Feeder",
+          "type": "Industrial",
+          "state": "on",
+          "kw": 8.5
+        },
+        {
+          "id": "dev-mech-hyd",
+          "name": "Hydraulics Testing Rig",
+          "type": "Industrial",
+          "state": "off",
+          "kw": 6.2
+        }
+      ]
+    },
+    {
+      "id": "bit-block-east",
+      "name": "BIT Block 3",
+      "shortName": "BIT Block 3",
+      "label": "BIT Block 3",
+      "labelSource": "unlabeled on map",
+      "editable": true,
+      "floors": 4,
+      "height": 14,
+      "baselineKw": 36,
+      "solarCapacityKw": 20,
+      "department": "Academic Block 3",
+      "illustrative": true,
+      "openTickets": 0,
+      "percentagePolygon": [
+        [
+          80.89,
+          29.47
+        ],
+        [
+          96.51,
+          28.94
+        ],
+        [
+          96.88,
+          52.41
+        ],
+        [
+          81.49,
+          52.93
+        ]
+      ],
+      "holes": [],
+      "devices": [
+        {
+          "id": "dev-b3-ac1",
+          "name": "Electronics Lab AC",
+          "type": "HVAC",
+          "state": "on",
+          "kw": 4
+        },
+        {
+          "id": "dev-b3-lgt",
+          "name": "Studio Lighting Array",
+          "type": "Lighting",
+          "state": "on",
+          "kw": 1.2
+        }
+      ]
+    },
+    {
+      "id": "bit-block-strip",
+      "name": "BIT Block 4",
+      "shortName": "BIT Block 4",
+      "label": "BIT Block 4",
+      "labelSource": "unlabeled on map",
+      "editable": true,
+      "floors": 3,
+      "height": 10.5,
+      "baselineKw": 18,
+      "solarCapacityKw": 10,
+      "department": "Support Infrastructure",
+      "illustrative": true,
+      "openTickets": 0,
+      "percentagePolygon": [
+        [
+          76.44,
+          30.51
+        ],
+        [
+          80.53,
+          30.51
+        ],
+        [
+          81.01,
+          71.06
+        ],
+        [
+          76.92,
+          71.06
+        ]
+      ],
+      "holes": [],
+      "devices": [
+        {
+          "id": "dev-b4-pump",
+          "name": "Water Circulation Pumps",
+          "type": "Industrial",
+          "state": "on",
+          "kw": 2.5
+        },
+        {
+          "id": "dev-b4-lgt",
+          "name": "Corridor LEDs",
+          "type": "Lighting",
+          "state": "on",
+          "kw": 0.8
+        }
+      ]
+    },
+    {
+      "id": "bit-block-southeast",
+      "name": "BIT Block 5",
+      "shortName": "BIT Block 5",
+      "label": "BIT Block 5",
+      "labelSource": "unlabeled on map",
+      "editable": true,
+      "floors": 3,
+      "height": 10.5,
+      "baselineKw": 22,
+      "solarCapacityKw": 15,
+      "department": "Special Research Facilities",
+      "illustrative": true,
+      "openTickets": 0,
+      "percentagePolygon": [
+        [
+          85.82,
+          57.5
+        ],
+        [
+          100,
+          57.5
+        ],
+        [
+          100,
+          95.83
+        ],
+        [
+          85.82,
+          95.83
+        ]
+      ],
+      "holes": [],
+      "devices": [
+        {
+          "id": "dev-b5-comp",
+          "name": "Research Server Load",
+          "type": "IT",
+          "state": "on",
+          "kw": 5
+        },
+        {
+          "id": "dev-b5-ac",
+          "name": "Precision Lab AC",
+          "type": "HVAC",
+          "state": "on",
+          "kw": 3.2
+        }
+      ]
+    },
+    {
+      "id": "bit-guest-house",
+      "name": "BIT Guest House",
+      "shortName": "BIT Guest House",
+      "label": "BIT Guest House",
+      "floors": 2,
+      "height": 7,
+      "baselineKw": 12,
+      "solarCapacityKw": 8,
+      "department": "Campus Hospitality",
+      "illustrative": true,
+      "openTickets": 0,
+      "percentagePolygon": [
+        [
+          71.63,
+          73.01
+        ],
+        [
+          80.05,
+          73.01
+        ],
+        [
+          80.05,
+          92.96
+        ],
+        [
+          71.63,
+          92.96
+        ]
+      ],
+      "holes": [],
+      "devices": [
+        {
+          "id": "dev-gh-hvac",
+          "name": "Guest Rooms Climate AC",
+          "type": "HVAC",
+          "state": "on",
+          "kw": 2.8
+        },
+        {
+          "id": "dev-gh-geyser",
+          "name": "Central Solar Heat Pump",
+          "type": "Water",
+          "state": "on",
+          "kw": 3.5
+        }
+      ]
+    },
+    {
+      "id": "bit-parking",
+      "name": "BIT Parking Lot",
+      "shortName": "BIT Parking Lot",
+      "label": "BIT Parking Lot",
+      "isArea": true,
+      "floors": 0,
+      "height": 1,
+      "baselineKw": 2,
+      "solarCapacityKw": 30,
+      "department": "Campus Parking & Transit",
+      "illustrative": true,
+      "openTickets": 0,
+      "percentagePolygon": [
+        [
+          55.53,
+          53.46
+        ],
+        [
+          71.51,
+          53.46
+        ],
+        [
+          71.51,
+          91.26
+        ],
+        [
+          55.53,
+          91.26
+        ]
+      ],
+      "holes": [],
+      "devices": [
+        {
+          "id": "dev-pk-ev",
+          "name": "Campus EV Charging Unit",
+          "type": "EV",
+          "state": "on",
+          "kw": 7.2
+        },
+        {
+          "id": "dev-pk-lgt",
+          "name": "Solar Yard Illumination",
+          "type": "Lighting",
+          "state": "on",
+          "kw": 1.2
+        }
+      ]
+    }
+  ]
+}

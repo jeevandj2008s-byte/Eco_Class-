@@ -58,15 +58,15 @@ export default function SettingsPage() {
       <div className="p-6 rounded-3xl bg-white border border-[#d4e0ed] shadow-cal-card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <Sliders className="w-4 h-4 text-[#006bff]" />
-            <span className="text-xs font-bold uppercase tracking-wider text-[#006bff]">
+            <Sliders className="w-4 h-4 text-[#9ff0ec]" />
+            <span className="text-xs font-bold uppercase tracking-wider text-[#9ff0ec]">
               System Settings & Inheritance
             </span>
           </div>
-          <h1 className="text-2xl font-extrabold text-[#0b3558] mt-1 tracking-tight">
+          <h1 className="text-2xl font-extrabold text-white mt-1 tracking-tight">
             Global, Department & Personal Scopes
           </h1>
-          <p className="text-xs text-[#476788] mt-1">
+          <p className="text-xs text-[#b9b8bb] mt-1">
             Role-bounded settings inheritance (Admin &gt; HOD &gt; Faculty &gt; Student)
           </p>
         </div>
@@ -75,16 +75,16 @@ export default function SettingsPage() {
         <div className="flex items-center gap-2">
           <Link
             to="/admin"
-            className="px-4 py-2.5 rounded-lg bg-[#006bff] hover:bg-[#005be0] text-white font-semibold text-xs flex items-center gap-1.5 transition shadow-cal-btn"
+            className="px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#4d19b1] to-[#6f5adc] hover:from-[#581dc7] hover:to-[#7d68e8] text-white font-semibold text-xs flex items-center gap-1.5 transition shadow-[0_0_15px_rgba(111,90,220,0.4)] border border-white/20"
           >
             <Shield className="w-4 h-4" />
             <span>Theme & HOD Console</span>
           </Link>
           <button
             onClick={handleResetIsland}
-            className="px-4 py-2.5 rounded-lg bg-[#f0f3f8] hover:bg-[#e6f0ff] border border-[#d4e0ed] text-[#0b3558] font-semibold text-xs flex items-center gap-1.5 transition"
+            className="px-4 py-2.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.16] text-white font-semibold text-xs flex items-center gap-1.5 transition"
           >
-            <Move className="w-4 h-4 text-[#006bff]" />
+            <Move className="w-4 h-4 text-[#9ff0ec]" />
             <span>Reset Island Position</span>
           </button>
         </div>

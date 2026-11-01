@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Zap,
@@ -7,6 +7,7 @@ import {
   TrendingDown,
   Activity,
   ArrowRight,
+  ArrowLeft,
   Compass,
   CheckCircle2,
   Camera,
@@ -19,12 +20,27 @@ import { formatINR, formatCo2 } from '../lib/utils.js';
 import institutionData from '../config/institution.json';
 
 export default function LandingPage() {
+  const carouselRef = useRef(null);
+
+  const scrollCarousel = (direction) => {
+    if (carouselRef.current) {
+      const scrollAmount = direction === 'left' ? -340 : 340;
+      carouselRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
   const modules = [
     {
       to: '/dashboard',
       label: 'Command Center',
       tag: 'Live Telemetry',
+      stat: '142 kW',
+      statColor: 'text-[#0b3558]',
+      borderColor: 'border-[#d4e0ed] hover:border-[#0b3558]',
+      blobColor: 'text-[#0b3558]',
+      blobPath: 'M 16,16 C 35,14 55,24 75,20 C 95,16 110,6 126,10 C 138,14 144,26 142,40 C 140,52 126,58 110,58 L 18,58 C 6,58 0,48 0,36 C 0,24 6,18 16,16 Z',
       icon: Activity,
+      iconColor: 'text-[#006bff]',
       color: 'bg-[#e6f0ff] text-[#006bff]',
       desc: 'Real-time 142 kW microgrid draw, solar generation, and ghost gap monitoring.'
     },
@@ -32,7 +48,13 @@ export default function LandingPage() {
       to: '/campus',
       label: 'BIT Digital Twin',
       tag: 'Campus Map',
+      stat: '8 Blocks',
+      statColor: 'text-[#006bff]',
+      borderColor: 'border-[#b8d5ff] hover:border-[#006bff]',
+      blobColor: 'text-[#006bff]',
+      blobPath: 'M 18,22 C 32,22 46,26 62,24 C 76,22 88,2 108,2 C 128,2 142,14 142,30 C 142,46 128,56 112,56 L 20,56 C 8,56 0,46 0,34 C 0,22 8,22 18,22 Z',
       icon: Layers,
+      iconColor: 'text-[#006bff]',
       color: 'bg-[#e6f0ff] text-[#006bff]',
       desc: 'Interactive 8-building twin with thermal heatmaps and device controls.'
     },
@@ -40,7 +62,13 @@ export default function LandingPage() {
       to: '/vision',
       label: 'Vision Lab',
       tag: 'Edge AI & Phone',
+      stat: 'Edge AI',
+      statColor: 'text-[#f59e0b]',
+      borderColor: 'border-amber-200 hover:border-amber-400',
+      blobColor: 'text-[#f59e0b]',
+      blobPath: 'M 12,32 C 18,18 36,4 62,2 C 90,0 114,12 128,24 C 140,34 142,44 136,54 C 130,58 116,58 100,58 L 22,58 C 8,58 0,48 0,38 C 0,35 6,34 12,32 Z',
       icon: Camera,
+      iconColor: 'text-amber-600',
       color: 'bg-purple-50 text-purple-700',
       desc: 'COCO-SSD occupancy inference with phone camera wireless pairing.'
     },
@@ -48,7 +76,13 @@ export default function LandingPage() {
       to: '/control',
       label: 'Automation & Control',
       tag: 'Zero Latency',
+      stat: '0 Latency',
+      statColor: 'text-[#d946ef]',
+      borderColor: 'border-fuchsia-200 hover:border-fuchsia-400',
+      blobColor: 'text-[#d946ef]',
+      blobPath: 'M 18,22 C 32,22 46,26 62,24 C 76,22 88,2 108,2 C 128,2 142,14 142,30 C 142,46 128,56 112,56 L 20,56 C 8,56 0,46 0,34 C 0,22 8,22 18,22 Z',
       icon: Sliders,
+      iconColor: 'text-fuchsia-600',
       color: 'bg-amber-50 text-amber-700',
       desc: 'Campus Eco switch, load shedding, and 60-second safety undo window.'
     },
@@ -56,7 +90,13 @@ export default function LandingPage() {
       to: '/simulate',
       label: 'What-If Simulator',
       tag: 'Zustand Engine',
+      stat: '1,000+',
+      statColor: 'text-[#006bff]',
+      borderColor: 'border-blue-200 hover:border-[#006bff]',
+      blobColor: 'text-[#006bff]',
+      blobPath: 'M 16,16 C 35,14 55,24 75,20 C 95,16 110,6 126,10 C 138,14 144,26 142,40 C 140,52 126,58 110,58 L 18,58 C 6,58 0,48 0,36 C 0,24 6,18 16,16 Z',
       icon: TrendingDown,
+      iconColor: 'text-[#006bff]',
       color: 'bg-blue-50 text-blue-700',
       desc: '1,000+ student agents timetable simulation, weather, and tariff models.'
     },
@@ -64,7 +104,13 @@ export default function LandingPage() {
       to: '/carbon',
       label: 'Carbon ESG Passport',
       tag: 'Green Audit',
+      stat: 'Scope 2',
+      statColor: 'text-[#10b981]',
+      borderColor: 'border-emerald-200 hover:border-emerald-400',
+      blobColor: 'text-[#10b981]',
+      blobPath: 'M 12,32 C 18,18 36,4 62,2 C 90,0 114,12 128,24 C 140,34 142,44 136,54 C 130,58 116,58 100,58 L 22,58 C 8,58 0,48 0,38 C 0,35 6,34 12,32 Z',
       icon: Zap,
+      iconColor: 'text-emerald-600',
       color: 'bg-emerald-50 text-emerald-700',
       desc: 'Scope 2 emission tracker, green badges, and 1-click PDF ESG export.'
     },
@@ -72,7 +118,13 @@ export default function LandingPage() {
       to: '/coach',
       label: 'Aura AI Energy Coach',
       tag: 'Google Gemini',
+      stat: 'Gemini AI',
+      statColor: 'text-[#ec4899]',
+      borderColor: 'border-pink-200 hover:border-pink-400',
+      blobColor: 'text-[#ec4899]',
+      blobPath: 'M 18,22 C 32,22 46,26 62,24 C 76,22 88,2 108,2 C 128,2 142,14 142,30 C 142,46 128,56 112,56 L 20,56 C 8,56 0,46 0,34 C 0,22 8,22 18,22 Z',
       icon: Sparkles,
+      iconColor: 'text-pink-600',
       color: 'bg-pink-50 text-pink-700',
       desc: 'Ground truth campus telemetry conversational AI with actionable fixes.'
     },
@@ -80,7 +132,13 @@ export default function LandingPage() {
       to: '/helpdesk',
       label: 'Incident Helpdesk',
       tag: 'Crowdsourced',
+      stat: '3-Tap',
+      statColor: 'text-[#eab308]',
+      borderColor: 'border-yellow-200 hover:border-yellow-400',
+      blobColor: 'text-[#eab308]',
+      blobPath: 'M 12,32 C 18,18 36,4 62,2 C 90,0 114,12 128,24 C 140,34 142,44 136,54 C 130,58 116,58 100,58 L 22,58 C 8,58 0,48 0,38 C 0,35 6,34 12,32 Z',
       icon: LifeBuoy,
+      iconColor: 'text-yellow-600',
       color: 'bg-yellow-50 text-yellow-700',
       desc: '3-tap waste reporting, SLA tracking, and technician dispatch kanban.'
     },
@@ -88,7 +146,13 @@ export default function LandingPage() {
       to: '/admin',
       label: 'Admin & HOD Console',
       tag: 'Access Governance',
+      stat: 'Passkey',
+      statColor: 'text-[#6366f1]',
+      borderColor: 'border-indigo-200 hover:border-indigo-400',
+      blobColor: 'text-[#6366f1]',
+      blobPath: 'M 16,16 C 35,14 55,24 75,20 C 95,16 110,6 126,10 C 138,14 144,26 142,40 C 140,52 126,58 110,58 L 18,58 C 6,58 0,48 0,36 C 0,24 6,18 16,16 Z',
       icon: Shield,
+      iconColor: 'text-indigo-600',
       color: 'bg-indigo-50 text-indigo-700',
       desc: 'Passkey PIN security, role simulation, and immutable audit logs.'
     },
@@ -96,7 +160,13 @@ export default function LandingPage() {
       to: '/about',
       label: 'About BIT & Team',
       tag: 'Institutional',
+      stat: 'BIT 2026',
+      statColor: 'text-[#0b3558]',
+      borderColor: 'border-slate-200 hover:border-slate-400',
+      blobColor: 'text-[#0b3558]',
+      blobPath: 'M 18,22 C 32,22 46,26 62,24 C 76,22 88,2 108,2 C 128,2 142,14 142,30 C 142,46 128,56 112,56 L 20,56 C 8,56 0,46 0,34 C 0,22 8,22 18,22 Z',
       icon: Info,
+      iconColor: 'text-slate-600',
       color: 'bg-slate-100 text-slate-700',
       desc: 'Institutional vision, engineering roadmap, and white-label setup.'
     }
@@ -185,47 +255,92 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Complete Module Launcher Grid: Direct 1-Click Access to All 10 Modules */}
-      <section className="py-14 max-w-6xl mx-auto px-4 relative z-10">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <span className="text-xs font-bold text-[#004eba] uppercase tracking-widest">Interactive Modules</span>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#0b3558] mt-1">
-            Explore All Campus Energy Twin Systems
-          </h2>
-          <p className="text-xs sm:text-sm text-[#476788] mt-2">
-            Click any module below to open its dedicated view with live simulated telemetry and controls.
-          </p>
+      {/* Complete Module Launcher Carousel: Direct 1-Click Access to All 10 Modules (Exact Image 1 Style) */}
+      <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Header with Title on Left and Carousel Controls on Right */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
+          <div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0b3558] tracking-tight leading-[1.15]">
+              Explore All Campus<br />
+              Energy Twin Systems
+            </h2>
+            <p className="mt-3 text-xs sm:text-sm text-[#476788] flex items-center gap-1.5 font-medium">
+              <span>Click any module below to open its dedicated view with live simulated telemetry and controls</span>
+              <ArrowRight className="w-3.5 h-3.5 text-[#006bff]" />
+            </p>
+          </div>
+
+          {/* Carousel Arrows (Left & Right Buttons from Image 1) */}
+          <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
+            <button
+              onClick={() => scrollCarousel('left')}
+              aria-label="Previous modules"
+              className="w-10 h-10 rounded-full border border-[#d4e0ed] bg-white hover:bg-[#f0f3f8] flex items-center justify-center text-[#0b3558] shadow-cal-sm transition-all hover:scale-105 active:scale-95"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => scrollCarousel('right')}
+              aria-label="Next modules"
+              className="w-10 h-10 rounded-full border border-[#d4e0ed] bg-white hover:bg-[#f0f3f8] flex items-center justify-center text-[#0b3558] shadow-cal-sm transition-all hover:scale-105 active:scale-95"
+            >
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        {/* Horizontal Carousel */}
+        <div
+          ref={carouselRef}
+          className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pt-2 pb-8 px-1 no-scrollbar"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
           {modules.map((m) => {
             const Icon = m.icon;
             return (
               <Link
                 key={m.to}
                 to={m.to}
-                className="card-lift p-5 rounded-2xl bg-white border border-[#d4e0ed] hover:border-[#006bff] shadow-cal-card hover:shadow-cal-card transition-all flex flex-col justify-between group"
+                className={`w-[290px] sm:w-[320px] shrink-0 snap-start min-h-[420px] rounded-[28px] bg-white border ${m.borderColor} shadow-cal-card hover:shadow-cal-card p-7 sm:p-8 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:-translate-y-1.5 group`}
               >
+                {/* Top: Brand Logo / Module Identifier */}
                 <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${m.color} group-hover:scale-110 transition shadow-cal-sm`}>
-                      <Icon className="w-5 h-5" />
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <Icon className={`w-5 h-5 ${m.iconColor}`} />
+                      <span className="font-extrabold text-sm tracking-tight text-[#0b3558] uppercase">
+                        {m.label}
+                      </span>
                     </div>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#f0f3f8] text-[#476788] font-semibold border border-[#d4e0ed]">
+                    <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-[#f0f3f8] text-[#476788] border border-[#d4e0ed]">
                       {m.tag}
                     </span>
                   </div>
-                  <h3 className="text-sm font-bold text-[#0b3558] group-hover:text-[#006bff] transition">
-                    {m.label}
-                  </h3>
-                  <p className="text-xs text-[#476788] mt-1.5 leading-relaxed line-clamp-2">
-                    {m.desc}
-                  </p>
+
+                  {/* Middle: Big bold metric number & description */}
+                  <div className="mt-8 mb-6">
+                    <div className={`text-5xl font-black tracking-tight ${m.statColor}`}>
+                      {m.stat}
+                    </div>
+                    <p className="mt-3 text-xs sm:text-sm text-[#476788] leading-relaxed font-normal">
+                      {m.desc}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-[#d4e0ed] flex items-center justify-between text-xs font-semibold text-[#006bff]">
-                  <span>Open Module</span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                {/* Bottom: The signature organic blob button from Image 1 */}
+                <div className="relative inline-flex items-center mt-auto self-start">
+                  <svg
+                    viewBox="0 0 150 60"
+                    className={`w-[136px] h-[52px] ${m.blobColor} transition-transform duration-300 group-hover:scale-105`}
+                    fill="currentColor"
+                  >
+                    <path d={m.blobPath} />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-start pl-5 text-xs font-bold text-white gap-2 pointer-events-none tracking-tight">
+                    <span>Read now</span>
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+                  </span>
                 </div>
               </Link>
             );

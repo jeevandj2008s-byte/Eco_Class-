@@ -132,3 +132,4 @@ export function useCountUp(targetNumber, duration = 800) {
 
   return current;
 }
+

@@ -174,7 +174,7 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="relative w-full overflow-hidden bg-[#0d0c11] text-white">
+    <div className="relative w-full overflow-hidden bg-transparent text-white">
       {/* Decorative Ambient Glow Orbs */}
       <div className="blob-magenta top-8 left-1/4 -translate-x-1/2 opacity-70" />
       <div className="blob-cyan top-20 right-10 opacity-60" />
@@ -517,7 +517,7 @@ export default function LandingPage() {
       </section>
 
       {/* Credit Banner */}
-      <section className="py-8 bg-[#0d0c11]/80 border-t border-white/[0.1] text-center px-4">
+      <section className="py-8 bg-transparent border-t border-white/[0.1] text-center px-4">
         <p className="text-xs text-[#b9b8bb] font-medium">
           Built with ❤️ by <span className="font-bold text-white">[YOUR TEAM NAME], BIT</span> • [BIT ADDRESS]
         </p>

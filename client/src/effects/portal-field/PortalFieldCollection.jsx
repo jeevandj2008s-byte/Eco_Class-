@@ -1,8 +1,8 @@
 import React, { Suspense, lazy } from 'react';
+import CloudFieldRenderer from './renderers/CloudFieldRenderer.jsx';
 import './styles.css';
 
-// Lazy-loaded variant sources so inactive renderers and loops are never allocated
-const CloudFieldRenderer = lazy(() => import('./renderers/CloudFieldRenderer.jsx'));
+// Lazy-loaded variant sources for alternate variants
 const FlowFieldRenderer = lazy(() => import('./renderers/FlowFieldRenderer.jsx'));
 const PortalFieldRenderer = lazy(() => import('./renderers/PortalFieldRenderer.jsx'));
 const BellFieldRenderer = lazy(() => import('./renderers/BellFieldRenderer.jsx'));

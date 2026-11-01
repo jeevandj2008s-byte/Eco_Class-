@@ -8,8 +8,7 @@ export default function LivingCanvas() {
   return (
     <div
       aria-hidden="true"
-      className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none"
-      style={{ contain: 'strict' }}
+      className="fixed inset-0 w-full h-full pointer-events-none overflow-hidden z-0 select-none"
     >
       <PortalFieldCollection
         variant="cloud-field"
@@ -20,4 +19,3 @@ export default function LivingCanvas() {
     </div>
   );
 }
-

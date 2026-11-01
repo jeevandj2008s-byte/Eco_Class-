@@ -275,11 +275,11 @@ export default function DashboardPage({ onOpenMasterSwitch, onOpenReportModal })
                 <p className="text-[10px] text-[#476788]">14-Day Microgrid Telemetry (kWh)</p>
               </div>
               <div className="flex items-center gap-3 text-[11px] font-mono">
-                <span className="flex items-center gap-1 text-[#006bff]">
-                  <span className="w-2 h-2 rounded-full bg-[#006bff]" /> Real
+                <span className="flex items-center gap-1 text-[#6f5adc]">
+                  <span className="w-2 h-2 rounded-full bg-[#6f5adc]" /> Real
                 </span>
-                <span className="flex items-center gap-1 text-[#0099ff]">
-                  <span className="w-2 h-2 rounded-full bg-[#0099ff]" /> Ideal Ghost
+                <span className="flex items-center gap-1 text-[#9ff0ec]">
+                  <span className="w-2 h-2 rounded-full bg-[#9ff0ec]" /> Ideal Ghost
                 </span>
               </div>
             </div>
@@ -289,23 +289,23 @@ export default function DashboardPage({ onOpenMasterSwitch, onOpenReportModal })
                 <AreaChart data={historyData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
                   <defs>
                     <linearGradient id="colorReal" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#006bff" stopOpacity={0.25} />
-                      <stop offset="95%" stopColor="#006bff" stopOpacity={0} />
+                      <stop offset="5%" stopColor="#6f5adc" stopOpacity={0.4} />
+                      <stop offset="95%" stopColor="#6f5adc" stopOpacity={0} />
                     </linearGradient>
                     <linearGradient id="colorGhost" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#0099ff" stopOpacity={0.25} />
-                      <stop offset="95%" stopColor="#0099ff" stopOpacity={0} />
+                      <stop offset="5%" stopColor="#9ff0ec" stopOpacity={0.35} />
+                      <stop offset="95%" stopColor="#9ff0ec" stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5ebf3" />
-                  <XAxis dataKey="dayLabel" stroke="#476788" fontSize={9} tickLine={false} />
-                  <YAxis stroke="#476788" fontSize={9} tickLine={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.08)" />
+                  <XAxis dataKey="dayLabel" stroke="#b9b8bb" fontSize={9} tickLine={false} />
+                  <YAxis stroke="#b9b8bb" fontSize={9} tickLine={false} />
                   <Tooltip
-                    contentStyle={{ backgroundColor: '#ffffff', borderColor: '#d4e0ed', color: '#0b3558', borderRadius: '8px', boxShadow: '0 4px 12px rgba(71, 103, 136, 0.08)' }}
+                    contentStyle={{ backgroundColor: '#131219', borderColor: 'rgba(255, 255, 255, 0.16)', color: '#ffffff', borderRadius: '12px', boxShadow: '0 8px 24px rgba(0, 0, 0, 0.7)' }}
                     formatter={(val) => [`${formatNumberIN(val)} kWh`]}
                   />
-                  <Area type="monotone" dataKey="realKwh" stroke="#006bff" strokeWidth={2} fillOpacity={1} fill="url(#colorReal)" />
-                  <Area type="monotone" dataKey="ghostKwh" stroke="#0099ff" strokeWidth={2} fillOpacity={1} fill="url(#colorGhost)" />
+                  <Area type="monotone" dataKey="realKwh" stroke="#6f5adc" strokeWidth={2} fillOpacity={1} fill="url(#colorReal)" />
+                  <Area type="monotone" dataKey="ghostKwh" stroke="#9ff0ec" strokeWidth={2} fillOpacity={1} fill="url(#colorGhost)" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>

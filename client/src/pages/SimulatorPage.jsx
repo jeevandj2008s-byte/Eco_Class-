@@ -98,15 +98,15 @@ export default function SimulatorPage() {
       <div className="p-6 rounded-3xl bg-white border border-[#d4e0ed] shadow-cal-card flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <TrendingDown className="w-4 h-4 text-[#006bff]" />
-            <span className="text-xs font-bold uppercase tracking-wider text-[#006bff]">
+            <TrendingDown className="w-4 h-4 text-[#9ff0ec]" />
+            <span className="text-xs font-bold uppercase tracking-wider text-[#9ff0ec]">
               Campus Population & What-If Simulator
             </span>
           </div>
-          <h1 className="text-2xl font-extrabold text-[#0b3558] mt-1 tracking-tight">
+          <h1 className="text-2xl font-extrabold text-white mt-1 tracking-tight">
             Agent-Based College Schedule & Energy Modeling
           </h1>
-          <p className="text-xs text-[#476788] mt-1">
+          <p className="text-xs text-[#b9b8bb] mt-1">
             Timetable periods, classroom occupancy dynamics, and macro retrofit forecasting
           </p>
         </div>

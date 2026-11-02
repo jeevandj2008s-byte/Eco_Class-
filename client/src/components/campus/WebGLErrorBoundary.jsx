@@ -12,7 +12,10 @@ export class WebGLErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error('[3D Twin WebGL Error]:', error, errorInfo);
+    console.warn('[3D Twin WebGL Error - activating safe fallback]:', error?.message);
+    if (this.props.onError) {
+      this.props.onError(error);
+    }
   }
 
   handleRetry = () => {
@@ -21,6 +24,11 @@ export class WebGLErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
+      // If a seamless fallback component is supplied, render it immediately
+      if (this.props.fallback) {
+        return this.props.fallback;
+      }
+
       return (
         <div className="relative w-full h-full min-h-[500px] flex items-center justify-center bg-[#0a0910] p-6 text-center select-none">
           <div className="max-w-md w-full p-8 rounded-2xl bg-[#131219]/90 border border-white/[0.12] shadow-[0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-xl flex flex-col items-center animate-fade-in">
@@ -67,4 +75,3 @@ export class WebGLErrorBoundary extends React.Component {
     return this.props.children;
   }
 }
-

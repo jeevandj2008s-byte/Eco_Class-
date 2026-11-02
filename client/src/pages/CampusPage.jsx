@@ -173,12 +173,14 @@ export default function CampusPage() {
             telemetry={telemetry}
             selectedBuildingId={selectedBuilding?.id}
             onSelectBuilding={(b) => setSelectedBuilding(b)}
+            onFallbackTo2D={() => setViewMode('2D')}
           />
         ) : (
           <CampusMap2D
             activeOverlay={activeOverlay}
             telemetry={telemetry}
             onSelectBuilding={(b) => setSelectedBuilding(b)}
+            onFallbackTo2D={() => setViewMode('2D')}
           />
         )}
       </div>

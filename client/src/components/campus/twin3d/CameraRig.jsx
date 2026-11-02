@@ -1,0 +1,124 @@
+import React, { useRef, useEffect, useState } from 'react';
+import { useThree, useFrame } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
+import * as THREE from 'three';
+import { useTwin3DStore } from '../../../store/useTwin3DStore.js';
+import { BUILDINGS_CONFIG, FLOOR_HEIGHT, findClassroomHierarchy } from '../../../config/buildings.config.js';
+
+export function CameraRig() {
+  const { camera } = useThree();
+  const controlsRef = useRef();
+
+  const selectedBuildingId = useTwin3DStore((s) => s.selectedBuildingId);
+  const selectedFloorLevel = useTwin3DStore((s) => s.selectedFloorLevel);
+  const selectedClassroomId = useTwin3DStore((s) => s.selectedClassroomId);
+  const selectedStudentId = useTwin3DStore((s) => s.selectedStudentId);
+  const explodedHeight = useTwin3DStore((s) => s.explodedHeight);
+  const students = useTwin3DStore((s) => s.students);
+
+  // Desired target & position vectors for lerping
+  const targetLookAt = useRef(new THREE.Vector3(0, 2, 0));
+  const targetCamPos = useRef(new THREE.Vector3(0, 68, 88));
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const transitionTimer = useRef(0);
+
+  // Recalculate target when selection changes
+  useEffect(() => {
+    let newLookAt = new THREE.Vector3(0, 2, 0);
+    let newCamPos = new THREE.Vector3(0, 68, 88);
+
+    if (selectedStudentId) {
+      const student = students.find((s) => s.id === selectedStudentId);
+      if (student) {
+        const hierarchy = findClassroomHierarchy(student.classroomId);
+        if (hierarchy) {
+          const { building, floor, classroom } = hierarchy;
+          const floorY = (floor.level - 1) * FLOOR_HEIGHT + (floor.level - 1) * explodedHeight * 3.5;
+          const roomWorldX = building.position[0] + classroom.offset[0];
+          const roomWorldZ = building.position[2] + classroom.offset[2];
+
+          // Find seat coordinates inside room
+          const seat = classroom.layout?.seats?.find((s) => s.id === student.seatId);
+          const seatRelX = seat ? seat.position[0] : 0;
+          const seatRelY = seat ? seat.position[1] : 0.45;
+          const seatRelZ = seat ? seat.position[2] : 0;
+
+          const studentWorldX = roomWorldX + seatRelX;
+          const studentWorldY = floorY + seatRelY + 0.35;
+          const studentWorldZ = roomWorldZ + seatRelZ;
+
+          newLookAt.set(studentWorldX, studentWorldY, studentWorldZ);
+          // Position camera slightly elevated in front of student
+          newCamPos.set(studentWorldX, studentWorldY + 1.2, studentWorldZ + 2.2);
+        }
+      }
+    } else if (selectedClassroomId) {
+      const hierarchy = findClassroomHierarchy(selectedClassroomId);
+      if (hierarchy) {
+        const { building, floor, classroom } = hierarchy;
+        const floorY = (floor.level - 1) * FLOOR_HEIGHT + (floor.level - 1) * explodedHeight * 3.5;
+        const roomWorldX = building.position[0] + classroom.offset[0];
+        const roomWorldZ = building.position[2] + classroom.offset[2];
+
+        newLookAt.set(roomWorldX, floorY + 1.4, roomWorldZ);
+        newCamPos.set(roomWorldX, floorY + 8.2, roomWorldZ + 11.5);
+      }
+    } else if (selectedFloorLevel && selectedBuildingId) {
+      const building = BUILDINGS_CONFIG.find((b) => b.id === selectedBuildingId);
+      if (building) {
+        const floorY = (selectedFloorLevel - 1) * FLOOR_HEIGHT + (selectedFloorLevel - 1) * explodedHeight * 3.5;
+        newLookAt.set(building.position[0], floorY + 1.8, building.position[2]);
+        newCamPos.set(building.position[0], floorY + 16, building.position[2] + 28);
+      }
+    } else if (selectedBuildingId) {
+      const building = BUILDINGS_CONFIG.find((b) => b.id === selectedBuildingId);
+      if (building) {
+        const buildingCenterY = (building.floorCount * FLOOR_HEIGHT) / 2;
+        newLookAt.set(building.position[0], buildingCenterY, building.position[2]);
+        newCamPos.set(building.position[0], buildingCenterY + 22, building.position[2] + 38);
+      }
+    }
+
+    targetLookAt.current.copy(newLookAt);
+    targetCamPos.current.copy(newCamPos);
+    setIsTransitioning(true);
+    transitionTimer.current = 0;
+  }, [selectedBuildingId, selectedFloorLevel, selectedClassroomId, selectedStudentId, explodedHeight, students]);
+
+  // Smooth lerp frame loop
+  useFrame((state, delta) => {
+    if (!controlsRef.current) return;
+
+    if (isTransitioning) {
+      transitionTimer.current += delta;
+      const lerpSpeed = Math.min(1, delta * 3.5);
+
+      camera.position.lerp(targetCamPos.current, lerpSpeed);
+      controlsRef.current.target.lerp(targetLookAt.current, lerpSpeed);
+      controlsRef.current.update();
+
+      const distPos = camera.position.distanceTo(targetCamPos.current);
+      const distTarget = controlsRef.current.target.distanceTo(targetLookAt.current);
+
+      if ((distPos < 0.08 && distTarget < 0.08) || transitionTimer.current > 3.0) {
+        camera.position.copy(targetCamPos.current);
+        controlsRef.current.target.copy(targetLookAt.current);
+        controlsRef.current.update();
+        setIsTransitioning(false);
+      }
+    }
+  });
+
+  return (
+    <OrbitControls
+      ref={controlsRef}
+      enableDamping
+      dampingFactor={0.06}
+      maxPolarAngle={Math.PI / 2.05}
+      minDistance={1.2}
+      maxDistance={220}
+      target={[0, 2, 0]}
+    />
+  );
+}
+

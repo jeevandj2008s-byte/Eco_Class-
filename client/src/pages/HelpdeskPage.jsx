@@ -47,14 +47,14 @@ export default function HelpdeskPage({ onOpenReportModal }) {
         <div>
           <div className="flex items-center gap-2">
             <LifeBuoy className="w-4 h-4 text-[#006bff]" />
-            <span className="text-xs font-bold uppercase tracking-wider text-[#006bff]">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#bdf7ee]">
               Campus Helpdesk & Issue Tracker
             </span>
           </div>
-          <h1 className="text-2xl font-extrabold text-[#0b3558] mt-1 tracking-tight">
+          <h1 className="text-2xl font-extrabold text-white mt-1 tracking-tight leading-[1.15]">
             Student & Faculty Incident Resolution Hub
           </h1>
-          <p className="text-xs text-[#476788] mt-1">
+          <p className="text-xs text-[#b9b8bb] mt-1 font-normal">
             Crowdsourced campus care • Direct routing from reporter to HOD to technician
           </p>
         </div>

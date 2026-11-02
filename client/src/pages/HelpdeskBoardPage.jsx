@@ -74,14 +74,14 @@ export default function HelpdeskBoardPage() {
         <div>
           <div className="flex items-center gap-2">
             <Kanban className="w-4 h-4 text-[#006bff]" />
-            <span className="text-xs font-bold uppercase tracking-wider text-[#006bff]">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#bdf7ee]">
               HOD Management Console
             </span>
           </div>
-          <h1 className="text-2xl font-extrabold text-[#0b3558] mt-1 tracking-tight">
+          <h1 className="text-2xl font-extrabold text-white mt-1 tracking-tight leading-[1.15]">
             Department Incident Dispatch & SLA Kanban
           </h1>
-          <p className="text-xs text-[#476788] mt-1">
+          <p className="text-xs text-[#b9b8bb] mt-1 font-normal">
             AIML Department • Auto-routing with skills matrix & live worker workloads
           </p>
         </div>

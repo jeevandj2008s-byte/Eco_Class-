@@ -22,7 +22,7 @@
 
   <!-- Parking Lot Area -->
   <path d="M 462.0096 410.0382 L 594.9632 410.0382 L 594.9632 699.9642 L 462.0096 699.9642 Z" fill="#1e293b" stroke="#475569" stroke-width="2" stroke-dasharray="4 4"/>
-  <text x="528.32" y="552.24" fill="#94a3b8" font-size="12" font-family="system-ui, sans-serif" font-weight="bold" text-anchor="middle">BIT Parking Lot</text>
+  <text x="528.32" y="552.24" fill="#94a3b8" font-size="12" font-family="Inter, system-ui, sans-serif" font-weight="bold" text-anchor="middle">BIT Parking Lot</text>
 
   <!-- Building Base Footprints -->
   <path d="M 80.0384 249.9653 L 337.9584 246.97400000000002 L 337.9584 422.00340000000006 L 427.98080000000004 423.99760000000003 L 427.98080000000004 705.0264 L 80.0384 705.0264 Z M 163.9872 367.00950000000006 L 298.0224 367.00950000000006 L 298.0224 447.0076 L 332.9664 447.0076 L 332.9664 589.9764 L 164.98559999999998 589.9764 Z" fill="#1e2433" stroke="#38bdf8" stroke-width="2" fill-rule="evenodd"/>
@@ -35,20 +35,20 @@
 
   <!-- Courtyard Inner Lawn for Main Block -->
   <path d="M 163.9872 367.00950000000006 L 298.0224 367.00950000000006 L 298.0224 447.0076 L 332.9664 447.0076 L 332.9664 589.9764 L 164.98559999999998 589.9764 Z" fill="#0f291e" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.5"/>
-  <text x="247.93600000000004" y="479.375" fill="#10b981" font-size="11" font-family="system-ui, sans-serif" text-anchor="middle" font-weight="600">Courtyard</text>
+  <text x="247.93600000000004" y="479.375" fill="#10b981" font-size="11" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="600">Courtyard</text>
 
   <!-- Landmark Pins -->
   <g id="landmarks">
     <circle cx="407.0144" cy="186.9946" r="5" fill="#f59e0b"/>
-    <text x="407.0144" y="177.9946" fill="#fbbf24" font-size="10" font-family="system-ui, sans-serif" text-anchor="middle">Kuvempu Kalakshetra</text>
+    <text x="407.0144" y="177.9946" fill="#fbbf24" font-size="10" font-family="Inter, system-ui, sans-serif" text-anchor="middle">Kuvempu Kalakshetra</text>
 
     <circle cx="314.9952" cy="301.9679" r="5" fill="#38bdf8"/>
-    <text x="314.9952" y="292.9679" fill="#7dd3fc" font-size="10" font-family="system-ui, sans-serif" text-anchor="middle">Chaitra Kote</text>
+    <text x="314.9952" y="292.9679" fill="#7dd3fc" font-size="10" font-family="Inter, system-ui, sans-serif" text-anchor="middle">Chaitra Kote</text>
 
     <circle cx="294.02880000000005" cy="738.0074000000001" r="5" fill="#ec4899"/>
-    <text x="294.02880000000005" y="729.0074000000001" fill="#f472b6" font-size="10" font-family="system-ui, sans-serif" text-anchor="middle">BIT Pink Tree</text>
+    <text x="294.02880000000005" y="729.0074000000001" fill="#f472b6" font-size="10" font-family="Inter, system-ui, sans-serif" text-anchor="middle">BIT Pink Tree</text>
   </g>
 
   <!-- Caption / Disclaimer -->
-  <text x="14" y="753" fill="#64748b" font-size="10" font-family="system-ui, sans-serif">Schematic layout traced from public map data; not to scale.</text>
+  <text x="14" y="753" fill="#64748b" font-size="10" font-family="Inter, system-ui, sans-serif">Schematic layout traced from public map data; not to scale.</text>
 </svg>

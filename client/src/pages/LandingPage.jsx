@@ -277,10 +277,10 @@ return (
             </div>
 
             {/* 3-Line Headline fading from white to soft grey */}
-            <h1 className="text-4xl sm:text-6xl lg:text-[72px] font-display font-medium tracking-tight leading-[1.08] text-white max-w-2xl">
+            <h1 className="text-4xl sm:text-6xl lg:text-[72px] font-display font-extrabold tracking-tight leading-[1.08] text-white max-w-2xl">
               <span className="block bg-gradient-to-r from-white via-white to-[#d3d3d7] bg-clip-text text-transparent">Sustainable Energy.</span>
               <span className="block bg-gradient-to-r from-white via-white to-[#b9b8bb] bg-clip-text text-transparent">Reimagined in</span>
-              <span className="block bg-gradient-to-r from-white via-[#9ff0ec] to-[#6f5adc] bg-clip-text text-transparent">Real-Time.</span>
+              <span className="block bg-gradient-to-r from-white via-[#bdf7ee] to-[#9ff0ec] bg-clip-text text-transparent">Real-Time.</span>
             </h1>
 
             {/* Subline in light grey */}

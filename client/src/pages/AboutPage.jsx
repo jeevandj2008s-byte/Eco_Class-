@@ -22,14 +22,14 @@ export default function AboutPage() {
 
       {/* Header */}
       <div className="p-8 rounded-3xl bg-white border border-[#d4e0ed] shadow-cal-card text-center space-y-3 relative overflow-hidden">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#e6f0ff] border border-[#b8d5ff] text-[#006bff] text-xs font-semibold">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.12] text-[#bdf7ee] text-xs font-bold uppercase tracking-widest">
           <Award className="w-3.5 h-3.5" />
           <span>Developed by Eco_Class, BIT</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-[#0b3558] tracking-tight">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-[1.15]">
           AuraSync Energy Twin
         </h1>
-        <p className="text-xs sm:text-sm text-[#476788] max-w-2xl mx-auto leading-relaxed">
+        <p className="text-xs sm:text-sm text-[#b9b8bb] max-w-2xl mx-auto leading-relaxed font-normal">
           Pioneering Campus Digital Twin Architecture for {institutionData.institutionName}.
           Engineered for institutional scale, real-time energy telemetry, and transparent ESG governance.
         </p>

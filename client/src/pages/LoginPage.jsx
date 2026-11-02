@@ -71,14 +71,14 @@ export default function LoginPage() {
           <div className="w-12 h-12 rounded-xl bg-[#006bff] mx-auto mb-3 flex items-center justify-center shadow-cal-sm text-white">
             <Zap className="w-6 h-6 fill-white" />
           </div>
-          <h2 className="text-xl font-bold text-[#0b3558]">AuraSync Energy Twin</h2>
-          <p className="text-xs text-[#476788] mt-1">Bangalore Institute of Technology</p>
+          <h2 className="text-xl font-extrabold text-white tracking-tight">AuraSync Energy Twin</h2>
+          <p className="text-xs text-[#b9b8bb] mt-1 font-normal">Bangalore Institute of Technology</p>
         </div>
 
         {/* Demo Credentials Fast Chip Selector */}
         <div className="mb-5 p-4 rounded-xl bg-[#f8f9fb] border border-[#d4e0ed] space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-bold text-[#004eba] uppercase tracking-wider flex items-center gap-1">
+            <span className="text-[10px] font-bold text-[#bdf7ee] uppercase tracking-widest flex items-center gap-1">
               <UserCheck className="w-3 h-3 text-[#006bff]" />
               1-Click Demo Accounts & Credentials
             </span>

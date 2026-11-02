@@ -62,14 +62,14 @@ export default function ControlPage({ onOpenMasterSwitch }) {
         <div>
           <div className="flex items-center gap-2">
             <Sliders className="w-4 h-4 text-[#006bff]" />
-            <span className="text-xs font-bold uppercase tracking-wider text-[#004eba]">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#bdf7ee]">
               Campus Control Center
             </span>
           </div>
-          <h1 className="text-2xl font-bold text-[#0b3558] mt-1">
+          <h1 className="text-2xl font-extrabold text-white tracking-tight leading-[1.15] mt-1">
             Autonomous Optimization & Hierarchical Actuation
           </h1>
-          <p className="text-xs text-[#476788] mt-1">
+          <p className="text-xs text-[#b9b8bb] mt-1 font-normal">
             Software digital relays behind DeviceAdapter interface • Passkey PIN enforced
           </p>
         </div>

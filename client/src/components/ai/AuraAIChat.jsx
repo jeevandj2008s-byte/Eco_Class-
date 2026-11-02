@@ -379,7 +379,7 @@ export default function AuraAIChat({ isDrawer = false, onClose }) {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-base font-bold text-[#0b3558] leading-tight">Aura AI Campus Coach</h1>
+              <h1 className="text-base font-extrabold text-white tracking-tight leading-tight">Aura AI Campus Coach</h1>
               {/* Diagnostic Status Chip */}
               <span
                 className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-mono border ${

@@ -3,6 +3,16 @@
 @tailwind utilities;
 
 :root {
+  /* Global Typography Font Family Tokens */
+  --font-sans: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* Typography Two-Tone Shading Tokens (Matching Reference) */
+  --text-heading-white: #ffffff;
+  --text-heading-mint: #9ff0ec;
+  --text-eyebrow-mint: #bdf7ee;
+  --text-subtitle-lavender: #b9b8bb;
+
   /* Strata AI Infrastructure Design Tokens */
   --color-bg-deep: #0d0c11;
   --color-surface-dark: #131219;
@@ -61,7 +71,7 @@ html, body {
     linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
   background-size: 40px 40px;
   color: #ffffff;
-  font-family: 'Inter', 'DM Sans', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans);
   transition: background-color 0.25s ease, color 0.25s ease;
   min-height: 100vh;
   overflow-x: hidden;
@@ -301,3 +311,27 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 15px rgba(111, 90, 220, 0.4) !important;
 }
 
+
+
+/* Global Typography Inheritances */
+input, button, select, textarea, optgroup {
+  font-family: inherit;
+}
+
+code, kbd, samp, pre {
+  font-family: var(--font-mono);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  letter-spacing: -0.025em;
+}
+
+.recharts-wrapper,
+.recharts-text,
+.recharts-legend-item-text,
+.recharts-tooltip-wrapper,
+.recharts-default-tooltip,
+svg text {
+  font-family: var(--font-sans) !important;
+}

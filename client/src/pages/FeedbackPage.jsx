@@ -70,14 +70,14 @@ export default function FeedbackPage() {
         <div>
           <div className="flex items-center gap-2">
             <MessageSquare className="w-4 h-4 text-[#006bff]" />
-            <span className="text-xs font-bold uppercase tracking-wider text-[#006bff]">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#bdf7ee]">
               Campus Feedback & Roadmap
             </span>
           </div>
-          <h1 className="text-2xl font-extrabold text-[#0b3558] mt-1 tracking-tight">
+          <h1 className="text-2xl font-extrabold text-white mt-1 tracking-tight leading-[1.15]">
             Community Voice & AI Topic Clustering
           </h1>
-          <p className="text-xs text-[#476788] mt-1">
+          <p className="text-xs text-[#b9b8bb] mt-1 font-normal">
             Student & Faculty ideas auto-clustered by Aura AI into actionable improvements
           </p>
         </div>

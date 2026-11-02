@@ -203,10 +203,10 @@ export default function AdminPage() {
               Role: {user?.role?.toUpperCase() || 'HOD'}
             </span>
           </div>
-          <h1 className="text-2xl font-black text-[#0b3558] mt-1 tracking-tight">
+          <h1 className="text-2xl font-extrabold text-white mt-1 tracking-tight leading-[1.15]">
             BIT Infrastructure & Display Settings
           </h1>
-          <p className="text-xs text-[#476788] mt-1">
+          <p className="text-xs text-[#b9b8bb] mt-1 font-normal">
             Department of CSE (AIML) • Master Power Governance, Theme Styling & Multi-Display Scaling
           </p>
         </div>

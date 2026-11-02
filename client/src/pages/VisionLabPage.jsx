@@ -461,14 +461,14 @@ export default function VisionLabPage() {
         <div>
           <div className="flex items-center gap-2">
             <Eye className="w-4 h-4 text-[#006bff]" />
-            <span className="text-xs font-bold uppercase tracking-wider text-[#006bff]">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#bdf7ee]">
               Edge Computer Vision Lab
             </span>
           </div>
-          <h1 className="text-2xl font-extrabold text-[#0b3558] mt-1 tracking-tight">
+          <h1 className="text-2xl font-extrabold text-white mt-1 tracking-tight leading-[1.15]">
             Privacy-Preserving Edge CV & Occupancy Telemetry
           </h1>
-          <p className="text-xs text-[#476788] mt-1">
+          <p className="text-xs text-[#b9b8bb] mt-1 font-normal">
             Zero video leaves device • Client-side COCO-SSD inference • Phone WebRTC stream
           </p>
         </div>

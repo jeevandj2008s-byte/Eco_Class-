@@ -97,14 +97,14 @@ export default function DashboardPage({ onOpenMasterSwitch, onOpenReportModal })
         <div>
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-600">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#bdf7ee]">
               Live Microgrid Twin Active
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#0b3558] mt-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-[1.15] mt-1">
             BIT Energy Command Center
           </h1>
-          <p className="text-xs text-[#476788] mt-1">
+          <p className="text-xs text-[#b9b8bb] mt-1 font-normal">
             K.R Road, V.V puram ,Bangalore-50 • Powered by Eco_Class, BIT
           </p>
         </div>
@@ -314,11 +314,11 @@ export default function DashboardPage({ onOpenMasterSwitch, onOpenReportModal })
           {/* Active Energy Ghosts Detected */}
           <div className="p-5 rounded-2xl bg-white border border-[#d4e0ed] shadow-cal-card space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-xs font-bold text-[#0b3558] flex items-center gap-1.5">
+              <h3 className="text-xs font-bold text-white tracking-tight flex items-center gap-1.5">
                 <AlertTriangle className="w-3.5 h-3.5 text-rose-500" />
                 Active Energy Ghosts ({anomalies.length})
               </h3>
-              <span className="text-[10px] text-[#476788]">Automated CV & Telemetry</span>
+              <span className="text-[10px] text-[#b9b8bb]">Automated CV & Telemetry</span>
             </div>
 
             <div className="space-y-2">
@@ -349,11 +349,11 @@ export default function DashboardPage({ onOpenMasterSwitch, onOpenReportModal })
       {/* Buildings Telemetry Cards Breakdown */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-bold text-[#0b3558] flex items-center gap-2">
+          <h3 className="text-sm font-bold text-white tracking-tight flex items-center gap-2">
             <Compass className="w-4 h-4 text-[#006bff]" />
             Campus Blocks Breakdown
           </h3>
-          <span className="text-xs text-[#476788]">Total Sanctioned: 750 kVA BESCOM HT</span>
+          <span className="text-xs text-[#b9b8bb]">Total Sanctioned: 750 kVA BESCOM HT</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

@@ -325,7 +325,7 @@ export default function App() {
         >
           <div className="p-8 rounded-3xl glass-panel bg-[#0B0F19]/95 border border-emerald-500/40 text-center space-y-3 shadow-2xl max-w-md">
             <div className="text-3xl">🚀</div>
-            <h3 className="text-xl font-bold text-white">[YOUR TEAM NAME], BIT</h3>
+            <h3 className="text-xl font-bold text-white">Eco_Class, BIT</h3>
             <p className="text-xs text-emerald-400 font-mono">
               Bangalore Institute of Technology (BIT)
             </p>

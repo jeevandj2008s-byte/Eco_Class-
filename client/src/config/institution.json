@@ -10,13 +10,13 @@
   "state": "Karnataka",
   "pincode": "560004",
   "country": "India",
-  "location": "K.R. Road, V.V. Puram, Bengaluru, Karnataka - 560004, India",
-  "fullAddress": "Bangalore Institute of Technology, K.R. Road, V.V. Puram, Bengaluru, Karnataka - 560004, India",
+  "location": "K.R Road, V.V puram ,Bangalore-50",
+  "fullAddress": "Bangalore Institute of Technology, K.R Road, V.V puram ,Bangalore-50",
   "approxCoordinates": {
     "lat": 12.9552,
     "lng": 77.5743
   },
-  "developedBy": "[YOUR TEAM NAME], BIT",
+  "developedBy": "Eco_Class, BIT",
   "phone": "[ADD PHONE]",
   "email": "[ADD BIT INFO HERE]",
   "foundingYear": "[ADD BIT INFO HERE]",
@@ -26,7 +26,7 @@
   "sanctionedDemandKva": 750,
   "assumedLabelNote": "Assumed. Edit in Settings with your actual BESCOM bill.",
   "statements": [
-    "Bangalore Institute of Technology, K.R. Road, V.V. Puram, Bengaluru - 560004.",
+    "Bangalore Institute of Technology, K.R Road, V.V puram ,Bangalore-50.",
     "Smart microgrid telemetry helps track, isolate, and eliminate campus energy ghosts.",
     "Optimizing cooling setpoints to 24°C significantly trims peak HVAC compressor draw.",
     "Solar self-consumption directly mitigates institutional Scope 2 electricity emissions.",
@@ -45,5 +45,5 @@
     "Campus Facilities & Maintenance"
   ],
   "name": "Bangalore Institute of Technology",
-  "address": "Bangalore Institute of Technology, K.R. Road, V.V. Puram, Bengaluru, Karnataka - 560004, India"
+  "address": "Bangalore Institute of Technology, K.R Road, V.V puram ,Bangalore-50"
 }

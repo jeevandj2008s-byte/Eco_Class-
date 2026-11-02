@@ -108,7 +108,7 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
                 BIT
               </span>
             </div>
-            <span className="text-[10px] text-[#b9b8bb] font-medium hidden sm:inline">Energy Twin • [YOUR TEAM NAME], BIT</span>
+            <span className="text-[10px] text-[#b9b8bb] font-medium hidden sm:inline">Energy Twin • Eco_Class, BIT</span>
           </div>
         </Link>
 

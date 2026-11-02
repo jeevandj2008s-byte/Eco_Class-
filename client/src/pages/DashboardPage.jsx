@@ -105,7 +105,7 @@ export default function DashboardPage({ onOpenMasterSwitch, onOpenReportModal })
             BIT Energy Command Center
           </h1>
           <p className="text-xs text-[#476788] mt-1">
-            [BIT ADDRESS] • Powered by [YOUR TEAM NAME], BIT
+            K.R Road, V.V puram ,Bangalore-50 • Powered by Eco_Class, BIT
           </p>
         </div>
 

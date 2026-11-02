@@ -657,13 +657,6 @@ return (
           })}
         </div>
       </section>
-
-      {/* Credit Banner */}
-      <section className="py-8 bg-transparent border-t border-white/[0.1] text-center px-4">
-        <p className="text-xs text-[#b9b8bb] font-medium">
-          Built with ❤️ by <span className="font-bold text-white">[YOUR TEAM NAME], BIT</span> • [BIT ADDRESS]
-        </p>
-      </section>
     </div>
   );
 }

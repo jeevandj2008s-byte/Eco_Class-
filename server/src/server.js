@@ -277,7 +277,7 @@ app.get('/health', (req, res) => {
     status: 'online',
     app: 'AuraSync Energy Twin Backend',
     institution: 'Bangalore Institute of Technology (BIT)',
-    developer: '[YOUR TEAM NAME], BIT',
+    developer: 'Eco_Class, BIT',
     uptimeSeconds: Math.floor(process.uptime()),
     timestamp: new Date().toISOString()
   });
@@ -345,7 +345,7 @@ async function startServer() {
 ========================================================================
 🚀 AuraSync Energy Twin Server Running
 📍 Institution: Bangalore Institute of Technology (BIT)
-👥 Developed by: [YOUR TEAM NAME], BIT
+👥 Developed by: Eco_Class, BIT
 
 🌐 LOCALHOST ARCHITECTURE ACTIVE:
 💻 Local Web Client:   http://localhost:${CLIENT_PORT}

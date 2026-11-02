@@ -33,7 +33,7 @@ export function getLiveGroundingContext() {
     istHour: currentTick?.istHourFormatted || '12:00',
     campus: {
       name: 'Bangalore Institute of Technology (BIT)',
-      location: '[BIT ADDRESS]',
+      location: 'K.R Road, V.V puram ,Bangalore-50',
       totalRealKw: campus.totalRealKw || 142.5,
       ghostGapKw: campus.ghostGapKw || 34.2,
       idealGhostKw: campus.totalGhostKw || 108.3,
@@ -117,8 +117,8 @@ export function buildSystemPrompt({ mode = 'CFO', language = 'English', liveCont
     langInstruction = 'LANGUAGE: Respond in English.';
   }
 
-  return `You are Aura AI, the intelligent energy and campus-operations assistant for Bangalore Institute of Technology (BIT), [BIT ADDRESS].
-Developed by [YOUR TEAM NAME], BIT.
+  return `You are Aura AI, the intelligent energy and campus-operations assistant for Bangalore Institute of Technology (BIT), K.R Road, V.V puram ,Bangalore-50.
+Developed by Eco_Class, BIT.
 
 ${modeInstruction}
 ${langInstruction}

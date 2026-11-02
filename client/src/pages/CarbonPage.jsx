@@ -86,7 +86,7 @@ export default function CarbonPage() {
         doc.setFontSize(10);
         doc.setTextColor(71, 103, 136); // Slate Gray
         doc.text("Bangalore Institute of Technology, Bengaluru", 14, 27);
-        doc.text("Developed by [YOUR TEAM NAME], BIT • October 2026", 14, 33);
+        doc.text("Developed by Eco_Class, BIT • October 2026", 14, 33);
 
         doc.setLineWidth(0.5);
         doc.setDrawColor(212, 224, 237); // Hairline

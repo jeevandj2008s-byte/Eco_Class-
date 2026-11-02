@@ -173,7 +173,7 @@ export default function LoginPage() {
         </form>
 
         <div className="mt-6 text-center text-[11px] text-[#476788]">
-          Developed by <span className="text-[#0b3558] font-semibold">[YOUR TEAM NAME], BIT</span>
+          Developed by <span className="text-[#0b3558] font-semibold">Eco_Class, BIT</span>
         </div>
       </div>
     </div>

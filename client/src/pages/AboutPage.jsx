@@ -24,7 +24,7 @@ export default function AboutPage() {
       <div className="p-8 rounded-3xl bg-white border border-[#d4e0ed] shadow-cal-card text-center space-y-3 relative overflow-hidden">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#e6f0ff] border border-[#b8d5ff] text-[#006bff] text-xs font-semibold">
           <Award className="w-3.5 h-3.5" />
-          <span>Developed by [YOUR TEAM NAME], BIT</span>
+          <span>Developed by Eco_Class, BIT</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-[#0b3558] tracking-tight">
           AuraSync Energy Twin
@@ -61,7 +61,7 @@ export default function AboutPage() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Users className="w-5 h-5 text-[#006bff]" />
-            <h2 className="text-base font-bold text-[#0b3558]">The Engineering Team: [YOUR TEAM NAME], BIT</h2>
+            <h2 className="text-base font-bold text-[#0b3558]">The Engineering Team: Eco_Class, BIT</h2>
           </div>
           <span className="text-xs font-mono text-[#006bff] font-bold bg-[#e6f0ff] px-3 py-1 rounded-full border border-[#b8d5ff]">
             Engineering Department • BIT
@@ -69,7 +69,7 @@ export default function AboutPage() {
         </div>
 
         <p className="text-xs text-[#476788] leading-relaxed">
-          [YOUR TEAM NAME], BIT comprises engineers from Bangalore Institute of Technology, specializing in computer vision edge inferencing, distributed IoT data pipelines, and campus digital twins.
+          Eco_Class, BIT comprises engineers from Bangalore Institute of Technology, specializing in computer vision edge inferencing, distributed IoT data pipelines, and campus digital twins.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs">

@@ -2,7 +2,7 @@
   "campus": {
     "name": "Bangalore Institute of Technology",
     "shortName": "BIT",
-    "location": "[BIT ADDRESS]",
+    "location": "K.R Road, V.V puram ,Bangalore-50",
     "coordinates": { "lat": 12.8254, "lng": 77.5181 },
     "gridBounds": { "width": 320, "depth": 260 },
     "elevation": 890,

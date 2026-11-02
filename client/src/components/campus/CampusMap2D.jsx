@@ -239,7 +239,7 @@ export default function CampusMap2D({
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
-      className="relative w-full h-full bg-[#f0f3f8] overflow-hidden select-none cursor-grab active:cursor-grabbing flex items-center justify-center"
+      className="relative w-full h-full bg-[#0a0910] overflow-hidden select-none cursor-grab active:cursor-grabbing flex items-center justify-center"
     >
       {/* Zoom Controls & Admin Trace Mode Toggle */}
       <div className="absolute bottom-6 right-6 z-20 flex flex-col items-center gap-2">
@@ -425,55 +425,59 @@ export default function CampusMap2D({
       </div>
 
       {/* Floating Bottom Left Disclaimer Watermark */}
-      <div className="absolute bottom-4 left-4 z-20 pointer-events-none px-3 py-1 rounded-xl bg-white/90 border border-[#d4e0ed] text-[10px] text-[#476788] font-mono shadow-cal-sm">
-        Schematic layout traced from public map data; not to scale.
+      <div className="absolute bottom-4 left-4 z-20 pointer-events-none px-3.5 py-1.5 rounded-xl bg-[#131219]/90 border border-white/[0.14] text-[10px] text-[#b9b8bb] font-mono shadow-[0_12px_32px_rgba(0,0,0,0.6)] backdrop-blur-md flex items-center gap-2">
+        <span className="w-1.5 h-1.5 rounded-full bg-[#9ff0ec] animate-pulse" />
+        <span>Schematic layout traced from public map data; not to scale.</span>
       </div>
 
-      {/* Hover Tooltip */}
+      {/* Hover Tooltip (Campus Control Dark Glass System) */}
       {hoveredBuilding && (
         <div
-          className="fixed z-40 pointer-events-none p-3.5 rounded-2xl bg-white/95 border border-[#d4e0ed] text-xs text-[#0b3558] shadow-cal-card backdrop-blur-xl space-y-1.5 min-w-[230px]"
+          className="fixed z-40 pointer-events-none p-4 rounded-2xl bg-[#131219]/95 border border-white/[0.16] text-white shadow-[0_20px_50px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.1)] backdrop-blur-xl space-y-2 min-w-[250px]"
           style={{
             left: Math.min(tooltipPos.x + 15, window.innerWidth - 270),
-            top: Math.min(tooltipPos.y + 15, window.innerHeight - 220)
+            top: Math.min(tooltipPos.y + 15, window.innerHeight - 240)
           }}
         >
-          <div className="font-bold text-sm text-[#006bff]">
-            {hoveredBuilding.label || hoveredBuilding.name}
-          </div>
-          <div className="text-[10px] text-[#476788]">
-            {hoveredBuilding.department} • {hoveredBuilding.floors || 1} Floors
+          <div>
+            <div className="font-extrabold text-sm text-white tracking-tight">
+              {hoveredBuilding.label || hoveredBuilding.name}
+            </div>
+            <div className="text-[10px] text-[#bdf7ee] font-mono uppercase tracking-wider mt-0.5">
+              {hoveredBuilding.department} • {hoveredBuilding.floors || 1} Floors
+            </div>
           </div>
 
-          <div className="border-t border-[#d4e0ed] pt-2 grid grid-cols-2 gap-2 text-xs font-mono">
+          <div className="border-t border-white/[0.1] pt-2.5 grid grid-cols-2 gap-2 text-xs font-mono">
             <div>
-              <span className="text-[10px] text-[#476788] block">Real Power:</span>
-              <span className="font-bold text-[#0b3558]">
+              <span className="text-[10px] text-[#b9b8bb] block">Real Power:</span>
+              <span className="font-bold text-white">
                 {getBuildingTelemetry(hoveredBuilding.id).realKw} kW
               </span>
             </div>
             <div>
-              <span className="text-[10px] text-[#476788] block">Solar Power:</span>
-              <span className="font-bold text-amber-600">
+              <span className="text-[10px] text-[#b9b8bb] block">Solar Power:</span>
+              <span className="font-bold text-amber-400">
                 {hoveredBuilding.solarCapacityKw ? `${hoveredBuilding.solarCapacityKw} kW` : 'None'}
               </span>
             </div>
             <div>
-              <span className="text-[10px] text-[#476788] block">Ghost Gap:</span>
-              <span className={`font-bold ${getBuildingTelemetry(hoveredBuilding.id).wasteGapKw > 5 ? 'text-rose-600' : 'text-emerald-600'}`}>
+              <span className="text-[10px] text-[#b9b8bb] block">Ghost Gap:</span>
+              <span className={`font-bold ${getBuildingTelemetry(hoveredBuilding.id).wasteGapKw > 5 ? 'text-rose-400' : 'text-emerald-400'}`}>
                 {getBuildingTelemetry(hoveredBuilding.id).wasteGapKw} kW
               </span>
             </div>
             <div>
-              <span className="text-[10px] text-[#476788] block">Hourly Cost:</span>
-              <span className="font-bold text-[#006bff]">
+              <span className="text-[10px] text-[#b9b8bb] block">Hourly Cost:</span>
+              <span className="font-bold text-[#9ff0ec]">
                 ₹{getBuildingTelemetry(hoveredBuilding.id).costRsPerHour}/hr
               </span>
             </div>
           </div>
 
-          <div className="text-[10px] text-[#476788] italic pt-1">
-            Click building footprint to inspect circuits & devices
+          <div className="text-[10px] text-[#b9b8bb] italic pt-1 border-t border-white/[0.08] flex items-center gap-1">
+            <span className="w-1 h-1 rounded-full bg-[#9ff0ec]" />
+            <span>Click building footprint to inspect circuits</span>
           </div>
         </div>
       )}

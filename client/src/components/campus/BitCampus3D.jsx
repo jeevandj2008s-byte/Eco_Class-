@@ -259,14 +259,14 @@ export default function BitCampus3D({
   const buildings = defaultHotspots.buildings || [];
 
   return (
-    <div className="relative w-full h-full bg-[#050811] overflow-hidden select-none">
+    <div className="relative w-full h-full bg-[#0a0910] overflow-hidden select-none">
       <Canvas
         shadows
         camera={{ position: [0, 65, 80], fov: 45 }}
         gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
       >
-        <color attach="background" args={['#050811']} />
-        <fog attach="fog" args={['#050811', 80, 220]} />
+        <color attach="background" args={['#0a0910']} />
+        <fog attach="fog" args={['#0a0910', 80, 220]} />
 
         {/* Ambient & Directional Cyber Sunlight */}
         <ambientLight intensity={0.65} />
@@ -311,12 +311,12 @@ export default function BitCampus3D({
       </Canvas>
 
       {/* Floating 3D Navigation Watermark & Hint */}
-      <div className="absolute bottom-4 left-4 z-10 pointer-events-none px-3.5 py-1.5 rounded-xl glass-panel bg-black/70 border border-white/10 text-[10px] text-slate-300 font-mono flex items-center gap-2">
-        <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+      <div className="absolute bottom-4 left-4 z-10 pointer-events-none px-3.5 py-1.5 rounded-xl bg-[#131219]/90 border border-white/[0.14] text-[10px] text-[#b9b8bb] font-mono flex items-center gap-2 shadow-[0_12px_32px_rgba(0,0,0,0.6)] backdrop-blur-md">
+        <span className="w-2 h-2 rounded-full bg-[#9ff0ec] animate-ping"></span>
         <span>Left-click + Drag to rotate • Right-click to pan • Scroll to zoom</span>
       </div>
 
-      <div className="absolute bottom-4 right-4 z-10 pointer-events-none px-3 py-1 rounded-xl glass-panel bg-black/60 border border-white/10 text-[10px] text-slate-400 font-mono">
+      <div className="absolute bottom-4 right-4 z-10 pointer-events-none px-3 py-1 rounded-xl bg-[#131219]/90 border border-white/[0.14] text-[10px] text-[#bdf7ee] font-mono shadow-[0_12px_32px_rgba(0,0,0,0.6)] backdrop-blur-md">
         Bangalore Institute of Technology 3D Twin
       </div>
     </div>

@@ -15,7 +15,8 @@ import {
   LifeBuoy,
   Shield,
   ShieldCheck,
-  Info
+  Info,
+  MapPin
 } from 'lucide-react';
 import { formatINR, formatCo2 } from '../lib/utils.js';
 import institutionData from '../config/institution.json';
@@ -173,7 +174,91 @@ export default function LandingPage() {
     }
   ];
 
-  return (
+    const institutionCards = [
+    {
+      to: '/campus',
+      label: 'Campus Anchor',
+      tag: 'V.V. Puram',
+      stat: '560004',
+      statColor: 'text-white',
+      borderColor: 'border-white/[0.12] hover:border-[#6f5adc]/60',
+      blobColor: 'text-[#6f5adc]',
+      blobPath: 'M 16,16 C 35,14 55,24 75,20 C 95,16 110,6 126,10 C 138,14 144,26 142,40 C 140,52 126,58 110,58 L 18,58 C 6,58 0,48 0,36 C 0,24 6,18 16,16 Z',
+      icon: MapPin,
+      iconColor: 'text-[#9ff0ec]',
+      desc: `"${institutionData.statements[0]}"`
+    },
+    {
+      to: '/dashboard',
+      label: 'Energy Telemetry',
+      tag: 'Real-Time IoT',
+      stat: '142 kW',
+      statColor: 'text-[#9ff0ec]',
+      borderColor: 'border-white/[0.12] hover:border-[#9ff0ec]/60',
+      blobColor: 'text-[#4d19b1]',
+      blobPath: 'M 18,22 C 32,22 46,26 62,24 C 76,22 88,2 108,2 C 128,2 142,14 142,30 C 142,46 128,56 112,56 L 20,56 C 8,56 0,46 0,34 C 0,22 8,22 18,22 Z',
+      icon: Activity,
+      iconColor: 'text-[#9ff0ec]',
+      desc: `"${institutionData.statements[1]}"`
+    },
+    {
+      to: '/carbon',
+      label: 'Scope 2 Mitigation',
+      tag: 'Net-Zero 2030',
+      stat: '260 kWp',
+      statColor: 'text-[#bdf7ee]',
+      borderColor: 'border-white/[0.12] hover:border-[#bdf7ee]/60',
+      blobColor: 'text-[#6f5adc]',
+      blobPath: 'M 12,32 C 18,18 36,4 62,2 C 90,0 114,12 128,24 C 140,34 142,44 136,54 C 130,58 116,58 100,58 L 22,58 C 8,58 0,48 0,38 C 0,35 6,34 12,32 Z',
+      icon: CheckCircle2,
+      iconColor: 'text-[#bdf7ee]',
+      desc: `"${institutionData.statements[3]}"`
+    }
+  ];
+
+  const innovationCards = [
+    {
+      to: '/campus',
+      label: 'Campus Map',
+      tag: '8 Buildings',
+      stat: '8 Blocks',
+      statColor: 'text-[#9ff0ec]',
+      borderColor: 'border-white/[0.12] hover:border-[#9ff0ec]/60',
+      blobColor: 'text-[#4d19b1]',
+      blobPath: 'M 18,22 C 32,22 46,26 62,24 C 76,22 88,2 108,2 C 128,2 142,14 142,30 C 142,46 128,56 112,56 L 20,56 C 8,56 0,46 0,34 C 0,22 8,22 18,22 Z',
+      icon: Layers,
+      iconColor: 'text-[#9ff0ec]',
+      desc: 'Models BIT Main Block, Administration Block, Engineering Block A, Engineering Block B, Sports Court, Hostel, and EV Charging Hub.'
+    },
+    {
+      to: '/control',
+      label: 'Ghost Twin',
+      tag: 'Zero Latency',
+      stat: '0 Latency',
+      statColor: 'text-[#6f5adc]',
+      borderColor: 'border-white/[0.12] hover:border-[#6f5adc]/60',
+      blobColor: 'text-[#6f5adc]',
+      blobPath: 'M 16,16 C 35,14 55,24 75,20 C 95,16 110,6 126,10 C 138,14 144,26 142,40 C 140,52 126,58 110,58 L 18,58 C 6,58 0,48 0,36 C 0,24 6,18 16,16 Z',
+      icon: Compass,
+      iconColor: 'text-[#6f5adc]',
+      desc: 'Compares Real vs Ghost ideal consumption to isolate 8 deterministic energy ghosts: empty room ACs, continuous geysers, and idling projectors.'
+    },
+    {
+      to: '/coach',
+      label: 'Aura AI Coach',
+      tag: 'Google Gemini',
+      stat: 'Gemini AI',
+      statColor: 'text-[#bdf7ee]',
+      borderColor: 'border-white/[0.12] hover:border-[#bdf7ee]/60',
+      blobColor: 'text-[#4d19b1]',
+      blobPath: 'M 12,32 C 18,18 36,4 62,2 C 90,0 114,12 128,24 C 140,34 142,44 136,54 C 130,58 116,58 100,58 L 22,58 C 8,58 0,48 0,38 C 0,35 6,34 12,32 Z',
+      icon: Sparkles,
+      iconColor: 'text-[#bdf7ee]',
+      desc: 'Google Gemini-backed advisor with offline fallback generating ranked quantified advice in Indian Rupees (₹) and kg CO₂ across CFO, Eco, and Student personas.'
+    }
+  ];
+
+return (
     <div className="relative w-full overflow-hidden bg-transparent text-white">
       {/* Decorative Ambient Glow Orbs */}
       <div className="blob-magenta top-8 left-1/4 -translate-x-1/2 opacity-70" />
@@ -418,101 +503,158 @@ export default function LandingPage() {
       </section>
 
       {/* Institution Tie-In & Statement Strip */}
-      <section className="py-12 border-y border-white/[0.1] bg-white/[0.01]">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-6">
+      <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 border-t border-white/[0.08]">
+        {/* Header with Title on Left */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
+          <div>
             <span className="text-xs font-bold text-[#9ff0ec] uppercase tracking-widest">
-              Bangalore Institute of Technology
+              Bangalore Institute of Technology •
             </span>
-            <h3 className="text-lg sm:text-xl font-bold text-white mt-1">
-              Fostering Sustainable Educational Ecosystems
-            </h3>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight leading-[1.15] mt-2">
+              Fostering Sustainable<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#bdf7ee] to-[#9ff0ec]">
+                Educational Ecosystems
+              </span>
+            </h2>
+            <p className="mt-3 text-xs sm:text-sm text-[#b9b8bb] flex items-center gap-1.5 font-normal">
+              <span>Campus microgrid telemetry, institutional governance, and verified Net-Zero impact</span>
+              <ArrowRight className="w-3.5 h-3.5 text-[#9ff0ec]" />
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-5 rounded-2xl bg-[#131219]/70 border border-white/[0.12] shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
-              <CheckCircle2 className="w-5 h-5 text-[#9ff0ec] mb-2" />
-              <p className="text-xs text-[#d3d3d7] leading-relaxed font-medium">
-                "{institutionData.statements[0]}"
-              </p>
-            </div>
-            <div className="p-5 rounded-2xl bg-[#131219]/70 border border-white/[0.12] shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
-              <CheckCircle2 className="w-5 h-5 text-[#9ff0ec] mb-2" />
-              <p className="text-xs text-[#d3d3d7] leading-relaxed font-medium">
-                "{institutionData.statements[1]}"
-              </p>
-            </div>
-            <div className="p-5 rounded-2xl bg-[#131219]/70 border border-white/[0.12] shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
-              <CheckCircle2 className="w-5 h-5 text-[#9ff0ec] mb-2" />
-              <p className="text-xs text-[#d3d3d7] leading-relaxed font-medium">
-                "{institutionData.statements[3]}"
-              </p>
-            </div>
-          </div>
+        </div>
+
+        {/* 3 Unified Dark Glass Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+          {institutionCards.map((c) => {
+            const Icon = c.icon;
+            return (
+              <Link
+                key={c.to + c.label}
+                to={c.to}
+                className={`w-full min-h-[420px] rounded-[28px] bg-[#131219]/80 border ${c.borderColor} shadow-[0_16px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.08)] p-7 sm:p-8 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:border-white/30 group`}
+              >
+                {/* Top: Brand Logo / Module Identifier */}
+                <div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.1] flex items-center justify-center">
+                        <Icon className={`w-4 h-4 ${c.iconColor}`} />
+                      </div>
+                      <span className="font-extrabold text-sm tracking-tight text-white uppercase">
+                        {c.label}
+                      </span>
+                    </div>
+                    <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-white/[0.04] text-[#9ff0ec] border border-white/[0.12]">
+                      {c.tag}
+                    </span>
+                  </div>
+
+                  {/* Middle: Big bold metric number & description */}
+                  <div className="mt-8 mb-6">
+                    <div className={`text-5xl font-black tracking-tight ${c.statColor}`}>
+                      {c.stat}
+                    </div>
+                    <p className="mt-3 text-xs sm:text-sm text-[#d3d3d7] leading-relaxed font-normal">
+                      {c.desc}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Bottom: The signature organic blob button */}
+                <div className="relative inline-flex items-center mt-auto self-start">
+                  <svg
+                    viewBox="0 0 150 60"
+                    className={`w-[136px] h-[52px] ${c.blobColor} transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]`}
+                    fill="currentColor"
+                  >
+                    <path d={c.blobPath} />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-start pl-5 text-xs font-bold text-white gap-2 pointer-events-none tracking-tight">
+                    <span>Read now</span>
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </section>
 
-      {/* Feature Showcase Grid */}
-      <section className="py-16 max-w-6xl mx-auto px-4 relative">
-        <div className="blob-cyan -bottom-10 -left-10" />
-
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="text-xs font-bold text-[#bdf7ee] uppercase tracking-widest">Core Innovations</span>
-          <h2 className="text-3xl font-bold text-white mt-2">
-            Engineered for Campus Net-Zero Goals
-          </h2>
-          <p className="text-sm text-[#d3d3d7] mt-2">
-            Fully simulated with progressive hardware support for physical smart meters, relays, and IP cameras.
-          </p>
+      {/* Feature Showcase Grid: Core Innovations */}
+      <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 border-t border-white/[0.08]">
+        {/* Header with Title on Left */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
+          <div>
+            <span className="text-xs font-bold text-[#bdf7ee] uppercase tracking-widest">
+              Core Innovations
+            </span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight leading-[1.15] mt-2">
+              Engineered for<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#bdf7ee] to-[#9ff0ec]">
+                Campus Net-Zero Goals
+              </span>
+            </h2>
+            <p className="mt-3 text-xs sm:text-sm text-[#b9b8bb] flex items-center gap-1.5 font-normal">
+              <span>Fully simulated with progressive hardware support for physical smart meters, relays, and IP cameras.</span>
+              <ArrowRight className="w-3.5 h-3.5 text-[#9ff0ec]" />
+            </p>
+          </div>
         </div>
 
+        {/* 3 Unified Dark Glass Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
-          <Link
-            to="/campus"
-            className="card-lift p-6 rounded-2xl bg-[#131219]/70 border border-white/[0.12] hover:border-[#6f5adc]/60 shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition group block"
-          >
-            <div className="w-12 h-12 rounded-xl bg-[#6f5adc]/15 border border-[#6f5adc]/30 text-[#9ff0ec] flex items-center justify-center mb-4 group-hover:scale-110 transition shadow-[0_0_15px_rgba(111,90,220,0.3)]">
-              <Layers className="w-6 h-6" />
-            </div>
-            <h4 className="text-base font-bold text-white group-hover:text-[#9ff0ec] transition">Full-Scale BIT Campus Map</h4>
-            <p className="text-xs text-[#d3d3d7] mt-2 leading-relaxed">
-              Models BIT Main Block, Administration Block, Engineering Block A, Engineering Block B, Sports Court, Hostel, and EV Charging Hub.
-            </p>
-            <span className="text-xs text-[#9ff0ec] font-bold mt-4 inline-flex items-center gap-1">
-              Launch Campus Map <ArrowRight className="w-3.5 h-3.5" />
-            </span>
-          </Link>
+          {innovationCards.map((c) => {
+            const Icon = c.icon;
+            return (
+              <Link
+                key={c.to + c.label}
+                to={c.to}
+                className={`w-full min-h-[420px] rounded-[28px] bg-[#131219]/80 border ${c.borderColor} shadow-[0_16px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.08)] p-7 sm:p-8 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:border-white/30 group`}
+              >
+                {/* Top: Brand Logo / Module Identifier */}
+                <div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.1] flex items-center justify-center">
+                        <Icon className={`w-4 h-4 ${c.iconColor}`} />
+                      </div>
+                      <span className="font-extrabold text-sm tracking-tight text-white uppercase">
+                        {c.label}
+                      </span>
+                    </div>
+                    <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-white/[0.04] text-[#9ff0ec] border border-white/[0.12]">
+                      {c.tag}
+                    </span>
+                  </div>
 
-          <Link
-            to="/control"
-            className="card-lift p-6 rounded-2xl bg-[#131219]/70 border border-white/[0.12] hover:border-[#6f5adc]/60 shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition group block"
-          >
-            <div className="w-12 h-12 rounded-xl bg-[#6f5adc]/15 border border-[#6f5adc]/30 text-[#9ff0ec] flex items-center justify-center mb-4 group-hover:scale-110 transition shadow-[0_0_15px_rgba(111,90,220,0.3)]">
-              <Compass className="w-6 h-6" />
-            </div>
-            <h4 className="text-base font-bold text-white group-hover:text-[#9ff0ec] transition">Ghost Twin Technology</h4>
-            <p className="text-xs text-[#d3d3d7] mt-2 leading-relaxed">
-              Compares Real vs Ghost ideal consumption to isolate 8 deterministic energy ghosts: empty room ACs, continuous geysers, and idling projectors.
-            </p>
-            <span className="text-xs text-[#9ff0ec] font-bold mt-4 inline-flex items-center gap-1">
-              Open Control Center <ArrowRight className="w-3.5 h-3.5" />
-            </span>
-          </Link>
+                  {/* Middle: Big bold metric number & description */}
+                  <div className="mt-8 mb-6">
+                    <div className={`text-5xl font-black tracking-tight ${c.statColor}`}>
+                      {c.stat}
+                    </div>
+                    <p className="mt-3 text-xs sm:text-sm text-[#d3d3d7] leading-relaxed font-normal">
+                      {c.desc}
+                    </p>
+                  </div>
+                </div>
 
-          <Link
-            to="/coach"
-            className="card-lift p-6 rounded-2xl bg-[#131219]/70 border border-white/[0.12] hover:border-[#6f5adc]/60 shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition group block"
-          >
-            <div className="w-12 h-12 rounded-xl bg-[#6f5adc]/15 border border-[#6f5adc]/30 text-[#9ff0ec] flex items-center justify-center mb-4 group-hover:scale-110 transition shadow-[0_0_15px_rgba(111,90,220,0.3)]">
-              <Sparkles className="w-6 h-6" />
-            </div>
-            <h4 className="text-base font-bold text-white group-hover:text-[#9ff0ec] transition">Aura AI Energy Coach</h4>
-            <p className="text-xs text-[#d3d3d7] mt-2 leading-relaxed">
-              Google Gemini-backed advisor with offline fallback generating ranked quantified advice in Indian Rupees (₹) and kg CO₂ across CFO, Eco, and Student personas.
-            </p>
-            <span className="text-xs text-[#9ff0ec] font-bold mt-4 inline-flex items-center gap-1">
-              Chat with Aura AI <ArrowRight className="w-3.5 h-3.5" />
-            </span>
-          </Link>
+                {/* Bottom: The signature organic blob button */}
+                <div className="relative inline-flex items-center mt-auto self-start">
+                  <svg
+                    viewBox="0 0 150 60"
+                    className={`w-[136px] h-[52px] ${c.blobColor} transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]`}
+                    fill="currentColor"
+                  >
+                    <path d={c.blobPath} />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-start pl-5 text-xs font-bold text-white gap-2 pointer-events-none tracking-tight">
+                    <span>Read now</span>
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </section>
 

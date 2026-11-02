@@ -108,7 +108,12 @@ export default function CampusPage() {
   };
 
   return (
-    <div className="relative w-full h-[calc(100vh-65px)] overflow-hidden flex flex-col bg-[#0a0910]">
+    <div className="relative w-full h-[calc(100vh-65px)] overflow-hidden flex flex-col bg-transparent">
+      {/* Ambient Cosmic Cyber Background matching Campus Control System */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 select-none">
+        <div className="blob-magenta -top-32 -left-20 opacity-35" />
+        <div className="blob-cyan -bottom-32 -right-20 opacity-30" />
+      </div>
       {/* Top Floating Controls Strip: Mode Switch & Active Overlays in Campus Control Dark Glass */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 flex flex-wrap items-center justify-center gap-2.5 max-w-full px-2">
         {/* 2D / 3D Model Toggle */}

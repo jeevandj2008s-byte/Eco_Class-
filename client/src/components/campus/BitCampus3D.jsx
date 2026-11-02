@@ -47,7 +47,7 @@ export default function BitCampus3D({
   }, [selectedBuildingId]);
 
   return (
-    <div className="relative w-full h-full bg-[#07080e] overflow-hidden select-none">
+    <div className="relative w-full h-full bg-transparent overflow-hidden select-none">
       {hasWebGL ? (
         <WebGLErrorBoundary
           fallback={<IsometricCampus3D telemetry={telemetry} />}

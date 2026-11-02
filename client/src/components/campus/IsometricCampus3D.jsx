@@ -172,7 +172,7 @@ export function IsometricCampus3D({ telemetry }) {
       }
 
       // Background Cyber Sky
-      ctx.fillStyle = '#07080e';
+      ctx.fillStyle = 'rgba(7, 8, 14, 0.35)';
       ctx.fillRect(0, 0, viewW, viewH);
 
       // 1. Campus Ground Grid
@@ -601,7 +601,7 @@ export function IsometricCampus3D({ telemetry }) {
   };
 
   return (
-    <div className="relative w-full h-full bg-[#07080e] overflow-hidden select-none">
+    <div className="relative w-full h-full bg-transparent overflow-hidden select-none">
       <canvas
         ref={canvasRef}
         onMouseDown={handlePointerDown}

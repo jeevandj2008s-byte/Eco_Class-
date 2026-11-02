@@ -239,30 +239,30 @@ export default function CampusMap2D({
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
-      className="relative w-full h-full bg-[#0a0910] overflow-hidden select-none cursor-grab active:cursor-grabbing flex items-center justify-center"
+      className="relative w-full h-full bg-transparent overflow-hidden select-none cursor-grab active:cursor-grabbing flex items-center justify-center"
     >
       {/* Zoom Controls & Admin Trace Mode Toggle */}
       <div className="absolute bottom-6 right-6 z-20 flex flex-col items-center gap-2">
         <button
           onClick={() => setTransform((prev) => ({ ...prev, scale: Math.min(prev.scale * 1.25, 4.0) }))}
-          className="p-2.5 rounded-xl bg-white hover:bg-[#f0f3f8] text-[#0b3558] border border-[#d4e0ed] transition shadow-cal-sm"
+          className="p-2.5 rounded-xl bg-[#131219]/90 hover:bg-[#1c1b26] text-[#b9b8bb] hover:text-[#9ff0ec] border border-white/[0.14] backdrop-blur-md shadow-[0_8px_24px_rgba(0,0,0,0.6)] transition cursor-pointer"
           title="Zoom In"
         >
-          <ZoomIn className="w-4 h-4 text-[#006bff]" />
+          <ZoomIn className="w-4 h-4 text-[#9ff0ec]" />
         </button>
         <button
           onClick={() => setTransform((prev) => ({ ...prev, scale: Math.max(prev.scale * 0.8, 0.5) }))}
-          className="p-2.5 rounded-xl bg-white hover:bg-[#f0f3f8] text-[#0b3558] border border-[#d4e0ed] transition shadow-cal-sm"
+          className="p-2.5 rounded-xl bg-[#131219]/90 hover:bg-[#1c1b26] text-[#b9b8bb] hover:text-[#9ff0ec] border border-white/[0.14] backdrop-blur-md shadow-[0_8px_24px_rgba(0,0,0,0.6)] transition cursor-pointer"
           title="Zoom Out"
         >
-          <ZoomOut className="w-4 h-4 text-[#006bff]" />
+          <ZoomOut className="w-4 h-4 text-[#9ff0ec]" />
         </button>
         <button
           onClick={handleResetView}
-          className="p-2.5 rounded-xl bg-white hover:bg-[#f0f3f8] text-[#0b3558] border border-[#d4e0ed] transition shadow-cal-sm"
+          className="p-2.5 rounded-xl bg-[#131219]/90 hover:bg-[#1c1b26] text-[#b9b8bb] hover:text-[#9ff0ec] border border-white/[0.14] backdrop-blur-md shadow-[0_8px_24px_rgba(0,0,0,0.6)] transition cursor-pointer"
           title="Reset View"
         >
-          <RotateCcw className="w-4 h-4 text-[#476788]" />
+          <RotateCcw className="w-4 h-4 text-[#c9c3da]" />
         </button>
         <button
           onClick={() => {
@@ -271,8 +271,8 @@ export default function CampusMap2D({
           }}
           className={`p-2.5 rounded-xl border transition shadow-cal-sm ${
             isTraceMode
-              ? 'bg-[#006bff] text-white border-[#006bff] shadow-cal-btn'
-              : 'bg-white hover:bg-[#f0f3f8] text-[#476788] border-[#d4e0ed]'
+              ? 'bg-[#006bff] text-white border-[#9ff0ec] shadow-[0_0_20px_rgba(0,107,255,0.6)] backdrop-blur-md cursor-pointer'
+              : 'bg-[#131219]/90 hover:bg-[#1c1b26] text-[#b9b8bb] hover:text-white border border-white/[0.14] backdrop-blur-md shadow-[0_8px_24px_rgba(0,0,0,0.6)] cursor-pointer'
           }`}
           title="Toggle Admin Trace Mode"
         >
@@ -291,7 +291,7 @@ export default function CampusMap2D({
 
       {/* Interactive Map Transform Canvas */}
       <div
-        className="relative origin-center transition-transform duration-75 ease-out rounded-2xl shadow-2xl overflow-hidden"
+        className="relative origin-center transition-transform duration-75 ease-out rounded-2xl border border-white/[0.14] shadow-[0_24px_60px_rgba(0,0,0,0.85),0_0_50px_rgba(111,90,220,0.18)] overflow-hidden"
         style={{
           transform: `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale})`,
           width: `${CANVAS_WIDTH}px`,

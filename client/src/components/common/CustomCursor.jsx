@@ -33,17 +33,17 @@ export default function CustomCursor() {
         // Fast direct transform for lead dot
         dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%) scale(${isClicking ? 0.75 : 1})`;
 
-        // Smooth physics lerp loop for the trailing ring
+        // Snappy physics follower (0.6 lerp eliminates rubber-band input latency feel)
         const dx = mouseX - ringX;
         const dy = mouseY - ringY;
-        ringX += dx * 0.32;
-        ringY += dy * 0.32;
+        ringX += dx * 0.6;
+        ringY += dy * 0.6;
 
         const scale = isHovering ? 1.35 : isClicking ? 0.85 : 1;
         ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%) scale(${scale})`;
 
-        // If ring is still catching up, keep looping; otherwise sleep
-        if (Math.abs(dx) > 0.15 || Math.abs(dy) > 0.15) {
+        // Settle quickly and sleep
+        if (Math.abs(dx) > 0.2 || Math.abs(dy) > 0.2) {
           animId = requestAnimationFrame(renderLoop);
         } else {
           animId = null;
@@ -79,14 +79,12 @@ export default function CustomCursor() {
           const clickable = target.closest('button, a, input, textarea, select, [role="button"], .cursor-pointer');
           if (clickable && !isHovering) {
             isHovering = true;
-            ring.style.borderColor = '#6f5adc';
-            ring.style.backgroundColor = 'rgba(111, 90, 220, 0.15)';
-            ring.style.boxShadow = '0 0 16px rgba(111, 90, 220, 0.4)';
+            ring.style.borderColor = '#9ff0ec';
+            ring.style.backgroundColor = 'rgba(159, 240, 236, 0.12)';
           } else if (!clickable && isHovering) {
             isHovering = false;
             ring.style.borderColor = 'rgba(255, 255, 255, 0.25)';
             ring.style.backgroundColor = 'transparent';
-            ring.style.boxShadow = 'none';
           }
         }
       }
@@ -173,7 +171,7 @@ export default function CustomCursor() {
         className="fixed top-0 left-0 w-7 h-7 rounded-full border border-white/25 pointer-events-none z-[99998] opacity-0 will-change-transform"
         style={{
           transform: 'translate3d(-100px, -100px, 0) translate(-50%, -50%)',
-          transition: 'opacity 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease'
+          transition: 'opacity 0.2s ease, border-color 0.15s ease, background-color 0.15s ease'
         }}
       />
 

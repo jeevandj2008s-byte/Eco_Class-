@@ -17,7 +17,7 @@ export default function CloudFieldRenderer({
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
+    const ctx = canvas.getContext('2d', { alpha: false });
     if (!ctx) return;
 
     let animId = null;
@@ -189,12 +189,10 @@ export default function CloudFieldRenderer({
       height = window.innerHeight;
       rawMouseX = width * 0.5;
 
-      // Optimal DPR capping: 1.25 gives crisp visuals with 60% less GPU memory overhead than 2.0
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
-      canvas.width = Math.floor(width * dpr);
-      canvas.height = Math.floor(height * dpr);
+      // 1:1 crisp backing resolution: saves 36% GPU fill-rate overhead on Windows 125%/150% scaling
+      canvas.width = width;
+      canvas.height = height;
       ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.scale(dpr, dpr);
 
       rebuildGradients();
     };
@@ -217,9 +215,26 @@ export default function CloudFieldRenderer({
     };
     document.addEventListener('visibilitychange', onVisibilityChange);
 
-    // Main 60 FPS Target Render Loop
-    const TARGET_FPS = 60;
-    const FRAME_MS = 1000 / TARGET_FPS;
+    const onWindowBlur = () => {
+      isVisible = false;
+      if (animId) {
+        cancelAnimationFrame(animId);
+        animId = null;
+      }
+    };
+    const onWindowFocus = () => {
+      if (!document.hidden && !prefersReducedMotion) {
+        isVisible = true;
+        if (!animId) {
+          lastStamp = performance.now();
+          animId = requestAnimationFrame(render);
+        }
+      }
+    };
+    window.addEventListener('blur', onWindowBlur);
+    window.addEventListener('focus', onWindowFocus);
+
+    // Main VSync-Synchronized Render Loop (Paced cleanly for 60Hz - 144Hz displays)
     let lastStamp = performance.now();
 
     const render = (stamp) => {
@@ -230,13 +245,13 @@ export default function CloudFieldRenderer({
 
       animId = requestAnimationFrame(render);
 
-      // Frame interval capping (prevents 120Hz/144Hz displays from burning GPU cycles)
+      // Smooth frame gating (only skips on >70Hz displays to protect GPU, zero skips on 60Hz)
       const elapsed = stamp - lastStamp;
-      if (elapsed < FRAME_MS - 1.5) {
+      if (elapsed < 14) {
         return;
       }
       const dt = Math.min(elapsed / 1000, 0.05);
-      lastStamp = stamp - (elapsed % FRAME_MS);
+      lastStamp = stamp;
 
       time += dt * speed;
 
@@ -294,12 +309,7 @@ export default function CloudFieldRenderer({
         const tailX = m.x - Math.cos(angle) * m.tailLength;
         const tailY = m.y - Math.sin(angle) * m.tailLength;
 
-        const meteorGrad = ctx.createLinearGradient(tailX, tailY, m.x, m.y);
-        meteorGrad.addColorStop(0, 'rgba(159, 240, 236, 0)');
-        meteorGrad.addColorStop(0.7, `rgba(185, 140, 255, ${m.alpha * 0.5 * opacity})`);
-        meteorGrad.addColorStop(1, `rgba(255, 255, 255, ${m.alpha * opacity})`);
-
-        ctx.strokeStyle = meteorGrad;
+        ctx.strokeStyle = `rgba(185, 140, 255, ${m.alpha * 0.65 * opacity})`;
         ctx.lineWidth = 1.6;
         ctx.beginPath();
         ctx.moveTo(tailX, tailY);
@@ -313,7 +323,7 @@ export default function CloudFieldRenderer({
       }
 
       // 5. Render Layered Strata Cloud Waves (Optimized step spacing)
-      const stepX = Math.max(16, Math.floor(width / 80));
+      const stepX = Math.max(24, Math.floor(width / 55));
       for (let li = 0; li < layers.length; li++) {
         const l = layers[li];
         const baseY = height * (1 - l.baseFraction);

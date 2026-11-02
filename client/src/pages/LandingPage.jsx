@@ -348,7 +348,7 @@ return (
           <div className="lg:col-span-5 relative flex items-center justify-center">
             <div className="relative w-full aspect-square max-w-[540px] mx-auto flex items-center justify-center">
               {/* Radial Haze Behind Slabs */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#4d19b1]/30 via-[#6f5adc]/20 to-[#9ff0ec]/20 blur-3xl rounded-full pointer-events-none" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(111,90,220,0.22)_0%,rgba(77,25,177,0.1)_45%,transparent_70%)] rounded-full pointer-events-none" />
 
               {/* Masked Video Artwork Loop (Optimized via Hardware Overlay) */}
               <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl">
@@ -367,7 +367,7 @@ return (
               </div>
 
               {/* Floating Glass Card 1: Upper-Left */}
-              <div className="absolute -top-3 -left-3 sm:top-4 sm:-left-6 w-[260px] sm:w-[280px] p-4 rounded-[18px] bg-[#131219]/90 border border-white/[0.16] shadow-[0_16px_36px_rgba(0,0,0,0.7),inset_0_1px_1px_rgba(255,255,255,0.12)] animate-float z-20">
+              <div className="absolute -top-3 -left-3 sm:top-4 sm:-left-6 w-[260px] sm:w-[280px] p-4 rounded-[18px] bg-[#131219]/90 border border-white/[0.16] shadow-[0_16px_36px_rgba(0,0,0,0.7),inset_0_1px_1px_rgba(255,255,255,0.12)] animate-float will-change-transform transform-gpu z-20">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-[#9ff0ec]/10 border border-[#9ff0ec]/30 flex items-center justify-center text-[#9ff0ec] shrink-0 shadow-[0_0_12px_rgba(159,240,236,0.3)]">
                     <Activity className="w-5 h-5" />
@@ -384,7 +384,7 @@ return (
               </div>
 
               {/* Floating Glass Card 2: Lower-Right */}
-              <div className="absolute -bottom-3 -right-3 sm:bottom-6 sm:-right-6 w-[260px] sm:w-[280px] p-4 rounded-[18px] bg-[#131219]/90 border border-white/[0.16] shadow-[0_16px_36px_rgba(0,0,0,0.7),inset_0_1px_1px_rgba(255,255,255,0.12)] animate-float z-20" style={{ animationDelay: '2.5s' }}>
+              <div className="absolute -bottom-3 -right-3 sm:bottom-6 sm:-right-6 w-[260px] sm:w-[280px] p-4 rounded-[18px] bg-[#131219]/90 border border-white/[0.16] shadow-[0_16px_36px_rgba(0,0,0,0.7),inset_0_1px_1px_rgba(255,255,255,0.12)] animate-float will-change-transform transform-gpu z-20" style={{ animationDelay: '2.5s' }}>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-[#6f5adc]/15 border border-[#6f5adc]/35 flex items-center justify-center text-[#9ff0ec] shrink-0 shadow-[0_0_12px_rgba(111,90,220,0.4)]">
                     <ShieldCheck className="w-5 h-5" />

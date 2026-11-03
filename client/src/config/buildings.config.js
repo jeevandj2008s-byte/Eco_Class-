@@ -1,28 +1,174 @@
 /**
- * Buildings & Floor Interior Architecture Configuration
- * Defines building dimensional properties, floor stacks, corridors, and classroom bounding cells.
- * Edit rooms, capacities, and layout parameters here without altering 3D engine code.
+ * Buildings & Campus 3D Architecture Configuration
+ * Defines building dimensional properties, courtyard void geometry, connected wings,
+ * bridge walkways, classrooms, parking lot parameters, and block labels.
+ *
+ * EDIT HERE to customize block names, parking capacity, or animation flags
+ * without touching 3D rendering geometry code.
  */
 
 import { generateClassroomLayout } from '../utils/seatLayout.js';
 
-export const FLOOR_HEIGHT = 3.6; // Floor-to-floor vertical distance in 3D units
+export const FLOOR_HEIGHT = 3.4; // Realistic floor-to-floor height in 3D units (~3.4m)
 
+/**
+ * Global 3D Animation Controls
+ * Toggle any animation on or off with a single boolean flag.
+ */
+export const ANIMATION_CONFIG = {
+  enabled: true,         // Master animation switch
+  barrierArm: true,      // Parking entry barrier arm oscillation
+  carsMoving: true,      // Autonomous shuttle/car entering & leaving
+  flagWave: true,        // Courtyard flag waving in the wind
+  treesSway: true,       // Subtle foliage wind sway
+  studentsIdle: true,    // Seated student idle breathing/sway
+  fountainWater: true    // Courtyard fountain water shimmer
+};
+
+/**
+ * Editable Block Names & Labels Configuration
+ * Change any name, accent color, or badge here in one line.
+ */
+export const BLOCK_LABELS_CONFIG = [
+  {
+    id: 'bit-main',
+    name: 'Block A (Main Courtyard Block)',
+    shortName: 'Block A',
+    code: 'BLK-A',
+    accentColor: '#38bdf8', // Cool cyan/sky
+    entranceLabel: 'Main Grand Entrance',
+    floors: ['G', '1', '2', '3', '4']
+  },
+  {
+    id: 'bit-block-central',
+    name: 'Block B (Academic Wing)',
+    shortName: 'Block B',
+    code: 'BLK-B',
+    accentColor: '#a78bfa', // Lavender/purple
+    entranceLabel: 'East Plaza Entry',
+    floors: ['G', '1', '2', '3']
+  },
+  {
+    id: 'bit-mechanical',
+    name: 'Block C (Engineering & Labs)',
+    shortName: 'Block C',
+    code: 'BLK-C',
+    accentColor: '#34d399', // Emerald
+    entranceLabel: 'Tech Labs Entry',
+    floors: ['G', '1', '2', '3']
+  },
+  {
+    id: 'bit-block-east',
+    name: 'Block D (Admin & Seminar Wing)',
+    shortName: 'Block D',
+    code: 'BLK-D',
+    accentColor: '#fbbf24', // Amber
+    entranceLabel: 'Admin Secretariat',
+    floors: ['G', '1', '2']
+  },
+  {
+    id: 'campus-parking',
+    name: 'Parking Facility',
+    shortName: 'Parking',
+    code: 'P',
+    accentColor: '#006bff',
+    entranceLabel: 'Main Gate & Security',
+    floors: ['G']
+  }
+];
+
+/**
+ * Editable Parking Lot Configuration
+ * Configurable capacity, location, and fill ratios.
+ */
+export const PARKING_CONFIG = {
+  id: 'campus-parking',
+  position: [18, 0, 32],       // South-east area adjacent to access road
+  width: 28,                   // East-West length
+  depth: 22,                   // North-South depth
+  rows: 2,                     // Rows of car parking bays
+  baysPerRow: 8,               // 8 bays per row = 16 car bays total
+  bayWidth: 2.6,               // Standard 2.6m car bay
+  bayDepth: 5.0,               // Standard 5.0m car bay
+  bikeSlots: 16,               // Dedicated two-wheeler parking slots
+  accessibleBays: 2,           // Accessible / PRM reserved parking spots
+  visitorBays: 4,              // Dedicated visitor slots
+  carFillRatio: 0.65,          // ~65% occupied with cars
+  bikeFillRatio: 0.60,         // ~60% occupied with two-wheelers
+  barrierGatePos: [4.5, 0, 22.5], // Gate barrier arm location
+  securityBoothPos: [2.5, 0, 22.5]
+};
+
+/**
+ * Sky-Bridges / Connecting Walkways between blocks
+ */
+export const CONNECTING_BRIDGES = [
+  {
+    id: 'bridge-a-b-fl2',
+    fromBlock: 'bit-main',
+    toBlock: 'bit-block-central',
+    level: 2,
+    start: [-5, (2 - 1) * FLOOR_HEIGHT + 1.2, 14],
+    end: [8, (2 - 1) * FLOOR_HEIGHT + 1.2, 8],
+    width: 2.8,
+    height: 2.6
+  },
+  {
+    id: 'bridge-a-b-fl3',
+    fromBlock: 'bit-main',
+    toBlock: 'bit-block-central',
+    level: 3,
+    start: [-5, (3 - 1) * FLOOR_HEIGHT + 1.2, 14],
+    end: [8, (3 - 1) * FLOOR_HEIGHT + 1.2, 8],
+    width: 2.8,
+    height: 2.6
+  },
+  {
+    id: 'bridge-b-c-fl2',
+    fromBlock: 'bit-block-central',
+    toBlock: 'bit-mechanical',
+    level: 2,
+    start: [20, (2 - 1) * FLOOR_HEIGHT + 1.2, 4],
+    end: [22, (2 - 1) * FLOOR_HEIGHT + 1.2, -18],
+    width: 2.6,
+    height: 2.6
+  }
+];
+
+/**
+ * Building Blocks Architectural Hierarchy
+ */
 export const BUILDINGS_CONFIG = [
   {
     id: 'bit-main',
-    name: 'BIT Main Block',
-    code: 'MB',
-    color: '#3b82f6',
-    accentColor: '#60a5fa',
+    name: 'Block A (Main Courtyard Block)',
+    code: 'BLK-A',
+    color: '#38bdf8',
+    accentColor: '#7dd3fc',
     position: [-27, 0, 24],
     width: 44,
-    depth: 48,
-    floorCount: 5,
+    depth: 44,
+    floorCount: 4,
+    // Courtyard Void Geometry inside Block A (open center from ground to sky)
+    courtyard: {
+      enabled: true,
+      width: 18,
+      depth: 18,
+      center: [0, 0, 0],
+      corridorWidth: 2.6, // Corridor loop surrounding the quad
+      quadGarden: {
+        lawnWidth: 16,
+        lawnDepth: 16,
+        hasFountain: true,
+        hasFlagPole: true,
+        benchesCount: 4,
+        treesCount: 4
+      }
+    },
     floors: [
       {
         level: 1,
-        name: 'Floor 1 - Computer Science & Dean',
+        name: 'Floor 1 - Computer Science & Grand Atrium',
         classrooms: [
           {
             id: 'MB-101',
@@ -31,7 +177,7 @@ export const BUILDINGS_CONFIG = [
             type: 'LECTURE_HALL',
             offset: [-12, 0, -12],
             width: 11,
-            depth: 9.5,
+            depth: 9.2,
             rows: 5,
             columns: 2,
             seatsPerBench: 3,
@@ -42,9 +188,9 @@ export const BUILDINGS_CONFIG = [
             name: 'CS-102 (Operating Systems)',
             code: 'CS-102',
             type: 'LECTURE_HALL',
-            offset: [0, 0, -12],
-            width: 10,
-            depth: 9.5,
+            offset: [12, 0, -12],
+            width: 11,
+            depth: 9.2,
             rows: 4,
             columns: 2,
             seatsPerBench: 3,
@@ -55,9 +201,9 @@ export const BUILDINGS_CONFIG = [
             name: 'CS-103 (Algorithms Lab)',
             code: 'CS-103',
             type: 'SMART_CLASS',
-            offset: [12, 0, -12],
+            offset: [-12, 0, 12],
             width: 11,
-            depth: 9.5,
+            depth: 9.2,
             rows: 4,
             columns: 2,
             seatsPerBench: 2,
@@ -68,22 +214,9 @@ export const BUILDINGS_CONFIG = [
             name: 'CS-104 (Database Systems)',
             code: 'CS-104',
             type: 'LECTURE_HALL',
-            offset: [-12, 0, 12],
-            width: 11,
-            depth: 9.5,
-            rows: 4,
-            columns: 2,
-            seatsPerBench: 3,
-            department: 'Computer Science'
-          },
-          {
-            id: 'MB-105',
-            name: 'CS-105 (Computer Networks)',
-            code: 'CS-105',
-            type: 'LECTURE_HALL',
             offset: [12, 0, 12],
             width: 11,
-            depth: 9.5,
+            depth: 9.2,
             rows: 4,
             columns: 2,
             seatsPerBench: 3,
@@ -93,74 +226,74 @@ export const BUILDINGS_CONFIG = [
       },
       {
         level: 2,
-        name: 'Floor 2 - AI & Machine Learning Hub',
+        name: 'Floor 2 - AI, ML & Data Science',
         classrooms: [
           {
             id: 'MB-201',
-            name: 'AI-201 (Deep Learning Studio)',
+            name: 'AI-201 (Machine Learning Core)',
             code: 'AI-201',
-            type: 'AI_LAB',
+            type: 'LECTURE_HALL',
             offset: [-12, 0, -12],
             width: 11,
-            depth: 9.5,
-            rows: 4,
-            columns: 2,
-            seatsPerBench: 3,
-            department: 'AI & Machine Learning'
-          },
-          {
-            id: 'MB-202',
-            name: 'AI-202 (Computer Vision Lab)',
-            code: 'AI-202',
-            type: 'AI_LAB',
-            offset: [0, 0, -12],
-            width: 10,
-            depth: 9.5,
-            rows: 4,
-            columns: 2,
-            seatsPerBench: 2,
-            department: 'AI & Machine Learning'
-          },
-          {
-            id: 'MB-203',
-            name: 'AI-203 (Neural Networks)',
-            code: 'AI-203',
-            type: 'LECTURE_HALL',
-            offset: [12, 0, -12],
-            width: 11,
-            depth: 9.5,
+            depth: 9.2,
             rows: 5,
             columns: 2,
             seatsPerBench: 3,
             department: 'AI & Machine Learning'
           },
           {
-            id: 'MB-204',
-            name: 'AI-204 (Robotics & Edge AI)',
-            code: 'AI-204',
+            id: 'MB-202',
+            name: 'AI-202 (Deep Learning Studio)',
+            code: 'AI-202',
+            type: 'SMART_CLASS',
+            offset: [12, 0, -12],
+            width: 11,
+            depth: 9.2,
+            rows: 4,
+            columns: 2,
+            seatsPerBench: 3,
+            department: 'AI & Machine Learning'
+          },
+          {
+            id: 'MB-203',
+            name: 'AI-203 (Robotics & Vision Lab)',
+            code: 'AI-203',
             type: 'SMART_CLASS',
             offset: [-12, 0, 12],
             width: 11,
-            depth: 9.5,
+            depth: 9.2,
             rows: 4,
             columns: 2,
             seatsPerBench: 2,
+            department: 'AI & Machine Learning'
+          },
+          {
+            id: 'MB-204',
+            name: 'AI-204 (Natural Language Systems)',
+            code: 'AI-204',
+            type: 'LECTURE_HALL',
+            offset: [12, 0, 12],
+            width: 11,
+            depth: 9.2,
+            rows: 4,
+            columns: 2,
+            seatsPerBench: 3,
             department: 'AI & Machine Learning'
           }
         ]
       },
       {
         level: 3,
-        name: 'Floor 3 - Information Science',
+        name: 'Floor 3 - Software Architecture & Cloud Labs',
         classrooms: [
           {
             id: 'MB-301',
-            name: 'IS-301 (Cloud Computing)',
-            code: 'IS-301',
+            name: 'SE-301 (Distributed Systems)',
+            code: 'SE-301',
             type: 'LECTURE_HALL',
             offset: [-12, 0, -12],
             width: 11,
-            depth: 9.5,
+            depth: 9.2,
             rows: 4,
             columns: 2,
             seatsPerBench: 3,
@@ -168,16 +301,48 @@ export const BUILDINGS_CONFIG = [
           },
           {
             id: 'MB-302',
-            name: 'IS-302 (Cyber Security)',
-            code: 'IS-302',
+            name: 'SE-302 (Cybersecurity Studio)',
+            code: 'SE-302',
             type: 'SMART_CLASS',
             offset: [12, 0, -12],
             width: 11,
-            depth: 9.5,
+            depth: 9.2,
+            rows: 4,
+            columns: 2,
+            seatsPerBench: 2,
+            department: 'Information Science'
+          }
+        ]
+      },
+      {
+        level: 4,
+        name: 'Floor 4 - Research Labs & Department Library',
+        classrooms: [
+          {
+            id: 'MB-401',
+            name: 'RES-401 (Quantum Computing)',
+            code: 'RES-401',
+            type: 'SMART_CLASS',
+            offset: [-12, 0, -12],
+            width: 11,
+            depth: 9.2,
+            rows: 4,
+            columns: 2,
+            seatsPerBench: 2,
+            department: 'Research & Innovation'
+          },
+          {
+            id: 'MB-402',
+            name: 'RES-402 (Digital Twin Simulator)',
+            code: 'RES-402',
+            type: 'LECTURE_HALL',
+            offset: [12, 0, -12],
+            width: 11,
+            depth: 9.2,
             rows: 4,
             columns: 2,
             seatsPerBench: 3,
-            department: 'Information Science'
+            department: 'Research & Innovation'
           }
         ]
       }
@@ -185,89 +350,76 @@ export const BUILDINGS_CONFIG = [
   },
   {
     id: 'bit-block-central',
-    name: 'BIT Academic Block 2',
-    code: 'B2',
-    color: '#f97316',
-    accentColor: '#fb923c',
+    name: 'Block B (Academic Wing)',
+    code: 'BLK-B',
+    color: '#a78bfa',
+    accentColor: '#c4b5fd',
     position: [18, 0, -10],
-    width: 36,
-    depth: 28,
+    width: 26,
+    depth: 36,
     floorCount: 4,
     floors: [
       {
         level: 1,
-        name: 'Floor 1 - Electronics & Comm (ECE)',
+        name: 'Floor 1 - Electronics Core & VLSI',
         classrooms: [
           {
             id: 'B2-101',
-            name: 'EC-101 (VLSI Design)',
+            name: 'EC-101 (Analog Microelectronics)',
             code: 'EC-101',
             type: 'LECTURE_HALL',
-            offset: [-9, 0, -6],
-            width: 10,
+            offset: [0, 0, -9],
+            width: 13,
             depth: 8.5,
             rows: 4,
             columns: 2,
             seatsPerBench: 3,
-            department: 'Electronics & Communication'
+            department: 'Electronics & Comm'
           },
           {
             id: 'B2-102',
-            name: 'EC-102 (Embedded Systems)',
+            name: 'EC-102 (Signal Processing Lab)',
             code: 'EC-102',
             type: 'SMART_CLASS',
-            offset: [9, 0, -6],
-            width: 10,
+            offset: [0, 0, 9],
+            width: 13,
             depth: 8.5,
             rows: 4,
             columns: 2,
             seatsPerBench: 2,
-            department: 'Electronics & Communication'
-          },
-          {
-            id: 'B2-103',
-            name: 'EC-103 (Digital Signal Processing)',
-            code: 'EC-103',
-            type: 'LECTURE_HALL',
-            offset: [-9, 0, 6],
-            width: 10,
-            depth: 8.5,
-            rows: 4,
-            columns: 2,
-            seatsPerBench: 3,
-            department: 'Electronics & Communication'
+            department: 'Electronics & Comm'
           }
         ]
       },
       {
         level: 2,
-        name: 'Floor 2 - Electrical & Electronics (EEE)',
+        name: 'Floor 2 - Embedded Systems & IoT Hub',
         classrooms: [
           {
             id: 'B2-201',
-            name: 'EE-201 (Power Grid & Microgrids)',
-            code: 'EE-201',
-            type: 'LECTURE_HALL',
-            offset: [-9, 0, -6],
-            width: 10,
-            depth: 8.5,
-            rows: 4,
-            columns: 2,
-            seatsPerBench: 3,
-            department: 'Electrical Engineering'
-          },
-          {
-            id: 'B2-202',
-            name: 'EE-202 (Renewable Energy Lab)',
-            code: 'EE-202',
+            name: 'EC-201 (Microcontrollers Lab)',
+            code: 'EC-201',
             type: 'SMART_CLASS',
-            offset: [9, 0, -6],
-            width: 10,
+            offset: [0, 0, -9],
+            width: 13,
             depth: 8.5,
             rows: 4,
             columns: 2,
             seatsPerBench: 2,
-            department: 'Electrical Engineering'
+            department: 'Electronics & Comm'
+          },
+          {
+            id: 'B2-202',
+            name: 'EC-202 (FPGA & SoC Design)',
+            code: 'EC-202',
+            type: 'LECTURE_HALL',
+            offset: [0, 0, 9],
+            width: 13,
+            depth: 8.5,
+            rows: 4,
+            columns: 2,
+            seatsPerBench: 3,
+            department: 'Electronics & Comm'
           }
         ]
       }
@@ -275,44 +427,44 @@ export const BUILDINGS_CONFIG = [
   },
   {
     id: 'bit-mechanical',
-    name: 'BIT Mechanical Engineering',
-    code: 'ME',
-    color: '#ef4444',
-    accentColor: '#f87171',
-    position: [53, 0, -23],
-    width: 26,
-    depth: 26,
+    name: 'Block C (Engineering & Labs)',
+    code: 'BLK-C',
+    color: '#34d399',
+    accentColor: '#6ee7b7',
+    position: [24, 0, -38],
+    width: 28,
+    depth: 30,
     floorCount: 3,
     floors: [
       {
         level: 1,
-        name: 'Floor 1 - CAD & CNC Workshop',
+        name: 'Floor 1 - Robotics & Mechatronics',
         classrooms: [
           {
             id: 'ME-101',
-            name: 'ME-101 (CAD / CAM Lab)',
+            name: 'ME-101 (Thermodynamics)',
             code: 'ME-101',
-            type: 'WORKSHOP',
-            offset: [-6, 0, -6],
-            width: 9,
-            depth: 8,
-            rows: 4,
-            columns: 2,
-            seatsPerBench: 2,
-            department: 'Mechanical Engineering'
-          },
-          {
-            id: 'ME-102',
-            name: 'ME-102 (Thermodynamics Hall)',
-            code: 'ME-102',
             type: 'LECTURE_HALL',
-            offset: [6, 0, -6],
-            width: 9,
-            depth: 8,
+            offset: [0, 0, -6],
+            width: 14,
+            depth: 8.5,
             rows: 4,
             columns: 2,
             seatsPerBench: 3,
-            department: 'Mechanical Engineering'
+            department: 'Mechanical Engg'
+          },
+          {
+            id: 'ME-102',
+            name: 'ME-102 (Automated CAD Lab)',
+            code: 'ME-102',
+            type: 'SMART_CLASS',
+            offset: [0, 0, 6],
+            width: 14,
+            depth: 8.5,
+            rows: 4,
+            columns: 2,
+            seatsPerBench: 2,
+            department: 'Mechanical Engg'
           }
         ]
       }
@@ -320,44 +472,44 @@ export const BUILDINGS_CONFIG = [
   },
   {
     id: 'bit-block-east',
-    name: 'BIT Academic Block 3',
-    code: 'B3',
-    color: '#eab308',
-    accentColor: '#facc15',
-    position: [58, 0, 12],
+    name: 'Block D (Admin & Seminar Wing)',
+    code: 'BLK-D',
+    color: '#fbbf24',
+    accentColor: '#fde68a',
+    position: [34, 0, 18],
     width: 22,
-    depth: 30,
+    depth: 32,
     floorCount: 3,
     floors: [
       {
         level: 1,
-        name: 'Floor 1 - Civil & Environmental',
+        name: 'Floor 1 - Executive Hall & Faculty',
         classrooms: [
           {
             id: 'B3-101',
-            name: 'CV-101 (Structural Analysis)',
-            code: 'CV-101',
-            type: 'LECTURE_HALL',
-            offset: [0, 0, -7],
-            width: 14,
+            name: 'ADM-101 (Executive Seminar Hall)',
+            code: 'ADM-101',
+            type: 'AUDITORIUM',
+            offset: [0, 0, -6],
+            width: 12,
             depth: 8.5,
             rows: 4,
             columns: 2,
             seatsPerBench: 3,
-            department: 'Civil Engineering'
+            department: 'Administration'
           },
           {
             id: 'B3-102',
-            name: 'CV-102 (GIS & Remote Sensing)',
-            code: 'CV-102',
+            name: 'ADM-102 (Conference Room)',
+            code: 'ADM-102',
             type: 'SMART_CLASS',
-            offset: [0, 0, 7],
-            width: 14,
+            offset: [0, 0, 6],
+            width: 12,
             depth: 8.5,
-            rows: 4,
+            rows: 3,
             columns: 2,
             seatsPerBench: 2,
-            department: 'Civil Engineering'
+            department: 'Administration'
           }
         ]
       }
@@ -410,4 +562,3 @@ export function findClassroomHierarchy(classroomId) {
   }
   return null;
 }
-

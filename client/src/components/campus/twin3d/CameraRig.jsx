@@ -22,8 +22,24 @@ export function CameraRig() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const transitionTimer = useRef(0);
 
+  // Optional Cinematic Fly-over state
+  const [isFlyOver, setIsFlyOver] = useState(false);
+  const flyOverProgress = useRef(0);
+
+  useEffect(() => {
+    // Expose callable helper without forcing it on load
+    window.__triggerCampusFlyOver = () => {
+      setIsFlyOver(true);
+      flyOverProgress.current = 0;
+    };
+    return () => {
+      delete window.__triggerCampusFlyOver;
+    };
+  }, []);
+
   // Recalculate target when selection changes
   useEffect(() => {
+    setIsFlyOver(false); // Stop flyover on selection
     let newLookAt = new THREE.Vector3(0, 2, 0);
     let newCamPos = new THREE.Vector3(0, 68, 88);
 
@@ -37,7 +53,6 @@ export function CameraRig() {
           const roomWorldX = building.position[0] + classroom.offset[0];
           const roomWorldZ = building.position[2] + classroom.offset[2];
 
-          // Find seat coordinates inside room
           const seat = classroom.layout?.seats?.find((s) => s.id === student.seatId);
           const seatRelX = seat ? seat.position[0] : 0;
           const seatRelY = seat ? seat.position[1] : 0.45;
@@ -48,7 +63,6 @@ export function CameraRig() {
           const studentWorldZ = roomWorldZ + seatRelZ;
 
           newLookAt.set(studentWorldX, studentWorldY, studentWorldZ);
-          // Position camera slightly elevated in front of student
           newCamPos.set(studentWorldX, studentWorldY + 1.2, studentWorldZ + 2.2);
         }
       }
@@ -85,9 +99,24 @@ export function CameraRig() {
     transitionTimer.current = 0;
   }, [selectedBuildingId, selectedFloorLevel, selectedClassroomId, selectedStudentId, explodedHeight, students]);
 
-  // Smooth lerp frame loop
+  // Smooth lerp frame loop & optional flyover
   useFrame((state, delta) => {
     if (!controlsRef.current) return;
+
+    if (isFlyOver) {
+      flyOverProgress.current += delta * 0.25;
+      const angle = flyOverProgress.current;
+      const radius = 105;
+      camera.position.x = Math.sin(angle) * radius;
+      camera.position.z = Math.cos(angle) * radius;
+      camera.position.y = 70 + Math.sin(angle * 2) * 8;
+      controlsRef.current.target.set(0, 5, 0);
+      controlsRef.current.update();
+      if (flyOverProgress.current > Math.PI * 2) {
+        setIsFlyOver(false);
+      }
+      return;
+    }
 
     if (isTransitioning) {
       transitionTimer.current += delta;
@@ -116,9 +145,8 @@ export function CameraRig() {
       dampingFactor={0.06}
       maxPolarAngle={Math.PI / 2.05}
       minDistance={1.2}
-      maxDistance={220}
+      maxDistance={240}
       target={[0, 2, 0]}
     />
   );
 }
-

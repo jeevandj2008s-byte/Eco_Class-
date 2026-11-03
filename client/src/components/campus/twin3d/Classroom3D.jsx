@@ -11,7 +11,6 @@ export function Classroom3D({ classroom, buildingId, floorLevel }) {
   const selectClassroom = useTwin3DStore((s) => s.selectClassroom);
   const showLabels = useTwin3DStore((s) => s.showLabels);
   const students = useTwin3DStore((s) => s.students);
-  const openAddModal = useTwin3DStore((s) => s.openAddModal);
 
   const isSelected = selectedClassroomId === id;
 
@@ -43,92 +42,110 @@ export function Classroom3D({ classroom, buildingId, floorLevel }) {
         selectClassroom(id);
       }}
     >
-      {/* 1. Floor Slab */}
+      {/* 1. Floor Slab (Warm institutional wood/sand finish contrasting with cool glass) */}
       <mesh position={[0, 0.05, 0]} receiveShadow>
         <boxGeometry args={[width - 0.1, 0.1, depth - 0.1]} />
         <meshStandardMaterial
-          color={isSelected ? '#1f273d' : '#141824'}
+          color={isSelected ? '#25324d' : '#1c2230'}
           roughness={0.7}
           metalness={0.1}
         />
       </mesh>
 
-      {/* 2. Perimeter Walls */}
+      {/* 2. Perimeter Walls (Warm Sand / Beige tone on inside) */}
       {/* Back Wall */}
       <mesh position={[0, wallHeight / 2, depth / 2]} castShadow receiveShadow>
         <boxGeometry args={[width, wallHeight, 0.15]} />
-        <meshStandardMaterial
-          color="#1e2230"
-          roughness={0.8}
-        />
+        <meshStandardMaterial color="#2d3342" roughness={0.75} />
       </mesh>
 
       {/* Left Wall */}
       <mesh position={[-width / 2, wallHeight / 2, 0]} castShadow receiveShadow>
         <boxGeometry args={[0.15, wallHeight, depth]} />
-        <meshStandardMaterial
-          color="#1b1f2c"
-          roughness={0.8}
-        />
+        <meshStandardMaterial color="#262b38" roughness={0.75} />
       </mesh>
 
       {/* Right Wall */}
       <mesh position={[width / 2, wallHeight / 2, 0]} castShadow receiveShadow>
         <boxGeometry args={[0.15, wallHeight, depth]} />
-        <meshStandardMaterial
-          color="#1b1f2c"
-          roughness={0.8}
-        />
+        <meshStandardMaterial color="#262b38" roughness={0.75} />
       </mesh>
 
-      {/* Front Wall (where whiteboard sits) */}
+      {/* Front Wall (where teaching board sits) */}
       <mesh position={[0, wallHeight / 2, -depth / 2]} castShadow receiveShadow>
         <boxGeometry args={[width, wallHeight, 0.15]} />
-        <meshStandardMaterial
-          color="#1e2230"
-          roughness={0.8}
-        />
+        <meshStandardMaterial color="#2d3342" roughness={0.75} />
       </mesh>
 
-      {/* Whiteboard Surface */}
+      {/* 3. Teaching Board (Green Chalkboard / Whiteboard Hybrid) */}
       <mesh position={[0, 1.8, -depth / 2 + 0.1]} receiveShadow>
-        <boxGeometry args={[Math.min(3.8, width * 0.45), 1.3, 0.04]} />
+        <boxGeometry args={[Math.min(4.2, width * 0.5), 1.35, 0.04]} />
         <meshStandardMaterial
-          color="#f8fafc"
-          roughness={0.2}
+          color="#164e3f"
+          roughness={0.3}
           metalness={0.1}
         />
       </mesh>
-
-      {/* Whiteboard Frame border */}
+      {/* Metallic Board Frame Border */}
       <mesh position={[0, 1.8, -depth / 2 + 0.08]}>
-        <boxGeometry args={[Math.min(3.8, width * 0.45) + 0.1, 1.4, 0.02]} />
-        <meshStandardMaterial color="#38bdf8" roughness={0.4} metalness={0.8} />
+        <boxGeometry args={[Math.min(4.2, width * 0.5) + 0.12, 1.45, 0.02]} />
+        <meshStandardMaterial color="#94a3b8" roughness={0.3} metalness={0.8} />
       </mesh>
 
-      {/* Corridor Glass Wall / Entry Doorway Partition */}
-      <mesh position={[0, wallHeight / 2, depth / 2 - 0.1]}>
-        <boxGeometry args={[width * 0.7, wallHeight, 0.05]} />
-        <meshStandardMaterial
-          color="#38bdf8"
-          transparent
-          opacity={0.12}
-          roughness={0.1}
-          metalness={0.9}
-        />
-      </mesh>
+      {/* 4. Standing Teacher Figure at Front */}
+      <group position={[0.8, 0, -depth / 2 + 1.4]} rotation={[0, Math.PI, 0]}>
+        {/* Head */}
+        <mesh position={[0, 1.72, 0]} castShadow>
+          <sphereGeometry args={[0.13, 10, 10]} />
+          <meshStandardMaterial color="#fed7aa" roughness={0.6} />
+        </mesh>
+        {/* Torso (Formal Teacher Blazer) */}
+        <mesh position={[0, 1.25, 0]} castShadow>
+          <boxGeometry args={[0.38, 0.58, 0.22]} />
+          <meshStandardMaterial color="#1e3a8a" roughness={0.5} />
+        </mesh>
+        {/* Standing Legs */}
+        <mesh position={[-0.1, 0.5, 0]} castShadow>
+          <boxGeometry args={[0.14, 0.95, 0.16]} />
+          <meshStandardMaterial color="#1f2937" roughness={0.6} />
+        </mesh>
+        <mesh position={[0.1, 0.5, 0]} castShadow>
+          <boxGeometry args={[0.14, 0.95, 0.16]} />
+          <meshStandardMaterial color="#1f2937" roughness={0.6} />
+        </mesh>
+      </group>
 
-      {/* Ceiling LED Light Strips */}
+      {/* 5. Corridor Glass Partition with Door Cutout */}
+      <group position={[0, wallHeight / 2, depth / 2 - 0.1]}>
+        {/* Glass Wall Section */}
+        <mesh position={[-width * 0.15, 0, 0]}>
+          <boxGeometry args={[width * 0.65, wallHeight, 0.05]} />
+          <meshStandardMaterial
+            color="#60a5fa"
+            transparent
+            opacity={0.18}
+            roughness={0.1}
+            metalness={0.9}
+          />
+        </mesh>
+        {/* Door Frame & Header */}
+        <mesh position={[width * 0.35, wallHeight / 2 - 0.3, 0]}>
+          <boxGeometry args={[1.4, 0.6, 0.08]} />
+          <meshStandardMaterial color="#334155" />
+        </mesh>
+      </group>
+
+      {/* 6. Warm Ceiling Lighting Strip */}
       <mesh position={[0, wallHeight - 0.1, 0]}>
-        <boxGeometry args={[width * 0.6, 0.05, 0.15]} />
+        <boxGeometry args={[width * 0.65, 0.04, 0.2]} />
         <meshStandardMaterial
-          color="#ffffff"
-          emissive="#e0f2fe"
-          emissiveIntensity={1.2}
+          color="#fef3c7"
+          emissive="#fde68a"
+          emissiveIntensity={1.3}
         />
       </mesh>
 
-      {/* Floating 3D Room Badge */}
+      {/* 7. Floating 3D Room Label */}
       {showLabels && (
         <Html
           position={[0, wallHeight + 0.6, 0]}
@@ -154,7 +171,7 @@ export function Classroom3D({ classroom, buildingId, floorLevel }) {
                 <span className="w-1.5 h-1.5 rounded-full bg-[#9ff0ec]" />
                 <span className="text-xs font-bold text-white tracking-tight">{code || name}</span>
               </div>
-              <span className="text-[9px] text-[#c9c3da] font-mono">{department || 'BIT'}</span>
+              <span className="text-[9px] text-[#c9c3da] font-mono">{department || 'Academic'}</span>
             </div>
 
             <div className="pl-1.5 border-l border-white/10 flex flex-col items-end">
@@ -169,4 +186,3 @@ export function Classroom3D({ classroom, buildingId, floorLevel }) {
     </group>
   );
 }
-

@@ -4,7 +4,7 @@ import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { useTwin3DStore } from '../../../store/useTwin3DStore.js';
-import { findClassroomHierarchy, FLOOR_HEIGHT } from '../../../config/buildings.config.js';
+import { findClassroomHierarchy, FLOOR_HEIGHT, ANIMATION_CONFIG } from '../../../config/buildings.config.js';
 
 const tempObj = new THREE.Object3D();
 const tempColor = new THREE.Color();
@@ -92,7 +92,7 @@ export function InstancedStudents() {
 
   // Subtle idle breathing animation
   useFrame((state) => {
-    if (!animateStudents || !meshRef.current || studentData.length === 0) return;
+    if (!animateStudents || !ANIMATION_CONFIG.enabled || !ANIMATION_CONFIG.studentsIdle || !meshRef.current || studentData.length === 0) return;
     const t = state.clock.getElapsedTime();
 
     // Subtle sinusoidal breathing on Y axis

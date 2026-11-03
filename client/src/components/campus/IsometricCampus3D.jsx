@@ -1,6 +1,17 @@
 import React, { useRef, useEffect, useState, useMemo, useCallback } from 'react';
 import { useTwin3DStore } from '../../store/useTwin3DStore.js';
-import { PROCESSED_BUILDINGS, FLOOR_HEIGHT, findClassroomHierarchy, BUILDINGS_CONFIG } from '../../config/buildings.config.js';
+import {
+  PROCESSED_BUILDINGS,
+  FLOOR_HEIGHT,
+  findClassroomHierarchy,
+  BUILDINGS_CONFIG,
+  PARKING_CONFIG,
+  BLOCK_LABELS_CONFIG,
+  CONNECTING_BRIDGES,
+  ANIMATION_CONFIG
+} from '../../config/buildings.config.js';
+
+const CAR_COLORS = ['#0284c7', '#dc2626', '#f59e0b', '#10b981', '#ffffff', '#7c3aed'];
 
 export function IsometricCampus3D({ telemetry }) {
   const canvasRef = useRef(null);
@@ -70,7 +81,7 @@ export function IsometricCampus3D({ telemetry }) {
           const sy = floorY + (seat ? seat.position[1] : 0.45);
 
           tLook = [sx, sy, sz];
-          tZoom = 38.0; // High zoom into student bench
+          tZoom = 38.0;
           tRotX = 0.45;
         }
       }
@@ -83,7 +94,7 @@ export function IsometricCampus3D({ telemetry }) {
         const rz = building.position[2] + classroom.offset[2];
 
         tLook = [rx, floorY + 1.2, rz];
-        tZoom = 24.0; // Classroom interior zoom
+        tZoom = 24.0;
         tRotX = 0.52;
       }
     } else if (selectedBuildingId) {
@@ -152,34 +163,29 @@ export function IsometricCampus3D({ telemetry }) {
       const viewW = canvas.clientWidth;
       const viewH = canvas.clientHeight;
 
-      // Handle Smooth Flight Lerp
+      // Smooth Flight Lerp
       const ft = flightTarget.current;
       const cam = cameraState.current;
       if (ft.active) {
         ft.progress = Math.min(1.0, ft.progress + 0.04);
-        const ease = 0.5 - Math.cos(ft.progress * Math.PI) / 2;
-
         cam.zoom += (ft.targetZoom - cam.zoom) * 0.1;
         cam.rotY += (ft.targetRotY - cam.rotY) * 0.1;
         cam.rotX += (ft.targetRotX - cam.rotX) * 0.1;
         cam.targetLookAt[0] += (ft.targetLookAt[0] - cam.targetLookAt[0]) * 0.1;
         cam.targetLookAt[1] += (ft.targetLookAt[1] - cam.targetLookAt[1]) * 0.1;
         cam.targetLookAt[2] += (ft.targetLookAt[2] - cam.targetLookAt[2]) * 0.1;
-
-        if (ft.progress >= 0.99) {
-          ft.active = false;
-        }
+        if (ft.progress >= 0.99) ft.active = false;
       }
 
-      // Background Cyber Sky
-      ctx.fillStyle = 'rgba(7, 8, 14, 0.35)';
+      // Atmospheric Translucent Tint (allowing cosmic stars to show through)
+      ctx.fillStyle = 'rgba(7, 8, 14, 0.45)';
       ctx.fillRect(0, 0, viewW, viewH);
 
       // 1. Campus Ground Grid
       ctx.strokeStyle = 'rgba(0, 107, 255, 0.08)';
       ctx.lineWidth = 1;
-      const gridSize = 70;
-      const step = 7;
+      const gridSize = 75;
+      const step = 8;
       for (let g = -gridSize; g <= gridSize; g += step) {
         const p1 = project3D(g, 0, -gridSize, viewW, viewH);
         const p2 = project3D(g, 0, gridSize, viewW, viewH);
@@ -196,12 +202,12 @@ export function IsometricCampus3D({ telemetry }) {
         ctx.stroke();
       }
 
-      // Main Road (North Road)
+      // North Highway Road
       const r1 = project3D(-75, 0, -62, viewW, viewH);
       const r2 = project3D(75, 0, -62, viewW, viewH);
       const r3 = project3D(75, 0, -50, viewW, viewH);
       const r4 = project3D(-75, 0, -50, viewW, viewH);
-      ctx.fillStyle = '#10141f';
+      ctx.fillStyle = '#0f1422';
       ctx.beginPath();
       ctx.moveTo(r1.x, r1.y);
       ctx.lineTo(r2.x, r2.y);
@@ -210,30 +216,102 @@ export function IsometricCampus3D({ telemetry }) {
       ctx.closePath();
       ctx.fill();
 
-      // Road Divider line
-      const rd1 = project3D(-70, 0.05, -56, viewW, viewH);
-      const rd2 = project3D(70, 0.05, -56, viewW, viewH);
-      ctx.strokeStyle = 'rgba(251, 191, 36, 0.6)';
-      ctx.lineWidth = 1.5;
-      ctx.setLineDash([8, 6]);
+      // Access Road to Parking & Entrance
+      const pr1 = project3D(-4, 0, 50, viewW, viewH);
+      const pr2 = project3D(6, 0, 50, viewW, viewH);
+      const pr3 = project3D(6, 0, 20, viewW, viewH);
+      const pr4 = project3D(-4, 0, 20, viewW, viewH);
+      ctx.fillStyle = '#101524';
       ctx.beginPath();
-      ctx.moveTo(rd1.x, rd1.y);
-      ctx.lineTo(rd2.x, rd2.y);
-      ctx.stroke();
-      ctx.setLineDash([]);
+      ctx.moveTo(pr1.x, pr1.y);
+      ctx.lineTo(pr2.x, pr2.y);
+      ctx.lineTo(pr3.x, pr3.y);
+      ctx.lineTo(pr4.x, pr4.y);
+      ctx.closePath();
+      ctx.fill();
 
-      // 2. Render Buildings & Interiors
+      // 2. Render Parking Lot Facility
+      const pk = PARKING_CONFIG;
+      const pw2 = pk.width / 2;
+      const pd2 = pk.depth / 2;
+      const pk1 = project3D(pk.position[0] - pw2, 0, pk.position[2] - pd2, viewW, viewH);
+      const pk2 = project3D(pk.position[0] + pw2, 0, pk.position[2] - pd2, viewW, viewH);
+      const pk3 = project3D(pk.position[0] + pw2, 0, pk.position[2] + pd2, viewW, viewH);
+      const pk4 = project3D(pk.position[0] - pw2, 0, pk.position[2] + pd2, viewW, viewH);
+
+      ctx.fillStyle = '#0e131f';
+      ctx.beginPath();
+      ctx.moveTo(pk1.x, pk1.y);
+      ctx.lineTo(pk2.x, pk2.y);
+      ctx.lineTo(pk3.x, pk3.y);
+      ctx.lineTo(pk4.x, pk4.y);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#006bff';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+
+      // Render Parked Cars in Parking Lot
+      for (let r = 0; r < pk.rows; r++) {
+        const pz = pk.position[2] + (r === 0 ? -pd2 / 2 : pd2 / 2);
+        for (let c = 0; c < pk.baysPerRow; c++) {
+          if ((r + c) % 3 === 0) continue; // Some vacant bays
+          const px = pk.position[0] - pw2 + 3.0 + c * pk.bayWidth;
+          const cp = project3D(px, 0.35, pz, viewW, viewH);
+          ctx.fillStyle = CAR_COLORS[(r * 3 + c) % CAR_COLORS.length];
+          ctx.beginPath();
+          ctx.roundRect(cp.x - 7, cp.y - 12, 14, 24, 3);
+          ctx.fill();
+        }
+      }
+
+      // Animated Barrier Arm at Parking Gate
+      const gateP = project3D(pk.position[0] + pw2 - 3.5, 1.2, pk.position[2] + pd2, viewW, viewH);
+      const barrierAngle = ANIMATION_CONFIG.barrierArm ? ((Math.sin(time * 1.4) + 1) / 2) * 0.7 : 0;
+      ctx.strokeStyle = '#ef4444';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(gateP.x, gateP.y);
+      ctx.lineTo(gateP.x - Math.cos(barrierAngle) * 22, gateP.y - Math.sin(barrierAngle) * 22);
+      ctx.stroke();
+
+      // Parking Floating Sign
+      if (showLabels && cam.zoom <= 16) {
+        const pSign = project3D(pk.position[0], 5.0, pk.position[2], viewW, viewH);
+        ctx.fillStyle = '#006bff';
+        ctx.beginPath();
+        ctx.roundRect(pSign.x - 30, pSign.y - 10, 60, 20, 6);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 10px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('PARKING', pSign.x, pSign.y + 4);
+      }
+
+      // 3. Render Sky-Bridges between blocks
+      CONNECTING_BRIDGES.forEach((br) => {
+        const bp1 = project3D(br.start[0], br.start[1], br.start[2], viewW, viewH);
+        const bp2 = project3D(br.end[0], br.end[1], br.end[2], viewW, viewH);
+        ctx.strokeStyle = '#60a5fa';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(bp1.x, bp1.y);
+        ctx.lineTo(bp2.x, bp2.y);
+        ctx.stroke();
+      });
+
+      // 4. Render Buildings & Courtyard
       PROCESSED_BUILDINGS.forEach((b) => {
         const isBSelected = selectedBuildingId === b.id;
         const isInspecting = isBSelected && (selectedFloorLevel !== null || selectedClassroomId !== null);
         const isCutaway = xrayMode || isInspecting;
 
-        // Foundation slab
         const hw = b.width / 2;
         const hd = b.depth / 2;
         const bx = b.position[0];
         const bz = b.position[2];
 
+        // Foundation slab
         const f1 = project3D(bx - hw, -0.2, bz - hd, viewW, viewH);
         const f2 = project3D(bx + hw, -0.2, bz - hd, viewW, viewH);
         const f3 = project3D(bx + hw, -0.2, bz + hd, viewW, viewH);
@@ -251,11 +329,37 @@ export function IsometricCampus3D({ telemetry }) {
         ctx.lineWidth = isBSelected ? 2 : 1;
         ctx.stroke();
 
+        // Courtyard Quad Garden for Block A
+        if (b.courtyard?.enabled) {
+          const cw2 = b.courtyard.width / 2;
+          const cd2 = b.courtyard.depth / 2;
+          const q1 = project3D(bx - cw2, 0.05, bz - cd2, viewW, viewH);
+          const q2 = project3D(bx + cw2, 0.05, bz - cd2, viewW, viewH);
+          const q3 = project3D(bx + cw2, 0.05, bz + cd2, viewW, viewH);
+          const q4 = project3D(bx - cw2, 0.05, bz + cd2, viewW, viewH);
+
+          ctx.fillStyle = '#0f3323';
+          ctx.beginPath();
+          ctx.moveTo(q1.x, q1.y);
+          ctx.lineTo(q2.x, q2.y);
+          ctx.lineTo(q3.x, q3.y);
+          ctx.lineTo(q4.x, q4.y);
+          ctx.closePath();
+          ctx.fill();
+
+          // Central Fountain Shimmer
+          const fountainP = project3D(bx, 0.25, bz, viewW, viewH);
+          ctx.fillStyle = '#0284c7';
+          ctx.beginPath();
+          ctx.arc(fountainP.x, fountainP.y, 8 + Math.sin(time * 3.0) * 1.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
         // Render Floors
         b.floors.forEach((floor) => {
           const floorY = (floor.level - 1) * FLOOR_HEIGHT + (floor.level - 1) * explodedHeight * 3.5;
           const isAbove = isBSelected && selectedFloorLevel !== null && floor.level > selectedFloorLevel;
-          if (xrayMode && isAbove) return; // Hide upper floors in X-ray
+          if (xrayMode && isAbove) return;
 
           const isFSelected = isBSelected && selectedFloorLevel === floor.level;
 
@@ -290,7 +394,7 @@ export function IsometricCampus3D({ telemetry }) {
             const c3 = project3D(rx + rw, floorY + 0.05, rz + rd, viewW, viewH);
             const c4 = project3D(rx - rw, floorY + 0.05, rz + rd, viewW, viewH);
 
-            ctx.fillStyle = isRSelected ? 'rgba(0, 107, 255, 0.25)' : 'rgba(22, 25, 36, 0.7)';
+            ctx.fillStyle = isRSelected ? 'rgba(0, 107, 255, 0.25)' : 'rgba(28, 34, 48, 0.8)';
             ctx.beginPath();
             ctx.moveTo(c1.x, c1.y);
             ctx.lineTo(c2.x, c2.y);
@@ -298,21 +402,28 @@ export function IsometricCampus3D({ telemetry }) {
             ctx.lineTo(c4.x, c4.y);
             ctx.closePath();
             ctx.fill();
-            ctx.strokeStyle = isRSelected ? '#9ff0ec' : 'rgba(255, 255, 255, 0.18)';
+            ctx.strokeStyle = isRSelected ? '#9ff0ec' : 'rgba(96, 165, 250, 0.25)';
             ctx.lineWidth = isRSelected ? 2 : 1;
             ctx.stroke();
 
-            // Front Whiteboard
+            // Teaching Green Board
             const wb1 = project3D(rx - 1.8, floorY + 1.2, rz - rd + 0.1, viewW, viewH);
             const wb2 = project3D(rx + 1.8, floorY + 1.2, rz - rd + 0.1, viewW, viewH);
-            ctx.strokeStyle = '#38bdf8';
+            ctx.strokeStyle = '#10b981';
             ctx.lineWidth = 2.5;
             ctx.beginPath();
             ctx.moveTo(wb1.x, wb1.y);
             ctx.lineTo(wb2.x, wb2.y);
             ctx.stroke();
 
-            // Benches & Desks inside classroom
+            // Standing Teacher Figure
+            const teachP = project3D(rx + 0.6, floorY + 0.9, rz - rd + 1.2, viewW, viewH);
+            ctx.fillStyle = '#1e3a8a';
+            ctx.beginPath();
+            ctx.arc(teachP.x, teachP.y, 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Desks
             const layout = room.layout;
             if (layout && layout.benches) {
               layout.benches.forEach((bench) => {
@@ -336,7 +447,6 @@ export function IsometricCampus3D({ telemetry }) {
                 ctx.closePath();
                 ctx.fill();
                 ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
-                ctx.lineWidth = 0.8;
                 ctx.stroke();
               });
             }
@@ -362,7 +472,7 @@ export function IsometricCampus3D({ telemetry }) {
           });
         });
 
-        // 3. Render Seated Students
+        // 5. Render Seated Students
         if (showStudents) {
           students.forEach((stu, idx) => {
             if (stu.buildingId !== b.id) return;
@@ -378,8 +488,7 @@ export function IsometricCampus3D({ telemetry }) {
             const sz = b.position[2] + classroom.offset[2] + seat.position[2];
             const sy = floorY + seat.position[1];
 
-            // Subtle breathing motion
-            const breathOffset = animateStudents ? Math.sin(time * 2.2 + idx * 0.4) * 0.04 : 0;
+            const breathOffset = (animateStudents && ANIMATION_CONFIG.studentsIdle) ? Math.sin(time * 2.2 + idx * 0.4) * 0.04 : 0;
             const headP = project3D(sx, sy + 0.65 + breathOffset, sz, viewW, viewH);
             const torsoP = project3D(sx, sy + 0.35 + breathOffset, sz, viewW, viewH);
 
@@ -426,13 +535,14 @@ export function IsometricCampus3D({ telemetry }) {
           });
         }
 
-        // Building Beacon Label (at roof)
+        // 6. Block Floating Billboard Label
         if (showLabels && cam.zoom <= 14) {
           const totalH = b.floorCount * FLOOR_HEIGHT + (b.floorCount - 1) * explodedHeight * 3.5;
           const beaconP = project3D(bx, totalH + 3.0, bz, viewW, viewH);
+          const labelCfg = BLOCK_LABELS_CONFIG.find((l) => l.id === b.id) || { shortName: b.code || b.name, name: b.name };
 
           ctx.font = 'bold 12px Inter, sans-serif';
-          const bText = `${b.name} (${b.code})`;
+          const bText = labelCfg.name;
           const bw = ctx.measureText(bText).width;
 
           ctx.fillStyle = isBSelected ? '#006bff' : 'rgba(19, 18, 25, 0.9)';
@@ -474,11 +584,11 @@ export function IsometricCampus3D({ telemetry }) {
   const handlePointerDown = (e) => {
     const cam = cameraState.current;
     cam.isDragging = true;
-    cam.isPanDrag = e.button === 2 || e.shiftKey; // Right-click or Shift-drag to pan
+    cam.isPanDrag = e.button === 2 || e.shiftKey;
     cam.dragStart = [e.clientX, e.clientY];
     cam.camStartRot = [cam.rotY, cam.rotX];
     cam.camStartPan = [...cam.pan];
-    flightTarget.current.active = false; // Cancel automatic lerp on user drag
+    flightTarget.current.active = false;
   };
 
   const handlePointerMove = (e) => {
@@ -497,7 +607,6 @@ export function IsometricCampus3D({ telemetry }) {
         cam.rotX = Math.max(0.15, Math.min(1.45, cam.camStartRot[1] + dy * 0.006));
       }
     } else {
-      // Raycast detection for students / classrooms on hover
       const rect = canvas.getBoundingClientRect();
       const mouseX = e.clientX - rect.left;
       const mouseY = e.clientY - rect.top;
@@ -534,7 +643,6 @@ export function IsometricCampus3D({ telemetry }) {
     const wasDraggingDist = Math.hypot(e.clientX - cam.dragStart[0], e.clientY - cam.dragStart[1]);
     cam.isDragging = false;
 
-    // Detect click if mouse barely moved
     if (wasDraggingDist < 5) {
       const canvas = canvasRef.current;
       if (!canvas) return;
@@ -542,7 +650,6 @@ export function IsometricCampus3D({ telemetry }) {
       const mouseX = e.clientX - rect.left;
       const mouseY = e.clientY - rect.top;
 
-      // 1. Check if clicked a student
       if (showStudents) {
         for (const stu of students) {
           const hierarchy = findClassroomHierarchy(stu.classroomId);
@@ -564,7 +671,6 @@ export function IsometricCampus3D({ telemetry }) {
         }
       }
 
-      // 2. Check if clicked a classroom
       for (const b of PROCESSED_BUILDINGS) {
         for (const f of b.floors) {
           for (const room of f.classrooms) {
@@ -581,7 +687,6 @@ export function IsometricCampus3D({ telemetry }) {
         }
       }
 
-      // 3. Check if clicked a building
       for (const b of PROCESSED_BUILDINGS) {
         const p = project3D(b.position[0], 2, b.position[2], canvas.clientWidth, canvas.clientHeight);
         if (Math.hypot(p.x - mouseX, p.y - mouseY) < b.width * cam.zoom * 0.35) {
@@ -615,9 +720,8 @@ export function IsometricCampus3D({ telemetry }) {
       {/* Engine Compatibility Pill */}
       <div className="absolute top-4 right-4 z-20 pointer-events-none px-3 py-1.5 rounded-xl bg-[#131219]/90 border border-emerald-500/30 text-[10px] text-emerald-300 font-mono flex items-center gap-2 shadow-[0_8px_24px_rgba(0,0,0,0.6)] backdrop-blur-md">
         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-        <span>3D Engine: Universal Canvas Acceleration</span>
+        <span>3D Engine: Universal Real-Time Twin</span>
       </div>
     </div>
   );
 }
-

@@ -3,163 +3,199 @@ import { Classroom3D } from './Classroom3D.jsx';
 import { FLOOR_HEIGHT } from '../../../config/buildings.config.js';
 import { useTwin3DStore } from '../../../store/useTwin3DStore.js';
 
-export function Floor3D({ floor, buildingWidth, buildingDepth, buildingId, courtyard }) {
+export function Floor3D({
+  floor,
+  buildingWidth,
+  buildingDepth,
+  buildingId,
+  courtyard,
+  theme = {
+    wallColor: '#dfdcd5',
+    trimColor: '#1e2638',
+    corniceColor: '#c8c4bc',
+    roofSlab: '#1e2433'
+  }
+}) {
   const { level, classrooms = [] } = floor;
 
   const selectedFloorLevel = useTwin3DStore((s) => s.selectedFloorLevel);
   const selectedBuildingId = useTwin3DStore((s) => s.selectedBuildingId);
-  const explodedHeight = useTwin3DStore((s) => s.explodedHeight);
 
-  // If a specific floor is selected, hide floors above it so the chosen floor is an isometric cutaway dollhouse
+  // Interior inspection mode
   const isInspectingFloor = selectedBuildingId === buildingId && selectedFloorLevel !== null;
+  const isSelectedFloor = isInspectingFloor && selectedFloorLevel === level;
   const isAboveSelected = isInspectingFloor && level > selectedFloorLevel;
+
+  // Upper floors are lifted away and hidden during floor cutaway inspection
   if (isAboveSelected) {
     return null;
   }
 
-  const isSelectedFloor = isInspectingFloor && selectedFloorLevel === level;
-  const floorY = (level - 1) * FLOOR_HEIGHT + (level - 1) * explodedHeight * 3.5;
+  const floorY = (level - 1) * FLOOR_HEIGHT;
 
   const hasCourtyard = courtyard && courtyard.enabled;
   const cw = hasCourtyard ? courtyard.width : 0;
   const cd = hasCourtyard ? courtyard.depth : 0;
 
-  const slabW = buildingWidth - 0.3;
-  const slabD = buildingDepth - 0.3;
+  const slabW = buildingWidth - 0.2;
+  const slabD = buildingDepth - 0.2;
   const sideW = (slabW - cw) / 2;
   const sideD = (slabD - cd) / 2;
 
   return (
     <group name={`floor-${level}`} position={[0, floorY, 0]}>
-      {/* 1. Volumetric Floor Base Plate Slab */}
+      {/* 1. Volumetric Floor Base Slab (Solid & Opaque) */}
       {hasCourtyard ? (
         <group name="courtyard-floor-slabs">
           {/* North Wing */}
-          <mesh position={[0, -0.12, -(cd / 2 + sideD / 2)]} receiveShadow>
-            <boxGeometry args={[slabW, 0.24, sideD]} />
+          <mesh position={[0, -0.14, -(cd / 2 + sideD / 2)]} receiveShadow>
+            <boxGeometry args={[slabW, 0.28, sideD]} />
             <meshStandardMaterial
-              color={isSelectedFloor ? '#1c2436' : '#121622'}
-              roughness={0.6}
-              metalness={0.2}
+              color={isSelectedFloor ? '#1e2538' : '#141824'}
+              roughness={0.7}
+              metalness={0.15}
             />
           </mesh>
           {/* South Wing */}
-          <mesh position={[0, -0.12, (cd / 2 + sideD / 2)]} receiveShadow>
-            <boxGeometry args={[slabW, 0.24, sideD]} />
+          <mesh position={[0, -0.14, (cd / 2 + sideD / 2)]} receiveShadow>
+            <boxGeometry args={[slabW, 0.28, sideD]} />
             <meshStandardMaterial
-              color={isSelectedFloor ? '#1c2436' : '#121622'}
-              roughness={0.6}
-              metalness={0.2}
+              color={isSelectedFloor ? '#1e2538' : '#141824'}
+              roughness={0.7}
+              metalness={0.15}
             />
           </mesh>
           {/* West Wing */}
-          <mesh position={[-(cw / 2 + sideW / 2), -0.12, 0]} receiveShadow>
-            <boxGeometry args={[sideW, 0.24, cd]} />
+          <mesh position={[-(cw / 2 + sideW / 2), -0.14, 0]} receiveShadow>
+            <boxGeometry args={[sideW, 0.28, cd]} />
             <meshStandardMaterial
-              color={isSelectedFloor ? '#1c2436' : '#121622'}
-              roughness={0.6}
-              metalness={0.2}
+              color={isSelectedFloor ? '#1e2538' : '#141824'}
+              roughness={0.7}
+              metalness={0.15}
             />
           </mesh>
           {/* East Wing */}
-          <mesh position={[(cw / 2 + sideW / 2), -0.12, 0]} receiveShadow>
-            <boxGeometry args={[sideW, 0.24, cd]} />
+          <mesh position={[(cw / 2 + sideW / 2), -0.14, 0]} receiveShadow>
+            <boxGeometry args={[sideW, 0.28, cd]} />
             <meshStandardMaterial
-              color={isSelectedFloor ? '#1c2436' : '#121622'}
-              roughness={0.6}
-              metalness={0.2}
+              color={isSelectedFloor ? '#1e2538' : '#141824'}
+              roughness={0.7}
+              metalness={0.15}
             />
           </mesh>
 
-          {/* Courtyard Glass Railing Loop */}
-          <group name="courtyard-railings">
-            <mesh position={[0, 0.5, -cd / 2]}>
-              <boxGeometry args={[cw, 1.0, 0.05]} />
-              <meshStandardMaterial color="#60a5fa" transparent opacity={0.35} roughness={0.05} metalness={0.9} />
-            </mesh>
-            <mesh position={[0, 0.5, cd / 2]}>
-              <boxGeometry args={[cw, 1.0, 0.05]} />
-              <meshStandardMaterial color="#60a5fa" transparent opacity={0.35} roughness={0.05} metalness={0.9} />
-            </mesh>
-            <mesh position={[-cw / 2, 0.5, 0]}>
-              <boxGeometry args={[0.05, 1.0, cd]} />
-              <meshStandardMaterial color="#60a5fa" transparent opacity={0.35} roughness={0.05} metalness={0.9} />
-            </mesh>
-            <mesh position={[cw / 2, 0.5, 0]}>
-              <boxGeometry args={[0.05, 1.0, cd]} />
-              <meshStandardMaterial color="#60a5fa" transparent opacity={0.35} roughness={0.05} metalness={0.9} />
-            </mesh>
-          </group>
+          {/* Courtyard Railings when Cutaway */}
+          {isSelectedFloor && (
+            <group name="courtyard-railings">
+              <mesh position={[0, 0.5, -cd / 2]}>
+                <boxGeometry args={[cw, 1.0, 0.08]} />
+                <meshStandardMaterial color="#64748b" metalness={0.8} roughness={0.3} />
+              </mesh>
+              <mesh position={[0, 0.5, cd / 2]}>
+                <boxGeometry args={[cw, 1.0, 0.08]} />
+                <meshStandardMaterial color="#64748b" metalness={0.8} roughness={0.3} />
+              </mesh>
+              <mesh position={[-cw / 2, 0.5, 0]}>
+                <boxGeometry args={[0.08, 1.0, cd]} />
+                <meshStandardMaterial color="#64748b" metalness={0.8} roughness={0.3} />
+              </mesh>
+              <mesh position={[cw / 2, 0.5, 0]}>
+                <boxGeometry args={[0.08, 1.0, cd]} />
+                <meshStandardMaterial color="#64748b" metalness={0.8} roughness={0.3} />
+              </mesh>
+            </group>
+          )}
         </group>
       ) : (
-        <mesh position={[0, -0.12, 0]} receiveShadow>
-          <boxGeometry args={[slabW, 0.24, slabD]} />
+        <mesh position={[0, -0.14, 0]} receiveShadow>
+          <boxGeometry args={[slabW, 0.28, slabD]} />
           <meshStandardMaterial
-            color={isSelectedFloor ? '#1c2436' : '#121622'}
-            roughness={0.6}
-            metalness={0.2}
+            color={isSelectedFloor ? '#1e2538' : '#141824'}
+            roughness={0.7}
+            metalness={0.15}
           />
         </mesh>
       )}
 
-      {/* 2. Glass Curtain Perimeter Walls when in Dollhouse Cutaway */}
+      {/* 2. ISOMETRIC CUTAWAY LOW WALLS (Only rendered on the currently selected floor) */}
       {isSelectedFloor && (
-        <group name="floor-cutaway-glass-walls">
-          {/* North Glass Wall */}
-          <mesh position={[0, 1.2, -slabD / 2]}>
-            <boxGeometry args={[slabW, 2.4, 0.04]} />
-            <meshStandardMaterial color="#93c5fd" transparent opacity={0.3} roughness={0.05} metalness={0.95} />
+        <group name="floor-cutaway-perimeter-walls">
+          {/* North Low Wall */}
+          <mesh position={[0, 0.7, -slabD / 2]} castShadow receiveShadow>
+            <boxGeometry args={[slabW, 1.4, 0.3]} />
+            <meshStandardMaterial color={theme.wallColor} roughness={0.78} />
           </mesh>
-          {/* South Glass Wall */}
-          <mesh position={[0, 1.2, slabD / 2]}>
-            <boxGeometry args={[slabW, 2.4, 0.04]} />
-            <meshStandardMaterial color="#93c5fd" transparent opacity={0.3} roughness={0.05} metalness={0.95} />
+          {/* South Low Wall */}
+          <mesh position={[0, 0.7, slabD / 2]} castShadow receiveShadow>
+            <boxGeometry args={[slabW, 1.4, 0.3]} />
+            <meshStandardMaterial color={theme.wallColor} roughness={0.78} />
           </mesh>
-          {/* West Glass Wall */}
-          <mesh position={[-slabW / 2, 1.2, 0]}>
-            <boxGeometry args={[0.04, 2.4, slabD]} />
-            <meshStandardMaterial color="#93c5fd" transparent opacity={0.3} roughness={0.05} metalness={0.95} />
+          {/* West Low Wall */}
+          <mesh position={[-slabW / 2, 0.7, 0]} castShadow receiveShadow>
+            <boxGeometry args={[0.3, 1.4, slabD]} />
+            <meshStandardMaterial color={theme.wallColor} roughness={0.78} />
           </mesh>
-          {/* East Glass Wall */}
-          <mesh position={[slabW / 2, 1.2, 0]}>
-            <boxGeometry args={[0.04, 2.4, slabD]} />
-            <meshStandardMaterial color="#93c5fd" transparent opacity={0.3} roughness={0.05} metalness={0.95} />
+          {/* East Low Wall */}
+          <mesh position={[slabW / 2, 0.7, 0]} castShadow receiveShadow>
+            <boxGeometry args={[0.3, 1.4, slabD]} />
+            <meshStandardMaterial color={theme.wallColor} roughness={0.78} />
+          </mesh>
+
+          {/* Wall Top Coping Band */}
+          <mesh position={[0, 1.42, -slabD / 2]}>
+            <boxGeometry args={[slabW + 0.05, 0.06, 0.34]} />
+            <meshStandardMaterial color={theme.trimColor} roughness={0.5} />
+          </mesh>
+          <mesh position={[0, 1.42, slabD / 2]}>
+            <boxGeometry args={[slabW + 0.05, 0.06, 0.34]} />
+            <meshStandardMaterial color={theme.trimColor} roughness={0.5} />
+          </mesh>
+          <mesh position={[-slabW / 2, 1.42, 0]}>
+            <boxGeometry args={[0.34, 0.06, slabD + 0.05]} />
+            <meshStandardMaterial color={theme.trimColor} roughness={0.5} />
+          </mesh>
+          <mesh position={[slabW / 2, 1.42, 0]}>
+            <boxGeometry args={[0.34, 0.06, slabD + 0.05]} />
+            <meshStandardMaterial color={theme.trimColor} roughness={0.5} />
           </mesh>
         </group>
       )}
 
-      {/* 3. Open Staircase Core & Elevator Shaft */}
-      <group position={[-buildingWidth / 2 + 3.2, FLOOR_HEIGHT / 2, 0]}>
-        <mesh castShadow receiveShadow>
-          <boxGeometry args={[4.2, FLOOR_HEIGHT, 5.0]} />
-          <meshStandardMaterial color="#181d29" roughness={0.6} metalness={0.2} />
-        </mesh>
-        {[0, 1, 2, 3, 4].map((step) => (
-          <mesh key={step} position={[-0.8 + step * 0.35, -FLOOR_HEIGHT / 2 + step * 0.65 + 0.3, 0]}>
-            <boxGeometry args={[0.4, 0.18, 2.2]} />
-            <meshStandardMaterial color="#334155" roughness={0.4} />
+      {/* 3. Open Staircase Core & Elevator Penthouse */}
+      {isSelectedFloor && (
+        <group position={[-buildingWidth / 2 + 3.4, FLOOR_HEIGHT / 2, 0]}>
+          <mesh castShadow receiveShadow>
+            <boxGeometry args={[4.2, FLOOR_HEIGHT, 5.0]} />
+            <meshStandardMaterial color="#1a202c" roughness={0.65} metalness={0.2} />
           </mesh>
-        ))}
-        {/* Floor Level Badge */}
-        <mesh position={[2.15, 0.4, 0]}>
-          <boxGeometry args={[0.05, 0.8, 1.2]} />
-          <meshStandardMaterial
-            color={isSelectedFloor ? '#9ff0ec' : '#006bff'}
-            emissive={isSelectedFloor ? '#9ff0ec' : '#006bff'}
-            emissiveIntensity={isSelectedFloor ? 0.9 : 0.3}
-          />
-        </mesh>
-      </group>
+          {[0, 1, 2, 3, 4].map((step) => (
+            <mesh key={step} position={[-0.8 + step * 0.35, -FLOOR_HEIGHT / 2 + step * 0.65 + 0.3, 0]}>
+              <boxGeometry args={[0.4, 0.18, 2.2]} />
+              <meshStandardMaterial color="#334155" roughness={0.4} />
+            </mesh>
+          ))}
+          {/* Floor Level Core Plaque */}
+          <mesh position={[2.15, 0.4, 0]}>
+            <boxGeometry args={[0.05, 0.8, 1.2]} />
+            <meshStandardMaterial
+              color="#006bff"
+              emissive="#006bff"
+              emissiveIntensity={0.6}
+            />
+          </mesh>
+        </group>
+      )}
 
-      {/* 4. Child Classrooms with Real 3D Benches, Students and Boards */}
-      {classrooms.map((room) => (
-        <Classroom3D
-          key={room.id}
-          classroom={room}
-          buildingId={buildingId}
-          floorLevel={level}
-        />
-      ))}
+      {/* 4. CLASSROOMS & SEATED STUDENTS: Rendered ONLY on the selected cutaway floor */}
+      {isSelectedFloor &&
+        classrooms.map((room) => (
+          <Classroom3D
+            key={room.id}
+            classroom={room}
+            buildingId={buildingId}
+            floorLevel={level}
+          />
+        ))}
     </group>
   );
 }

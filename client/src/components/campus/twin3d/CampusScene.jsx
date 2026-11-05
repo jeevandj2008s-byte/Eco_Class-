@@ -32,12 +32,13 @@ export function CampusScene({ telemetry }) {
 
   return (
     <>
-      {/* 1. Atmospheric Soft Sunlight & Specular Lighting */}
-      <ambientLight intensity={0.7} color="#cbd5e1" />
-      <hemisphereLight intensity={0.45} color="#38bdf8" groundColor="#060814" />
+      {/* 1. Atmospheric Architectural Sunlight & Fill Lighting */}
+      <ambientLight intensity={0.65} color="#e2e8f0" />
+      <hemisphereLight intensity={0.4} color="#bfdbfe" groundColor="#0f172a" />
       <directionalLight
         position={[65, 95, 55]}
-        intensity={1.4}
+        intensity={1.5}
+        color="#fffbf2"
         castShadow
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
@@ -46,11 +47,12 @@ export function CampusScene({ telemetry }) {
         shadow-camera-right={95}
         shadow-camera-top={95}
         shadow-camera-bottom={-95}
+        shadow-bias={-0.0005}
       />
       {/* Warm Interior Lighting Glow */}
-      <pointLight position={[-15, 20, 10]} intensity={0.5} color="#fef3c7" distance={130} />
+      <pointLight position={[-15, 20, 10]} intensity={0.4} color="#fef3c7" distance={130} />
       {/* Cool Specular Violet Backfill Rim Light */}
-      <pointLight position={[-50, 40, -50]} intensity={0.4} color="#a78bfa" distance={160} />
+      <pointLight position={[-50, 40, -50]} intensity={0.3} color="#a78bfa" distance={160} />
 
       {/* 2. Campus Grounds, Roads, Perimeter Wall & Main Gate */}
       <group name="campus-terrain">

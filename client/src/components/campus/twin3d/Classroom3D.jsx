@@ -187,19 +187,19 @@ export function Classroom3D({ classroom, buildingId, floorLevel }) {
       {/* 5. REAL 3D BENCHES IN NEAT ROWS & SEATED 3D STUDENTS */}
       {layout?.benches?.map((bench) => (
         <group key={bench.id} position={bench.position}>
-          {/* Bench Tabletop */}
+          {/* Bench Warm Wooden Tabletop */}
           <mesh position={[0, 0.725, 0]} castShadow receiveShadow>
             <boxGeometry args={[bench.width, 0.045, bench.depth]} />
-            <meshStandardMaterial color="#334155" roughness={0.4} metalness={0.2} />
+            <meshStandardMaterial color="#854d0e" roughness={0.5} metalness={0.05} />
           </mesh>
           {/* Steel Frame Legs */}
           <mesh position={[-bench.width * 0.46, 0.35, 0]}>
             <boxGeometry args={[0.04, 0.7, bench.depth * 0.85]} />
-            <meshStandardMaterial color="#0f172a" metalness={0.8} />
+            <meshStandardMaterial color="#1e293b" metalness={0.8} roughness={0.3} />
           </mesh>
           <mesh position={[bench.width * 0.46, 0.35, 0]}>
             <boxGeometry args={[0.04, 0.7, bench.depth * 0.85]} />
-            <meshStandardMaterial color="#0f172a" metalness={0.8} />
+            <meshStandardMaterial color="#1e293b" metalness={0.8} roughness={0.3} />
           </mesh>
         </group>
       ))}

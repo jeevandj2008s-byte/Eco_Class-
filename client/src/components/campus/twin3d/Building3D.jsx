@@ -3,15 +3,16 @@ import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { Floor3D } from './Floor3D.jsx';
-import { FLOOR_HEIGHT, BLOCK_LABELS_CONFIG, ANIMATION_CONFIG } from '../../../config/buildings.config.js';
+import { FLOOR_HEIGHT, ANIMATION_CONFIG } from '../../../config/buildings.config.js';
 import { useTwin3DStore } from '../../../store/useTwin3DStore.js';
 
 export function Building3D({ building, telemetry }) {
-  const { id, name, code, color, position, width, depth, floorCount, floors = [], courtyard } = building;
+  const { id, name, code, shortName, baselineKw, accentColor = '#38bdf8', position, width, depth, floorCount, floors = [], courtyard } = building;
 
   const flagMeshRef = useRef();
   const fountainWaterRef = useRef();
   const [hoveredFloor, setHoveredFloor] = useState(null);
+  const [isBuildingHovered, setIsBuildingHovered] = useState(false);
 
   const selectedBuildingId = useTwin3DStore((s) => s.selectedBuildingId);
   const selectedFloorLevel = useTwin3DStore((s) => s.selectedFloorLevel);
@@ -21,6 +22,7 @@ export function Building3D({ building, telemetry }) {
   const showLabels = useTwin3DStore((s) => s.showLabels);
   const selectBuilding = useTwin3DStore((s) => s.selectBuilding);
   const selectFloor = useTwin3DStore((s) => s.selectFloor);
+  const students = useTwin3DStore((s) => s.students);
 
   const isSelected = selectedBuildingId === id;
   const isInspectingFloor = isSelected && selectedFloorLevel !== null;
@@ -31,31 +33,29 @@ export function Building3D({ building, telemetry }) {
   const totalHeight = floorCount * FLOOR_HEIGHT;
   const roofY = totalHeight + (floorCount - 1) * explodedHeight * 3.5;
 
-  const labelConfig = useMemo(() => {
-    return BLOCK_LABELS_CONFIG.find((l) => l.id === id) || {
-      name,
-      shortName: code || name,
-      accentColor: color || '#38bdf8',
-      entranceLabel: 'Main Entrance'
-    };
-  }, [id, name, code, color]);
-
-  const buildingTelemetry = useMemo(() => {
-    if (!telemetry?.buildings) return { realKw: 42, ghostKw: 31 };
+  // Real-time telemetry kW
+  const buildingKw = useMemo(() => {
+    if (!telemetry?.buildings) return baselineKw || 40;
     if (Array.isArray(telemetry.buildings)) {
-      return telemetry.buildings.find((b) => b.id === id || b.buildingId === id) || { realKw: 42, ghostKw: 31 };
+      const b = telemetry.buildings.find((x) => x.id === id || x.buildingId === id);
+      return b?.realKw || baselineKw || 40;
     }
-    return telemetry.buildings[id] || { realKw: 42, ghostKw: 31 };
-  }, [telemetry, id]);
+    return telemetry.buildings[id]?.realKw || baselineKw || 40;
+  }, [telemetry, id, baselineKw]);
+
+  // Students in this building
+  const buildingStudents = useMemo(() => {
+    return students.filter((s) => s.buildingId === id);
+  }, [students, id]);
 
   const hasCourtyard = courtyard && courtyard.enabled;
   const cw = hasCourtyard ? courtyard.width : 0;
   const cd = hasCourtyard ? courtyard.depth : 0;
 
-  // Exterior vertical architectural mullions / glass columns
-  const facadeMullions = useMemo(() => {
+  // Exterior vertical architectural columns
+  const facadePilasters = useMemo(() => {
     const cols = [];
-    const spacing = 6.0;
+    const spacing = 7.0;
     const halfW = width / 2;
     const halfD = depth / 2;
 
@@ -87,7 +87,6 @@ export function Building3D({ building, telemetry }) {
 
     if (ANIMATION_CONFIG.flagWave && flagMeshRef.current) {
       flagMeshRef.current.rotation.y = Math.sin(t * 3.0) * 0.15;
-      flagMeshRef.current.scale.x = 1.0 + Math.sin(t * 4.0) * 0.05;
     }
 
     if (ANIMATION_CONFIG.fountainWater && fountainWaterRef.current) {
@@ -99,25 +98,41 @@ export function Building3D({ building, telemetry }) {
     <group
       name={`building-${id}`}
       position={[position[0], 0, position[2]]}
+      onPointerOver={(e) => {
+        e.stopPropagation();
+        setIsBuildingHovered(true);
+      }}
+      onPointerOut={(e) => {
+        e.stopPropagation();
+        setIsBuildingHovered(false);
+      }}
       onClick={(e) => {
         e.stopPropagation();
         selectBuilding(id);
       }}
     >
-      {/* 1. Heavy Architectural Plinth Foundation */}
+      {/* 1. Heavy Volumetric Foundation Plinth */}
       <group position={[0, -0.4, 0]}>
         <mesh receiveShadow>
-          <boxGeometry args={[width + 2.0, 0.8, depth + 2.0]} />
-          <meshStandardMaterial color="#0b0e17" roughness={0.9} />
+          <boxGeometry args={[width + 1.8, 0.8, depth + 1.8]} />
+          <meshStandardMaterial
+            color="#0b0e17"
+            roughness={0.9}
+          />
         </mesh>
-        {/* Accent Plinth Water Table */}
         <mesh position={[0, 0.42, 0]} receiveShadow>
-          <boxGeometry args={[width + 0.8, 0.12, depth + 0.8]} />
-          <meshStandardMaterial color="#1e293b" roughness={0.6} metalness={0.4} />
+          <boxGeometry args={[width + 0.6, 0.12, depth + 0.6]} />
+          <meshStandardMaterial
+            color={isSelected ? '#006bff' : isBuildingHovered ? '#38bdf8' : '#1e293b'}
+            roughness={0.5}
+            metalness={0.4}
+            emissive={isSelected ? '#006bff' : isBuildingHovered ? '#38bdf8' : '#000000'}
+            emissiveIntensity={isSelected ? 0.6 : isBuildingHovered ? 0.3 : 0}
+          />
         </mesh>
       </group>
 
-      {/* 2. Floors & Interior Layout */}
+      {/* 2. Stacked Volumetric Floors (Each with its Classrooms, Real Benches & Seated Students) */}
       {floors.map((floor) => (
         <Floor3D
           key={floor.level}
@@ -129,7 +144,7 @@ export function Building3D({ building, telemetry }) {
         />
       ))}
 
-      {/* 3. Central Landscaped Quadrangle (Block A) */}
+      {/* 3. Central Courtyard Quadrangle (Block A) */}
       {hasCourtyard && (
         <group name="courtyard-quad-garden" position={[0, 0.02, 0]}>
           <mesh receiveShadow>
@@ -146,7 +161,7 @@ export function Building3D({ building, telemetry }) {
             <meshStandardMaterial color="#1f293d" roughness={0.6} />
           </mesh>
 
-          {/* Water Fountain */}
+          {/* Central Fountain */}
           <group position={[0, 0.2, 0]}>
             <mesh receiveShadow castShadow>
               <cylinderGeometry args={[2.4, 2.6, 0.4, 24]} />
@@ -164,25 +179,13 @@ export function Building3D({ building, telemetry }) {
                 metalness={0.8}
               />
             </mesh>
-            <mesh position={[0, 0.5, 0]} castShadow>
-              <cylinderGeometry args={[0.3, 0.4, 0.6, 12]} />
-              <meshStandardMaterial color="#475569" metalness={0.6} roughness={0.3} />
-            </mesh>
           </group>
 
           {/* Flag Pole */}
           <group position={[4.5, 0, 4.5]}>
-            <mesh position={[0, 0.2, 0]} castShadow>
-              <boxGeometry args={[1.0, 0.4, 1.0]} />
-              <meshStandardMaterial color="#475569" />
-            </mesh>
             <mesh position={[0, 4.0, 0]} castShadow>
               <cylinderGeometry args={[0.06, 0.08, 7.6, 12]} />
               <meshStandardMaterial color="#cbd5e1" metalness={0.9} roughness={0.2} />
-            </mesh>
-            <mesh position={[0, 7.85, 0]}>
-              <sphereGeometry args={[0.14, 10, 10]} />
-              <meshStandardMaterial color="#fbbf24" metalness={0.9} roughness={0.1} />
             </mesh>
             <mesh ref={flagMeshRef} position={[0.75, 7.0, 0]} castShadow>
               <boxGeometry args={[1.5, 0.9, 0.04]} />
@@ -192,81 +195,117 @@ export function Building3D({ building, telemetry }) {
         </group>
       )}
 
-      {/* 4. CRYSTAL-CLEAR LUXURY ARCHITECTURAL GLASS CURTAIN FACADE */}
-      <group name="luxury-glass-curtain-facade">
-        {/* Exterior Mullions / Vertical Aluminum Columns */}
-        {facadeMullions.map((c, i) => (
-          <mesh key={`mullion-${i}`} position={c} castShadow={!isCutaway}>
-            <boxGeometry args={[0.3, activeHeight, 0.3]} />
-            <meshStandardMaterial color="#1e2433" roughness={0.3} metalness={0.7} />
+      {/* 4. SOLID VOLUMETRIC FACADE, COLUMNS & INTERACTIVE FLOOR BANDS */}
+      <group name="volumetric-facade">
+        {/* Exterior Columns */}
+        {facadePilasters.map((c, i) => (
+          <mesh key={`col-${i}`} position={c} castShadow={!isCutaway} receiveShadow>
+            <boxGeometry args={[0.5, activeHeight, 0.5]} />
+            <meshStandardMaterial color="#1e2433" roughness={0.5} metalness={0.3} />
           </mesh>
         ))}
 
-        {/* Floor Slab Edge Architectural Bands */}
+        {/* Floor Slab Edges & Amber Glow Bands for Each Floor */}
         {floors.slice(0, activeFloorCount).map((f) => {
           const fY = (f.level - 1) * FLOOR_HEIGHT + (f.level - 1) * explodedHeight * 3.5;
           const isFSelected = isSelected && selectedFloorLevel === f.level;
           const isFHovered = hoveredFloor === f.level;
 
+          // Compute floor metrics for card
+          const floorStudents = students.filter(
+            (s) => s.buildingId === id && s.floorLevel === f.level
+          );
+          const totalFloorSeats = (f.classrooms || []).reduce(
+            (acc, r) => acc + (r.layout?.seats?.length || 24),
+            0
+          );
+          const floorPct = totalFloorSeats > 0 ? Math.round((floorStudents.length / totalFloorSeats) * 100) : 0;
+
           return (
             <group key={`facade-band-${f.level}`} position={[0, fY, 0]}>
-              {/* Floor Slab Edge Cornice Band */}
+              {/* Floor Slab Edge Cornice */}
               <mesh position={[0, 0.1, 0]}>
-                <boxGeometry args={[width + 0.4, 0.28, depth + 0.4]} />
+                <boxGeometry args={[width + 0.3, 0.26, depth + 0.3]} />
                 <meshStandardMaterial
-                  color={isFSelected ? '#006bff' : isFHovered ? '#38bdf8' : '#273144'}
-                  roughness={0.3}
-                  metalness={0.8}
-                  emissive={isFSelected ? '#006bff' : isFHovered ? '#38bdf8' : '#000000'}
-                  emissiveIntensity={isFSelected ? 0.6 : isFHovered ? 0.3 : 0}
+                  color={isFSelected ? '#006bff' : isFHovered ? '#f59e0b' : '#273144'}
+                  roughness={0.4}
+                  metalness={0.6}
                 />
               </mesh>
 
-              {/* Glowing Interactive Floor Highlight Line */}
-              <mesh position={[0, 0.1, depth / 2 + 0.22]}>
-                <boxGeometry args={[width * 0.95, 0.05, 0.05]} />
+              {/* AMBER / CYAN GLOWING HIGHLIGHT BAND (Matching reference video) */}
+              <mesh
+                position={[0, 0.1, depth / 2 + 0.2]}
+                onPointerOver={(e) => {
+                  e.stopPropagation();
+                  setHoveredFloor(f.level);
+                }}
+                onPointerOut={(e) => {
+                  e.stopPropagation();
+                  setHoveredFloor(null);
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  selectFloor(id, f.level);
+                }}
+              >
+                <boxGeometry args={[width * 0.98, 0.16, 0.12]} />
                 <meshStandardMaterial
-                  color="#9ff0ec"
-                  emissive="#9ff0ec"
-                  emissiveIntensity={isFSelected || isFHovered ? 2.0 : 0.4}
+                  color={isFSelected ? '#006bff' : isFHovered ? '#f59e0b' : '#38bdf8'}
+                  emissive={isFSelected ? '#006bff' : isFHovered ? '#f59e0b' : '#38bdf8'}
+                  emissiveIntensity={isFSelected ? 2.0 : isFHovered ? 1.8 : 0.3}
                 />
               </mesh>
 
-              {/* INTERACTIVE FLOOR PLUS [+] TAG (as in reference video frame 0 & 1) */}
-              {!isInspectingFloor && showLabels && (
+              {/* FLOATING FLOOR HOVER CARD (Level 2 Block View - matching reference video) */}
+              {isFHovered && !isInspectingFloor && (
                 <Html
-                  position={[width / 2 + 2.5, 1.4, 0]}
+                  position={[0, 1.4, depth / 2 + 1.2]}
                   center
-                  distanceFactor={26}
-                  zIndexRange={[90, 0]}
+                  distanceFactor={22}
+                  zIndexRange={[100, 0]}
                 >
                   <div
-                    onMouseEnter={() => setHoveredFloor(f.level)}
-                    onMouseLeave={() => setHoveredFloor(null)}
                     onClick={(e) => {
                       e.stopPropagation();
                       selectFloor(id, f.level);
                     }}
-                    className={`group cursor-pointer px-3.5 py-1.5 rounded-full border backdrop-blur-xl flex items-center gap-2.5 transition-all select-none shadow-[0_8px_24px_rgba(0,0,0,0.6)] ${
-                      isFSelected
-                        ? 'bg-[#006bff] border-[#9ff0ec] text-white scale-110 shadow-[0_0_20px_rgba(0,107,255,0.8)]'
-                        : isFHovered
-                        ? 'bg-[#181d2c]/95 border-[#9ff0ec] text-white scale-105'
-                        : 'bg-[#10131d]/90 border-white/20 text-[#c9c3da] hover:border-[#9ff0ec]/80 hover:text-white'
-                    }`}
+                    className="cursor-pointer p-3.5 rounded-2xl bg-[#10131d]/95 border border-[#f59e0b] shadow-[0_16px_40px_rgba(0,0,0,0.85),0_0_24px_rgba(245,158,11,0.4)] backdrop-blur-xl flex flex-col gap-2 min-w-[220px] animate-fade-in select-none"
                   >
-                    {/* Plus Icon Badge */}
-                    <div className="flex items-center justify-center w-5 h-5 rounded-full bg-[#9ff0ec]/20 border border-[#9ff0ec]/40 group-hover:bg-[#9ff0ec] group-hover:text-black transition-colors font-bold text-xs text-[#9ff0ec]">
-                      +
-                    </div>
-                    <div className="flex flex-col text-left leading-tight">
-                      <span className="text-[11px] font-bold tracking-tight text-white">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#f59e0b]">
                         Floor {f.level}
                       </span>
-                      <span className="text-[9px] font-mono text-[#9ff0ec]">
-                        {f.classrooms?.length || 0} Spaces
+                      <span className="px-1.5 py-0.5 rounded bg-[#f59e0b]/20 text-[#f59e0b] text-[9px] font-mono font-bold">
+                        {floorPct}% Full
                       </span>
                     </div>
+
+                    <div className="text-xs font-extrabold text-white leading-snug">
+                      {f.name || `Floor Level ${f.level}`}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 text-[10px] font-mono border-t border-white/10 pt-2 text-[#c9c3da]">
+                      <div>
+                        <span className="block text-[#8e8d92]">Classes</span>
+                        <span className="font-bold text-white">{f.classrooms?.length || 0} Rooms</span>
+                      </div>
+                      <div>
+                        <span className="block text-[#8e8d92]">Students</span>
+                        <span className="font-bold text-[#9ff0ec]">{floorStudents.length} / {totalFloorSeats}</span>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        selectFloor(id, f.level);
+                      }}
+                      className="w-full py-1.5 rounded-xl bg-[#f59e0b] hover:bg-[#d97706] text-black font-bold text-[11px] font-mono tracking-tight transition-all shadow-md flex items-center justify-center gap-1.5 mt-1"
+                    >
+                      <span>Explore Floor Cutaway</span>
+                      <span>→</span>
+                    </button>
                   </div>
                 </Html>
               )}
@@ -274,61 +313,50 @@ export function Building3D({ building, telemetry }) {
           );
         })}
 
-        {/* Clear Glass Curtain Facade Panels */}
-        {/* North Glass Wall */}
+        {/* Glazed Architectural Windows */}
         <mesh position={[0, activeHeight / 2, -depth / 2]} castShadow={!isCutaway}>
           <boxGeometry args={[width, activeHeight, 0.08]} />
           <meshStandardMaterial
-            color="#93c5fd"
+            color="#38bdf8"
             transparent
             opacity={isCutaway ? 0.04 : 0.28}
-            roughness={0.05}
-            metalness={0.95}
-            envMapIntensity={1.2}
+            roughness={0.1}
+            metalness={0.9}
           />
         </mesh>
-
-        {/* South Glass Wall */}
         <mesh position={[0, activeHeight / 2, depth / 2]} castShadow={!isCutaway}>
           <boxGeometry args={[width, activeHeight, 0.08]} />
           <meshStandardMaterial
-            color="#93c5fd"
+            color="#38bdf8"
             transparent
             opacity={isCutaway ? 0.04 : 0.28}
-            roughness={0.05}
-            metalness={0.95}
-            envMapIntensity={1.2}
+            roughness={0.1}
+            metalness={0.9}
           />
         </mesh>
-
-        {/* West Glass Wall */}
         <mesh position={[-width / 2, activeHeight / 2, 0]} castShadow={!isCutaway}>
           <boxGeometry args={[0.08, activeHeight, depth]} />
           <meshStandardMaterial
-            color="#93c5fd"
+            color="#38bdf8"
             transparent
             opacity={isCutaway ? 0.04 : 0.28}
-            roughness={0.05}
-            metalness={0.95}
-            envMapIntensity={1.2}
+            roughness={0.1}
+            metalness={0.9}
           />
         </mesh>
-
-        {/* East Glass Wall */}
         <mesh position={[width / 2, activeHeight / 2, 0]} castShadow={!isCutaway}>
           <boxGeometry args={[0.08, activeHeight, depth]} />
           <meshStandardMaterial
-            color="#93c5fd"
+            color="#38bdf8"
             transparent
             opacity={isCutaway ? 0.04 : 0.28}
-            roughness={0.05}
-            metalness={0.95}
-            envMapIntensity={1.2}
+            roughness={0.1}
+            metalness={0.9}
           />
         </mesh>
       </group>
 
-      {/* 5. Rooftop Infrastructure (hidden during cutaway / floor view) */}
+      {/* 5. Volumetric Solid Rooftop with Parapet Walls, Solar Arrays & Chiller Units */}
       {!isCutaway && (
         <group position={[0, roofY, 0]} name="rooftop-infrastructure">
           {/* Concrete Roof Slab */}
@@ -337,27 +365,27 @@ export function Building3D({ building, telemetry }) {
             <meshStandardMaterial color="#0c0e17" roughness={0.8} />
           </mesh>
 
-          {/* Sleek Parapet Glass Railing */}
-          <mesh position={[0, 0.55, -depth / 2]}>
-            <boxGeometry args={[width + 0.4, 0.9, 0.08]} />
-            <meshStandardMaterial color="#60a5fa" transparent opacity={0.3} roughness={0.1} />
+          {/* Parapet Walls */}
+          <mesh position={[0, 0.5, -depth / 2]} castShadow>
+            <boxGeometry args={[width + 0.4, 0.8, 0.25]} />
+            <meshStandardMaterial color="#1e293b" roughness={0.6} />
           </mesh>
-          <mesh position={[0, 0.55, depth / 2]}>
-            <boxGeometry args={[width + 0.4, 0.9, 0.08]} />
-            <meshStandardMaterial color="#60a5fa" transparent opacity={0.3} roughness={0.1} />
+          <mesh position={[0, 0.5, depth / 2]} castShadow>
+            <boxGeometry args={[width + 0.4, 0.8, 0.25]} />
+            <meshStandardMaterial color="#1e293b" roughness={0.6} />
           </mesh>
-          <mesh position={[-width / 2, 0.55, 0]}>
-            <boxGeometry args={[0.08, 0.9, depth]} />
-            <meshStandardMaterial color="#60a5fa" transparent opacity={0.3} roughness={0.1} />
+          <mesh position={[-width / 2, 0.5, 0]} castShadow>
+            <boxGeometry args={[0.25, 0.8, depth]} />
+            <meshStandardMaterial color="#1e293b" roughness={0.6} />
           </mesh>
-          <mesh position={[width / 2, 0.55, 0]}>
-            <boxGeometry args={[0.08, 0.9, depth]} />
-            <meshStandardMaterial color="#60a5fa" transparent opacity={0.3} roughness={0.1} />
+          <mesh position={[width / 2, 0.5, 0]} castShadow>
+            <boxGeometry args={[0.25, 0.8, depth]} />
+            <meshStandardMaterial color="#1e293b" roughness={0.6} />
           </mesh>
 
-          {/* Tilted Solar Panel Arrays */}
+          {/* Solar Panel Arrays */}
           {[-8, 0, 8].map((zOffset, rIdx) => (
-            <group key={`solar-row-${rIdx}`} position={[0, 0.5, zOffset]} rotation={[-0.26, 0, 0]}>
+            <group key={`solar-${rIdx}`} position={[0, 0.5, zOffset]} rotation={[-0.26, 0, 0]}>
               <mesh castShadow receiveShadow>
                 <boxGeometry args={[width * 0.75, 0.08, 3.2]} />
                 <meshStandardMaterial
@@ -373,7 +401,7 @@ export function Building3D({ building, telemetry }) {
         </group>
       )}
 
-      {/* 6. Main Entrance */}
+      {/* 6. Grand Main Entrance */}
       <group position={[0, 0, depth / 2]} name="main-entrance">
         <mesh position={[0, 3.0, 2.6]} castShadow>
           <boxGeometry args={[10.5, 0.25, 4.2]} />
@@ -383,58 +411,48 @@ export function Building3D({ building, telemetry }) {
           <boxGeometry args={[10.0, 0.05, 0.15]} />
           <meshStandardMaterial color="#9ff0ec" emissive="#9ff0ec" emissiveIntensity={1.5} />
         </mesh>
-
         <mesh position={[0, 0.12, 1.2]} receiveShadow>
           <boxGeometry args={[8.5, 0.24, 2.4]} />
           <meshStandardMaterial color="#1e293b" roughness={0.6} />
         </mesh>
-        <mesh position={[0, 0.24, 0.6]} receiveShadow>
-          <boxGeometry args={[7.5, 0.24, 1.4]} />
-          <meshStandardMaterial color="#1e293b" roughness={0.6} />
-        </mesh>
-
-        <mesh position={[-1.2, 1.5, 0.08]}>
-          <boxGeometry args={[2.0, 2.8, 0.08]} />
-          <meshStandardMaterial color="#38bdf8" transparent opacity={0.4} roughness={0.1} metalness={0.8} />
-        </mesh>
-        <mesh position={[1.2, 1.5, 0.08]}>
-          <boxGeometry args={[2.0, 2.8, 0.08]} />
-          <meshStandardMaterial color="#38bdf8" transparent opacity={0.4} roughness={0.1} metalness={0.8} />
-        </mesh>
       </group>
 
-      {/* 7. Floating Billboard Block Name Label */}
-      {!isInspectingFloor && showLabels && (
+      {/* 7. FLOATING BILLBOARD BLOCK NAME LABEL & CAMPUS HOVER CARD */}
+      {showLabels && !isInspectingFloor && (
         <Html
           position={[0, roofY + 3.0, 0]}
           center
           distanceFactor={28}
-          zIndexRange={[70, 0]}
+          zIndexRange={[80, 0]}
         >
           <div
             onClick={(e) => {
               e.stopPropagation();
               selectBuilding(id);
             }}
-            className={`cursor-pointer px-4 py-2 rounded-2xl border backdrop-blur-xl flex items-center gap-3 transition-all select-none ${
+            className={`cursor-pointer px-4 py-2.5 rounded-2xl border backdrop-blur-xl flex items-center gap-3 transition-all select-none shadow-[0_16px_40px_rgba(0,0,0,0.8)] ${
               isSelected
-                ? 'bg-[#006bff]/90 border-[#9ff0ec] text-white shadow-[0_0_30px_rgba(0,107,255,0.7)] scale-110'
-                : 'bg-[#131219]/90 border-white/15 text-[#b9b8bb] hover:border-[#9ff0ec]/50 hover:bg-[#181a26]'
+                ? 'bg-[#006bff]/95 border-[#9ff0ec] text-white shadow-[0_0_30px_rgba(0,107,255,0.7)] scale-110'
+                : isBuildingHovered
+                ? 'bg-[#181d2c]/95 border-[#9ff0ec] text-white scale-105'
+                : 'bg-[#131219]/90 border-white/15 text-[#b9b8bb] hover:border-[#9ff0ec]/50'
             }`}
           >
             <div
               className="flex items-center justify-center w-8 h-8 rounded-xl font-mono font-bold text-xs text-white shadow-md"
-              style={{ backgroundColor: labelConfig.accentColor || '#38bdf8' }}
+              style={{ backgroundColor: accentColor || '#38bdf8' }}
             >
-              {code || labelConfig.shortName}
+              {code || shortName}
             </div>
 
-            <div className="flex flex-col items-start leading-tight">
-              <span className="text-xs font-bold text-white tracking-tight">{labelConfig.name}</span>
+            <div className="flex flex-col text-left leading-tight">
+              <span className="text-xs font-bold text-white tracking-tight">{name}</span>
               <div className="text-[10px] text-[#9ff0ec] font-mono flex items-center gap-1.5 mt-0.5">
                 <span>{floorCount} Floors</span>
                 <span>•</span>
-                <span className="text-amber-400 font-bold">{buildingTelemetry.realKw} kW</span>
+                <span>{buildingStudents.length} Students</span>
+                <span>•</span>
+                <span className="text-amber-400 font-bold">{buildingKw} kW</span>
               </div>
             </div>
           </div>

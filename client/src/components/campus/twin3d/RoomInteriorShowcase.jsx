@@ -185,3 +185,4 @@ export function RoomInteriorShowcase({ telemetry }) {
     </div>
   );
 }
+

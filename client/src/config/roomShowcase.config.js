@@ -336,3 +336,4 @@ export function getRoomShowcaseData(classroomId) {
     features: ['High-Efficiency LED Lighting', 'Smart Energy Metering', 'High-Speed Wi-Fi 6', 'Automated Comfort Zone']
   };
 }
+

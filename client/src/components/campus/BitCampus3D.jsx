@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { WebGLErrorBoundary } from './WebGLErrorBoundary.jsx';
 import { CampusScene } from './twin3d/CampusScene.jsx';
 import { IsometricCampus3D } from './IsometricCampus3D.jsx';
+import { RoomInteriorShowcase } from './twin3d/RoomInteriorShowcase.jsx';
 import { TwinNavigationBreadcrumb } from './TwinNavigationBreadcrumb.jsx';
 import { TwinControlsBar } from './TwinControlsBar.jsx';
 import { TwinLeftPanel } from './TwinLeftPanel.jsx';
@@ -69,7 +70,7 @@ export default function BitCampus3D({
             <color attach="background" args={['#07080e']} />
             <fog attach="fog" args={['#07080e', 100, 260]} />
 
-            {/* Core Procedural Campus Scene with GPU Instanced Furniture & Students */}
+            {/* Core Architectural Campus 3D Scene */}
             <CampusScene telemetry={telemetry} />
           </Canvas>
         </WebGLErrorBoundary>
@@ -87,17 +88,20 @@ export default function BitCampus3D({
       {/* 3. Right Student & Classroom Inspector Panel */}
       <TwinRightPanel telemetry={telemetry} />
 
-      {/* 4. Bottom Controls Bar (X-Ray, Explode Slider, Add, Import) */}
+      {/* 4. Bottom Controls Bar */}
       <TwinControlsBar />
 
       {/* 5. Modals */}
       <AddStudentModal />
       <BulkImportModal />
 
+      {/* 6. Luxury Room Interior Picture Showcase (Matching Reference Video) */}
+      <RoomInteriorShowcase telemetry={telemetry} />
+
       {/* Bottom Navigation Legend & Hint */}
       <div className="absolute bottom-4 left-4 z-10 pointer-events-none px-3.5 py-1.5 rounded-xl bg-[#131219]/90 border border-white/[0.14] text-[10px] text-[#b9b8bb] font-mono hidden md:flex items-center gap-2 shadow-[0_12px_32px_rgba(0,0,0,0.6)] backdrop-blur-md">
         <span className="w-2 h-2 rounded-full bg-[#9ff0ec] animate-ping" />
-        <span>Drag: Rotate • Right-click/Shift-drag: Pan • Scroll: Zoom • Click Room/Student to focus</span>
+        <span>Click [+] on any Floor to isolate • Click room [+] hotspot to view interior picture</span>
       </div>
     </div>
   );

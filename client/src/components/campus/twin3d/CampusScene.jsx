@@ -4,8 +4,6 @@ import * as THREE from 'three';
 import { CameraRig } from './CameraRig.jsx';
 import { Building3D } from './Building3D.jsx';
 import { ParkingLot } from './ParkingLot.jsx';
-import { InstancedFurniture } from './InstancedFurniture.jsx';
-import { InstancedStudents } from './InstancedStudents.jsx';
 import { PROCESSED_BUILDINGS, CONNECTING_BRIDGES, ANIMATION_CONFIG } from '../../../config/buildings.config.js';
 
 export function CampusScene({ telemetry }) {
@@ -25,12 +23,12 @@ export function CampusScene({ telemetry }) {
 
   return (
     <>
-      {/* 1. Atmospheric Soft Architectural Sunlight & Cyber Ambient Fill */}
-      <ambientLight intensity={0.65} color="#b4c6e7" />
-      <hemisphereLight intensity={0.45} color="#38bdf8" groundColor="#060814" />
+      {/* 1. Atmospheric Architectural Lighting */}
+      <ambientLight intensity={0.7} color="#cbd5e1" />
+      <hemisphereLight intensity={0.5} color="#38bdf8" groundColor="#060814" />
       <directionalLight
-        position={[55, 85, 45]}
-        intensity={1.35}
+        position={[60, 90, 50]}
+        intensity={1.4}
         castShadow
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
@@ -40,8 +38,8 @@ export function CampusScene({ telemetry }) {
         shadow-camera-top={85}
         shadow-camera-bottom={-85}
       />
-      {/* Warm Interior Classroom Light bounce */}
-      <pointLight position={[-15, 20, 10]} intensity={0.4} color="#fef3c7" distance={120} />
+      {/* Warm Interior Glow */}
+      <pointLight position={[-15, 20, 10]} intensity={0.5} color="#fef3c7" distance={130} />
       {/* Cool Specular Violet Backfill Rim Light */}
       <pointLight position={[-50, 40, -50]} intensity={0.4} color="#a78bfa" distance={160} />
 
@@ -131,12 +129,10 @@ export function CampusScene({ telemetry }) {
             [35, 0, 68]
           ].map((pos, idx) => (
             <group key={`tree-${idx}`} position={pos}>
-              {/* Trunk */}
               <mesh position={[0, 1.8, 0]} castShadow>
                 <cylinderGeometry args={[0.28, 0.42, 3.6, 8]} />
                 <meshStandardMaterial color="#3b1d11" roughness={0.9} />
               </mesh>
-              {/* Low-poly Canopy */}
               <mesh position={[0, 4.4, 0]} castShadow>
                 <icosahedronGeometry args={[2.4, 1]} />
                 <meshStandardMaterial color={idx % 2 === 0 ? '#15803d' : '#166534'} roughness={0.75} />
@@ -149,7 +145,6 @@ export function CampusScene({ telemetry }) {
       {/* 3. Connecting Elevated Sky-Bridges between Blocks */}
       <group name="connecting-bridges">
         {CONNECTING_BRIDGES.map((br) => {
-          // Compute midpoint and direction vector
           const mx = (br.start[0] + br.end[0]) / 2;
           const my = (br.start[1] + br.end[1]) / 2;
           const mz = (br.start[2] + br.end[2]) / 2;
@@ -160,12 +155,10 @@ export function CampusScene({ telemetry }) {
 
           return (
             <group key={br.id} position={[mx, my, mz]} rotation={[0, rotY, 0]}>
-              {/* Bridge Floor Concrete Slab */}
               <mesh receiveShadow castShadow>
                 <boxGeometry args={[br.width, 0.25, len]} />
                 <meshStandardMaterial color="#1e293b" roughness={0.6} />
               </mesh>
-              {/* Bridge Glass Enclosure Walls */}
               <mesh position={[-br.width / 2, br.height / 2, 0]}>
                 <boxGeometry args={[0.06, br.height, len]} />
                 <meshStandardMaterial color="#60a5fa" transparent opacity={0.3} roughness={0.1} />
@@ -174,12 +167,10 @@ export function CampusScene({ telemetry }) {
                 <boxGeometry args={[0.06, br.height, len]} />
                 <meshStandardMaterial color="#60a5fa" transparent opacity={0.3} roughness={0.1} />
               </mesh>
-              {/* Bridge Roof */}
               <mesh position={[0, br.height, 0]} castShadow>
                 <boxGeometry args={[br.width + 0.2, 0.15, len]} />
                 <meshStandardMaterial color="#0f172a" roughness={0.7} />
               </mesh>
-              {/* Structural Ground Columns */}
               <mesh position={[0, -my / 2, 0]} castShadow>
                 <cylinderGeometry args={[0.3, 0.35, my, 8]} />
                 <meshStandardMaterial color="#334155" metalness={0.7} />
@@ -189,7 +180,7 @@ export function CampusScene({ telemetry }) {
         })}
       </group>
 
-      {/* 4. Building Blocks Hierarchy (Block A, B, C, D) */}
+      {/* 4. Luxury Architectural Glass & Modern Building Blocks */}
       <group name="campus-buildings">
         {PROCESSED_BUILDINGS.map((b) => (
           <Building3D
@@ -200,16 +191,10 @@ export function CampusScene({ telemetry }) {
         ))}
       </group>
 
-      {/* 5. Complete Parking Facility with Cars, Bikes, Barrier Arm & Booth */}
+      {/* 5. Complete Parking Facility */}
       <ParkingLot />
 
-      {/* 6. GPU-Instanced Classroom Benches & Desks */}
-      <InstancedFurniture />
-
-      {/* 7. GPU-Instanced Seated Students with Avatar Colors */}
-      <InstancedStudents />
-
-      {/* 8. Dynamic Camera Flight & Orbit Rig */}
+      {/* 6. Dynamic Cinematic Camera Rig */}
       <CameraRig />
     </>
   );

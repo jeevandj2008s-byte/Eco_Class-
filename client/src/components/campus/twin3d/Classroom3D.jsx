@@ -1,49 +1,30 @@
-import React, { useMemo, useRef, useState } from 'react';
-import { useFrame } from '@react-three/fiber';
+import React, { useState } from 'react';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { useTwin3DStore } from '../../../store/useTwin3DStore.js';
-import { ANIMATION_CONFIG } from '../../../config/buildings.config.js';
+import { getRoomShowcaseData } from '../../../config/roomShowcase.config.js';
 
 export function Classroom3D({ classroom, buildingId, floorLevel }) {
-  const { id, name, code, width, depth, offset, layout, department } = classroom;
+  const { id, name, code, width, depth, offset, department } = classroom;
   const [hovered, setHovered] = useState(false);
-
-  const fanBladesRef1 = useRef();
-  const fanBladesRef2 = useRef();
 
   const selectedBuildingId = useTwin3DStore((s) => s.selectedBuildingId);
   const selectedFloorLevel = useTwin3DStore((s) => s.selectedFloorLevel);
   const selectedClassroomId = useTwin3DStore((s) => s.selectedClassroomId);
-  const selectClassroom = useTwin3DStore((s) => s.selectClassroom);
+  const openRoomShowcase = useTwin3DStore((s) => s.openRoomShowcase);
   const showLabels = useTwin3DStore((s) => s.showLabels);
-  const students = useTwin3DStore((s) => s.students);
-  const xrayMode = useTwin3DStore((s) => s.xrayMode);
 
   const isSelected = selectedClassroomId === id;
   const isFloorSelected = selectedBuildingId === buildingId && selectedFloorLevel === floorLevel;
-  const isCutaway = xrayMode || isFloorSelected || isSelected;
+  const showcaseData = getRoomShowcaseData(id);
 
-  // Calculate live occupancy for this room
-  const roomStudents = useMemo(() => {
-    return students.filter((s) => s.classroomId === id);
-  }, [students, id]);
+  // Architectural cutaway wall height (clean, non-obtrusive, like in the reference video)
+  const wallHeight = 1.4;
 
-  const totalSeats = layout?.seats?.length || 0;
-  const occupancyPct = totalSeats > 0 ? Math.round((roomStudents.length / totalSeats) * 100) : 0;
-
-  // Base wall height and cutaway viewing height
-  const fullWallHeight = 3.2;
-  // In cutaway / floor-inspection mode, lower front walls to 0.85m so classrooms, benches, and students are clearly visible
-  const viewingWallHeight = isCutaway ? 0.85 : 3.2;
-
-  // Animate ceiling fan blades smoothly
-  useFrame((_, delta) => {
-    if (!ANIMATION_CONFIG.enabled) return;
-    const spinSpeed = delta * 8.0;
-    if (fanBladesRef1.current) fanBladesRef1.current.rotation.y += spinSpeed;
-    if (fanBladesRef2.current) fanBladesRef2.current.rotation.y += spinSpeed;
-  });
+  const handleOpenRoom = (e) => {
+    e.stopPropagation();
+    openRoomShowcase(id);
+  };
 
   return (
     <group
@@ -57,220 +38,130 @@ export function Classroom3D({ classroom, buildingId, floorLevel }) {
         e.stopPropagation();
         setHovered(false);
       }}
-      onClick={(e) => {
-        e.stopPropagation();
-        selectClassroom(id);
-      }}
+      onClick={handleOpenRoom}
     >
-      {/* 1. Classroom Flooring (Warm institutional timber/terrazzo finish) */}
+      {/* 1. Polished Architectural Floor Slab */}
       <mesh position={[0, 0.05, 0]} receiveShadow>
-        <boxGeometry args={[width - 0.1, 0.1, depth - 0.1]} />
+        <boxGeometry args={[width - 0.15, 0.1, depth - 0.15]} />
         <meshStandardMaterial
-          color={isSelected ? '#20293d' : '#181e2b'}
-          roughness={0.65}
-          metalness={0.15}
+          color={isSelected ? '#1e3a5f' : hovered ? '#1e293b' : '#141a26'}
+          roughness={0.4}
+          metalness={0.25}
         />
       </mesh>
 
-      {/* 2. Perimeter Walls with Architectural Cutaway for Clear Visibility */}
-      {/* Front Wall (where teaching chalkboard sits - always full height to mount board & clock) */}
-      <mesh position={[0, fullWallHeight / 2, -depth / 2]} castShadow receiveShadow>
-        <boxGeometry args={[width, fullWallHeight, 0.18]} />
-        <meshStandardMaterial color="#2d3342" roughness={0.7} />
+      {/* 2. Soft Ambient Floor Area Rim */}
+      <mesh position={[0, 0.11, 0]}>
+        <boxGeometry args={[width - 0.4, 0.01, depth - 0.4]} />
+        <meshBasicMaterial
+          color={isSelected ? '#38bdf8' : hovered ? '#9ff0ec' : '#60a5fa'}
+          wireframe
+          opacity={isSelected ? 0.4 : hovered ? 0.3 : 0.08}
+          transparent
+        />
       </mesh>
 
-      {/* Back / Corridor Wall (Waist-height cutaway so students and benches are visible) */}
-      <mesh position={[0, viewingWallHeight / 2, depth / 2]} castShadow receiveShadow>
-        <boxGeometry args={[width, viewingWallHeight, 0.18]} />
-        <meshStandardMaterial color="#282e3d" roughness={0.7} />
+      {/* 3. Clean Interior Architectural Partition Walls (Cutaway Height) */}
+      {/* North Wall */}
+      <mesh position={[0, wallHeight / 2, -depth / 2]} castShadow receiveShadow>
+        <boxGeometry args={[width, wallHeight, 0.16]} />
+        <meshStandardMaterial color="#262d3d" roughness={0.7} />
       </mesh>
-      {/* Glass upper partition on corridor wall when not cutaway */}
-      {!isCutaway && (
-        <mesh position={[0, (fullWallHeight + viewingWallHeight) / 2, depth / 2]}>
-          <boxGeometry args={[width * 0.75, fullWallHeight - viewingWallHeight, 0.04]} />
-          <meshStandardMaterial color="#60a5fa" transparent opacity={0.2} roughness={0.1} />
+      {/* North Wall Aluminum Cap */}
+      <mesh position={[0, wallHeight + 0.02, -depth / 2]}>
+        <boxGeometry args={[width + 0.04, 0.04, 0.2]} />
+        <meshStandardMaterial color="#475569" metalness={0.8} />
+      </mesh>
+
+      {/* South Wall (Corridor boundary with door passage cutout) */}
+      <group position={[0, 0, depth / 2]}>
+        <mesh position={[-width * 0.25, wallHeight / 2, 0]} castShadow receiveShadow>
+          <boxGeometry args={[width * 0.45, wallHeight, 0.16]} />
+          <meshStandardMaterial color="#222838" roughness={0.7} />
         </mesh>
-      )}
-
-      {/* Left Dividing Wall (Lowered near front in cutaway mode) */}
-      <mesh
-        position={[-width / 2, (isCutaway ? 1.6 : fullWallHeight) / 2, 0]}
-        castShadow
-        receiveShadow
-      >
-        <boxGeometry args={[0.18, isCutaway ? 1.6 : fullWallHeight, depth]} />
-        <meshStandardMaterial color="#242936" roughness={0.7} />
-      </mesh>
-
-      {/* Right Dividing Wall */}
-      <mesh
-        position={[width / 2, (isCutaway ? 1.6 : fullWallHeight) / 2, 0]}
-        castShadow
-        receiveShadow
-      >
-        <boxGeometry args={[0.18, isCutaway ? 1.6 : fullWallHeight, depth]} />
-        <meshStandardMaterial color="#242936" roughness={0.7} />
-      </mesh>
-
-      {/* 3. Teaching Green Chalkboard with Metal Trim & Chalk Tray */}
-      <group position={[0, 1.85, -depth / 2 + 0.12]}>
-        {/* Board Surface */}
-        <mesh receiveShadow>
-          <boxGeometry args={[Math.min(4.8, width * 0.55), 1.45, 0.04]} />
-          <meshStandardMaterial color="#14532d" roughness={0.35} metalness={0.1} />
+        <mesh position={[width * 0.25, wallHeight / 2, 0]} castShadow receiveShadow>
+          <boxGeometry args={[width * 0.45, wallHeight, 0.16]} />
+          <meshStandardMaterial color="#222838" roughness={0.7} />
         </mesh>
-        {/* Metal Outer Frame */}
-        <mesh position={[0, 0, -0.01]}>
-          <boxGeometry args={[Math.min(4.8, width * 0.55) + 0.14, 1.55, 0.02]} />
-          <meshStandardMaterial color="#94a3b8" metalness={0.8} roughness={0.2} />
-        </mesh>
-        {/* Chalk Tray */}
-        <mesh position={[0, -0.74, 0.04]}>
-          <boxGeometry args={[Math.min(4.8, width * 0.55), 0.04, 0.1]} />
-          <meshStandardMaterial color="#64748b" metalness={0.7} />
+        {/* Lintel over doorway */}
+        <mesh position={[0, wallHeight - 0.15, 0]}>
+          <boxGeometry args={[width * 0.18, 0.3, 0.16]} />
+          <meshStandardMaterial color="#334155" metalness={0.6} />
         </mesh>
       </group>
 
-      {/* Wall Clock above board */}
-      <group position={[0, fullWallHeight - 0.45, -depth / 2 + 0.11]}>
-        <mesh rotation={[Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[0.22, 0.22, 0.03, 16]} />
-          <meshStandardMaterial color="#f8fafc" roughness={0.4} />
-        </mesh>
-        <mesh position={[0, 0, 0.02]} rotation={[Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[0.24, 0.24, 0.02, 16]} />
-          <meshStandardMaterial color="#0f172a" metalness={0.6} />
-        </mesh>
-      </group>
-
-      {/* 4. Standing Teacher Figure at Front */}
-      <group position={[1.0, 0, -depth / 2 + 1.4]} rotation={[0, Math.PI, 0]}>
-        {/* Head */}
-        <mesh position={[0, 1.72, 0]} castShadow>
-          <sphereGeometry args={[0.13, 10, 10]} />
-          <meshStandardMaterial color="#fed7aa" roughness={0.6} />
-        </mesh>
-        {/* Torso (Formal Teacher Blazer) */}
-        <mesh position={[0, 1.25, 0]} castShadow>
-          <boxGeometry args={[0.38, 0.58, 0.22]} />
-          <meshStandardMaterial color="#1e3a8a" roughness={0.5} />
-        </mesh>
-        {/* Standing Legs */}
-        <mesh position={[-0.1, 0.5, 0]} castShadow>
-          <boxGeometry args={[0.14, 0.95, 0.16]} />
-          <meshStandardMaterial color="#1f2937" roughness={0.6} />
-        </mesh>
-        <mesh position={[0.1, 0.5, 0]} castShadow>
-          <boxGeometry args={[0.14, 0.95, 0.16]} />
-          <meshStandardMaterial color="#1f2937" roughness={0.6} />
-        </mesh>
-      </group>
-
-      {/* 5. PROCEDURAL CEILING FANS (2 Rotating Fans per Classroom) */}
-      {/* Ceiling Fan 1 (Front Area) */}
-      <group position={[0, fullWallHeight - 0.1, -depth * 0.2]}>
-        {/* Ceiling Mount Bracket */}
-        <mesh position={[0, 0, 0]}>
-          <cylinderGeometry args={[0.12, 0.16, 0.08, 12]} />
-          <meshStandardMaterial color="#cbd5e1" metalness={0.7} roughness={0.3} />
-        </mesh>
-        {/* Downrod */}
-        <mesh position={[0, -0.22, 0]}>
-          <cylinderGeometry args={[0.025, 0.025, 0.36, 8]} />
-          <meshStandardMaterial color="#94a3b8" metalness={0.8} roughness={0.2} />
-        </mesh>
-        {/* Motor Housing */}
-        <mesh position={[0, -0.42, 0]}>
-          <cylinderGeometry args={[0.22, 0.22, 0.10, 16]} />
-          <meshStandardMaterial color="#f1f5f9" metalness={0.5} roughness={0.3} />
-        </mesh>
-        {/* Rotating 3 Aerofoil Blades */}
-        <group ref={fanBladesRef1} position={[0, -0.44, 0]}>
-          {[0, (2 * Math.PI) / 3, (4 * Math.PI) / 3].map((angle, bIdx) => (
-            <group key={`fan1-b-${bIdx}`} rotation={[0, angle, 0]}>
-              <mesh position={[0.62, 0, 0]} rotation={[0.15, 0, 0]} castShadow>
-                <boxGeometry args={[1.05, 0.015, 0.14]} />
-                <meshStandardMaterial color="#e2e8f0" metalness={0.4} roughness={0.4} />
-              </mesh>
-            </group>
-          ))}
-        </group>
-      </group>
-
-      {/* Ceiling Fan 2 (Rear Area) */}
-      <group position={[0, fullWallHeight - 0.1, depth * 0.22]}>
-        {/* Ceiling Mount Bracket */}
-        <mesh position={[0, 0, 0]}>
-          <cylinderGeometry args={[0.12, 0.16, 0.08, 12]} />
-          <meshStandardMaterial color="#cbd5e1" metalness={0.7} roughness={0.3} />
-        </mesh>
-        {/* Downrod */}
-        <mesh position={[0, -0.22, 0]}>
-          <cylinderGeometry args={[0.025, 0.025, 0.36, 8]} />
-          <meshStandardMaterial color="#94a3b8" metalness={0.8} roughness={0.2} />
-        </mesh>
-        {/* Motor Housing */}
-        <mesh position={[0, -0.42, 0]}>
-          <cylinderGeometry args={[0.22, 0.22, 0.10, 16]} />
-          <meshStandardMaterial color="#f1f5f9" metalness={0.5} roughness={0.3} />
-        </mesh>
-        {/* Rotating 3 Aerofoil Blades */}
-        <group ref={fanBladesRef2} position={[0, -0.44, 0]}>
-          {[0, (2 * Math.PI) / 3, (4 * Math.PI) / 3].map((angle, bIdx) => (
-            <group key={`fan2-b-${bIdx}`} rotation={[0, angle, 0]}>
-              <mesh position={[0.62, 0, 0]} rotation={[0.15, 0, 0]} castShadow>
-                <boxGeometry args={[1.05, 0.015, 0.14]} />
-                <meshStandardMaterial color="#e2e8f0" metalness={0.4} roughness={0.4} />
-              </mesh>
-            </group>
-          ))}
-        </group>
-      </group>
-
-      {/* 6. Warm LED Ceiling Lighting Strips */}
-      <mesh position={[-width * 0.25, fullWallHeight - 0.05, 0]}>
-        <boxGeometry args={[0.2, 0.03, depth * 0.7]} />
-        <meshStandardMaterial color="#fef3c7" emissive="#fde68a" emissiveIntensity={1.4} />
-      </mesh>
-      <mesh position={[width * 0.25, fullWallHeight - 0.05, 0]}>
-        <boxGeometry args={[0.2, 0.03, depth * 0.7]} />
-        <meshStandardMaterial color="#fef3c7" emissive="#fde68a" emissiveIntensity={1.4} />
+      {/* West Dividing Wall */}
+      <mesh position={[-width / 2, wallHeight / 2, 0]} castShadow receiveShadow>
+        <boxGeometry args={[0.16, wallHeight, depth]} />
+        <meshStandardMaterial color="#222838" roughness={0.7} />
       </mesh>
 
-      {/* 7. Floating 3D Room Label */}
-      {showLabels && (
+      {/* East Dividing Wall */}
+      <mesh position={[width / 2, wallHeight / 2, 0]} castShadow receiveShadow>
+        <boxGeometry args={[0.16, wallHeight, depth]} />
+        <meshStandardMaterial color="#222838" roughness={0.7} />
+      </mesh>
+
+      {/* 4. Glowing Hotspot Concentric Ring on Floor */}
+      <group position={[0, 0.12, 0]}>
+        <mesh rotation={[-Math.PI / 2, 0, 0]}>
+          <ringGeometry args={[0.8, 0.95, 32]} />
+          <meshBasicMaterial
+            color="#9ff0ec"
+            transparent
+            opacity={hovered || isSelected ? 0.9 : 0.4}
+          />
+        </mesh>
+        <mesh rotation={[-Math.PI / 2, 0, 0]}>
+          <circleGeometry args={[0.7, 32]} />
+          <meshBasicMaterial
+            color="#006bff"
+            transparent
+            opacity={hovered || isSelected ? 0.35 : 0.12}
+          />
+        </mesh>
+      </group>
+
+      {/* 5. INTERACTIVE ROOM HOTSPOT PIN (Click to View Inside Picture) */}
+      {showLabels && isFloorSelected && (
         <Html
-          position={[0, viewingWallHeight + 0.6, 0]}
+          position={[0, 0.9, 0]}
           center
           distanceFactor={22}
-          zIndexRange={[80, 0]}
+          zIndexRange={[95, 0]}
         >
           <div
-            onClick={(e) => {
-              e.stopPropagation();
-              selectClassroom(id);
-            }}
-            className={`cursor-pointer px-3 py-1.5 rounded-xl border backdrop-blur-md flex items-center gap-2 transition-all select-none ${
+            onClick={handleOpenRoom}
+            className={`cursor-pointer group flex items-center gap-2.5 px-3.5 py-2 rounded-2xl border backdrop-blur-xl transition-all duration-200 select-none shadow-[0_12px_32px_rgba(0,0,0,0.8)] ${
               isSelected
-                ? 'bg-[#006bff]/95 border-[#9ff0ec] text-white shadow-[0_0_20px_rgba(0,107,255,0.7)] scale-105'
+                ? 'bg-[#006bff] border-[#9ff0ec] text-white scale-110 shadow-[0_0_30px_rgba(0,107,255,0.9)]'
                 : hovered
-                ? 'bg-[#181a26]/95 border-[#9ff0ec]/50 text-white shadow-[0_8px_20px_rgba(0,0,0,0.6)]'
-                : 'bg-[#131219]/90 border-white/10 text-[#b9b8bb] hover:border-white/30'
+                ? 'bg-[#151a26]/95 border-[#9ff0ec] text-white scale-105 shadow-[0_0_20px_rgba(159,240,236,0.4)]'
+                : 'bg-[#10131d]/90 border-white/20 text-[#c9c3da] hover:border-[#9ff0ec]/80'
             }`}
           >
-            <div className="flex flex-col items-start leading-tight">
-              <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#9ff0ec]" />
-                <span className="text-xs font-bold text-white tracking-tight">{code || name}</span>
-              </div>
-              <span className="text-[9px] text-[#c9c3da] font-mono">{department || 'Academic'}</span>
+            {/* Plus / Eye Icon Badge */}
+            <div className="flex items-center justify-center w-6 h-6 rounded-xl bg-[#9ff0ec]/20 border border-[#9ff0ec]/50 group-hover:bg-[#9ff0ec] group-hover:text-black transition-colors font-bold text-xs text-[#9ff0ec]">
+              +
             </div>
 
-            <div className="pl-1.5 border-l border-white/10 flex flex-col items-end">
-              <span className="text-[11px] font-mono font-bold text-[#9ff0ec]">
-                {roomStudents.length}/{totalSeats}
+            <div className="flex flex-col text-left leading-tight">
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-bold text-white tracking-tight">
+                  {code || name}
+                </span>
+                <span className="text-[10px] text-[#9ff0ec] font-mono px-1.5 py-0.2 rounded bg-black/40">
+                  {showcaseData.areaSqFt}
+                </span>
+              </div>
+              <div className="text-[9px] text-[#c9c3da] font-mono flex items-center gap-1 mt-0.5">
+                <span>{showcaseData.category}</span>
+                <span>•</span>
+                <span className="text-amber-300 font-semibold">{showcaseData.powerDrawKw} kW</span>
+              </div>
+              <span className="text-[8px] text-[#9ff0ec]/80 font-mono mt-0.5 group-hover:text-white transition-colors">
+                Click to explore inside picture →
               </span>
-              <span className="text-[8px] text-[#b9b8bb] font-mono">{occupancyPct}% full</span>
             </div>
           </div>
         </Html>

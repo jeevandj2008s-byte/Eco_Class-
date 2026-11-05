@@ -1,7 +1,7 @@
 /**
  * Zustand Store for AuraSync 3D Digital Twin
  * Manages spatial hierarchy navigation, visual modes (X-ray, exploded view),
- * camera targets, and student roster persistence.
+ * camera targets, student roster persistence, and architectural interior showcase.
  */
 
 import { create } from 'zustand';
@@ -29,16 +29,29 @@ export const useTwin3DStore = create((set, get) => ({
   // Student State
   students: getInitialStudents(),
 
-  // Active Modals
+  // Active Modals & Luxury Interior Showcase
   isAddModalOpen: false,
   isImportModalOpen: false,
+  isRoomShowcaseOpen: false,
   targetSeatForAdd: null, // { classroomId, benchId, seatIndex, seatId }
 
-  // Action: Setters for Modals
+  // Action: Setters for Modals & Showcase
   openAddModal: (targetSeat = null) => set({ isAddModalOpen: true, targetSeatForAdd: targetSeat }),
   closeAddModal: () => set({ isAddModalOpen: false, targetSeatForAdd: null }),
   openImportModal: () => set({ isImportModalOpen: true }),
   closeImportModal: () => set({ isImportModalOpen: false }),
+
+  openRoomShowcase: (classroomId) => {
+    const hierarchy = findClassroomHierarchy(classroomId);
+    set({
+      selectedBuildingId: hierarchy ? hierarchy.building.id : get().selectedBuildingId,
+      selectedFloorLevel: hierarchy ? hierarchy.floor.level : get().selectedFloorLevel,
+      selectedClassroomId: classroomId,
+      isRoomShowcaseOpen: true,
+      cameraMode: 'CLASSROOM'
+    });
+  },
+  closeRoomShowcase: () => set({ isRoomShowcaseOpen: false, selectedClassroomId: null }),
 
   // Action: Hover
   setHoveredStudentId: (id) => set({ hoveredStudentId: id }),
@@ -59,6 +72,7 @@ export const useTwin3DStore = create((set, get) => ({
       selectedFloorLevel: null,
       selectedClassroomId: null,
       selectedStudentId: null,
+      isRoomShowcaseOpen: false,
       cameraMode: 'CAMPUS'
     });
   },
@@ -69,6 +83,7 @@ export const useTwin3DStore = create((set, get) => ({
       selectedFloorLevel: null,
       selectedClassroomId: null,
       selectedStudentId: null,
+      isRoomShowcaseOpen: false,
       cameraMode: 'BUILDING'
     });
   },
@@ -79,6 +94,7 @@ export const useTwin3DStore = create((set, get) => ({
       selectedFloorLevel: floorLevel,
       selectedClassroomId: null,
       selectedStudentId: null,
+      isRoomShowcaseOpen: false,
       cameraMode: 'FLOOR'
     });
   },
@@ -91,6 +107,7 @@ export const useTwin3DStore = create((set, get) => ({
       selectedFloorLevel: hierarchy.floor.level,
       selectedClassroomId: classroomId,
       selectedStudentId: null,
+      isRoomShowcaseOpen: true,
       cameraMode: 'CLASSROOM'
     });
   },
@@ -223,4 +240,3 @@ export const useTwin3DStore = create((set, get) => ({
     }
   }
 }));
-

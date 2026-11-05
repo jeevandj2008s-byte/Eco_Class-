@@ -1,13 +1,22 @@
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
+import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { CameraRig } from './CameraRig.jsx';
 import { Building3D } from './Building3D.jsx';
 import { ParkingLot } from './ParkingLot.jsx';
-import { PROCESSED_BUILDINGS, CONNECTING_BRIDGES, ANIMATION_CONFIG } from '../../../config/buildings.config.js';
+import {
+  PROCESSED_BUILDINGS,
+  CONNECTING_BRIDGES,
+  CAMPUS_LANDMARKS,
+  ANIMATION_CONFIG
+} from '../../../config/buildings.config.js';
+import { useTwin3DStore } from '../../../store/useTwin3DStore.js';
 
 export function CampusScene({ telemetry }) {
   const treesGroupRef = useRef();
+  const showLabels = useTwin3DStore((s) => s.showLabels);
+  const selectedBuildingId = useTwin3DStore((s) => s.selectedBuildingId);
 
   // Subtle wind sway animation for perimeter campus trees
   useFrame((state) => {
@@ -23,22 +32,22 @@ export function CampusScene({ telemetry }) {
 
   return (
     <>
-      {/* 1. Atmospheric Architectural Lighting */}
+      {/* 1. Atmospheric Soft Sunlight & Specular Lighting */}
       <ambientLight intensity={0.7} color="#cbd5e1" />
-      <hemisphereLight intensity={0.5} color="#38bdf8" groundColor="#060814" />
+      <hemisphereLight intensity={0.45} color="#38bdf8" groundColor="#060814" />
       <directionalLight
-        position={[60, 90, 50]}
+        position={[65, 95, 55]}
         intensity={1.4}
         castShadow
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
-        shadow-camera-far={240}
-        shadow-camera-left={-85}
-        shadow-camera-right={85}
-        shadow-camera-top={85}
-        shadow-camera-bottom={-85}
+        shadow-camera-far={260}
+        shadow-camera-left={-95}
+        shadow-camera-right={95}
+        shadow-camera-top={95}
+        shadow-camera-bottom={-95}
       />
-      {/* Warm Interior Glow */}
+      {/* Warm Interior Lighting Glow */}
       <pointLight position={[-15, 20, 10]} intensity={0.5} color="#fef3c7" distance={130} />
       {/* Cool Specular Violet Backfill Rim Light */}
       <pointLight position={[-50, 40, -50]} intensity={0.4} color="#a78bfa" distance={160} />
@@ -47,33 +56,31 @@ export function CampusScene({ telemetry }) {
       <group name="campus-terrain">
         {/* Main Terrain Base Plate */}
         <mesh position={[0, -0.6, 0]} receiveShadow>
-          <boxGeometry args={[180, 0.4, 180]} />
+          <boxGeometry args={[190, 0.4, 190]} />
           <meshStandardMaterial color="#080a11" roughness={0.9} />
         </mesh>
 
         {/* Outer Perimeter Boundary Ring with Neon Blueprint Trace */}
         <mesh position={[0, -0.2, 0]}>
-          <ringGeometry args={[84, 86, 64]} />
-          <meshBasicMaterial color="#006bff" wireframe opacity={0.18} transparent />
+          <ringGeometry args={[88, 90, 64]} />
+          <meshBasicMaterial color="#006bff" wireframe opacity={0.15} transparent />
         </mesh>
 
         {/* Boundary Concrete Wall */}
         <group name="boundary-wall">
-          {/* North Wall */}
           <mesh position={[0, 0.6, -75]} castShadow>
-            <boxGeometry args={[150, 1.6, 0.4]} />
+            <boxGeometry args={[160, 1.6, 0.4]} />
             <meshStandardMaterial color="#1e293b" roughness={0.7} />
           </mesh>
-          {/* South Wall with Main Campus Gate Opening */}
           <mesh position={[-45, 0.6, 75]} castShadow>
-            <boxGeometry args={[60, 1.6, 0.4]} />
+            <boxGeometry args={[65, 1.6, 0.4]} />
             <meshStandardMaterial color="#1e293b" roughness={0.7} />
           </mesh>
           <mesh position={[45, 0.6, 75]} castShadow>
-            <boxGeometry args={[60, 1.6, 0.4]} />
+            <boxGeometry args={[65, 1.6, 0.4]} />
             <meshStandardMaterial color="#1e293b" roughness={0.7} />
           </mesh>
-          {/* Main Campus Entrance Gate Security Pillars */}
+          {/* Main Gate Pillars */}
           <mesh position={[-14, 1.8, 75]} castShadow>
             <boxGeometry args={[1.6, 3.6, 1.6]} />
             <meshStandardMaterial color="#006bff" emissive="#006bff" emissiveIntensity={0.2} />
@@ -84,47 +91,39 @@ export function CampusScene({ telemetry }) {
           </mesh>
         </group>
 
-        {/* North Campus Highway / K.R. Road */}
-        <mesh position={[0, -0.38, -62]} receiveShadow>
-          <boxGeometry args={[170, 0.05, 14]} />
+        {/* Top Campus Perimeter Road (Matching 2D map road) */}
+        <mesh position={[0, -0.38, -58]} receiveShadow>
+          <boxGeometry args={[180, 0.05, 12]} />
           <meshStandardMaterial color="#0f1422" roughness={0.7} />
         </mesh>
-        <mesh position={[0, -0.35, -62]}>
-          <boxGeometry args={[160, 0.02, 0.4]} />
+        <mesh position={[0, -0.35, -58]}>
+          <boxGeometry args={[170, 0.02, 0.4]} />
           <meshBasicMaterial color="#fbbf24" opacity={0.8} transparent />
         </mesh>
 
-        {/* Main Access Road leading from Gate to Parking & Building Entrance */}
+        {/* Main Access Road leading to Parking & Portico */}
         <mesh position={[0, -0.38, 50]} receiveShadow>
           <boxGeometry args={[12, 0.05, 52]} />
           <meshStandardMaterial color="#101524" roughness={0.7} />
         </mesh>
-
-        {/* Road linking Main Access to Block A & Parking */}
         <mesh position={[0, -0.38, 24]} receiveShadow>
           <boxGeometry args={[65, 0.05, 10]} />
           <meshStandardMaterial color="#101524" roughness={0.7} />
         </mesh>
 
-        {/* Campus Central Quadrangle Lawn */}
-        <mesh position={[-5, -0.38, 2]} receiveShadow>
-          <boxGeometry args={[28, 0.04, 32]} />
-          <meshStandardMaterial color="#0a261c" roughness={0.85} />
-        </mesh>
-
-        {/* Perimeter Campus Trees */}
+        {/* Campus Trees */}
         <group ref={treesGroupRef} name="campus-trees">
           {[
-            [-58, 0, -45],
-            [-58, 0, -15],
-            [-58, 0, 15],
-            [-58, 0, 45],
-            [58, 0, -45],
-            [58, 0, -15],
-            [58, 0, 15],
-            [58, 0, 45],
-            [-30, 0, -52],
-            [30, 0, -52],
+            [-65, 0, -45],
+            [-65, 0, -15],
+            [-65, 0, 15],
+            [-65, 0, 45],
+            [68, 0, -45],
+            [68, 0, -15],
+            [68, 0, 15],
+            [68, 0, 45],
+            [-30, 0, -50],
+            [20, 0, -50],
             [-35, 0, 68],
             [35, 0, 68]
           ].map((pos, idx) => (
@@ -140,9 +139,64 @@ export function CampusScene({ telemetry }) {
             </group>
           ))}
         </group>
+
+        {/* 3. 2D Map Landmarks: Kuvempu Kalakshetra, Chaitra Kota, BIT Pink Tree */}
+        <group name="campus-landmarks">
+          {CAMPUS_LANDMARKS.map((lm) => (
+            <group key={lm.id} position={lm.position}>
+              {lm.id === 'lm-pink-tree' ? (
+                // Iconic Tabebuia Pink Tree
+                <group>
+                  <mesh position={[0, 1.6, 0]} castShadow>
+                    <cylinderGeometry args={[0.25, 0.4, 3.2, 8]} />
+                    <meshStandardMaterial color="#422006" roughness={0.9} />
+                  </mesh>
+                  <mesh position={[0, 4.2, 0]} castShadow>
+                    <dodecahedronGeometry args={[2.6, 1]} />
+                    <meshStandardMaterial color="#f472b6" roughness={0.7} />
+                  </mesh>
+                </group>
+              ) : lm.id === 'lm-kuvempu' ? (
+                // Kuvempu Kalakshetra Cultural Amphitheater Marker
+                <group>
+                  <mesh position={[0, 0.8, 0]} castShadow receiveShadow>
+                    <cylinderGeometry args={[4.2, 4.8, 1.6, 24]} />
+                    <meshStandardMaterial color="#78350f" roughness={0.6} />
+                  </mesh>
+                  <mesh position={[0, 1.7, 0]} castShadow>
+                    <coneGeometry args={[4.5, 1.2, 24]} />
+                    <meshStandardMaterial color="#b45309" roughness={0.5} />
+                  </mesh>
+                </group>
+              ) : (
+                // Chaitra Kota Heritage Pavilion
+                <group>
+                  <mesh position={[0, 1.2, 0]} castShadow>
+                    <boxGeometry args={[3.6, 2.4, 3.6]} />
+                    <meshStandardMaterial color="#1e293b" roughness={0.6} />
+                  </mesh>
+                  <mesh position={[0, 2.5, 0]} castShadow>
+                    <coneGeometry args={[2.8, 1.2, 4]} />
+                    <meshStandardMaterial color="#0284c7" metalness={0.7} />
+                  </mesh>
+                </group>
+              )}
+
+              {/* Landmark Billboard Tag */}
+              {showLabels && !selectedBuildingId && (
+                <Html position={[0, 5.2, 0]} center distanceFactor={26}>
+                  <div className="pointer-events-none px-2.5 py-1 rounded-xl bg-[#131219]/90 border border-white/20 text-[10px] font-mono text-white whitespace-nowrap shadow-xl flex items-center gap-1.5 backdrop-blur-md">
+                    <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: lm.color }} />
+                    <span className="font-bold">{lm.name}</span>
+                  </div>
+                </Html>
+              )}
+            </group>
+          ))}
+        </group>
       </group>
 
-      {/* 3. Connecting Elevated Sky-Bridges between Blocks */}
+      {/* 4. Connecting Sky-Bridges */}
       <group name="connecting-bridges">
         {CONNECTING_BRIDGES.map((br) => {
           const mx = (br.start[0] + br.end[0]) / 2;
@@ -171,16 +225,12 @@ export function CampusScene({ telemetry }) {
                 <boxGeometry args={[br.width + 0.2, 0.15, len]} />
                 <meshStandardMaterial color="#0f172a" roughness={0.7} />
               </mesh>
-              <mesh position={[0, -my / 2, 0]} castShadow>
-                <cylinderGeometry args={[0.3, 0.35, my, 8]} />
-                <meshStandardMaterial color="#334155" metalness={0.7} />
-              </mesh>
             </group>
           );
         })}
       </group>
 
-      {/* 4. Luxury Architectural Glass & Modern Building Blocks */}
+      {/* 5. 8 Solid Volumetric Campus Buildings Matching 2D Map */}
       <group name="campus-buildings">
         {PROCESSED_BUILDINGS.map((b) => (
           <Building3D
@@ -191,10 +241,10 @@ export function CampusScene({ telemetry }) {
         ))}
       </group>
 
-      {/* 5. Complete Parking Facility */}
+      {/* 6. Complete Parking Facility */}
       <ParkingLot />
 
-      {/* 6. Dynamic Cinematic Camera Rig */}
+      {/* 7. Smooth Cinematic Camera Rig */}
       <CameraRig />
     </>
   );

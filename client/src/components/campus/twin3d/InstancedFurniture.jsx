@@ -1,29 +1,25 @@
 import React, { useMemo, useRef, useLayoutEffect } from 'react';
 import * as THREE from 'three';
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { PROCESSED_BUILDINGS, FLOOR_HEIGHT } from '../../../config/buildings.config.js';
 import { useTwin3DStore } from '../../../store/useTwin3DStore.js';
 
-const tempMatrix = new THREE.Matrix4();
 const tempObj = new THREE.Object3D();
 
 export function InstancedFurniture() {
   const explodedHeight = useTwin3DStore((s) => s.explodedHeight);
-  const selectedBuildingId = useTwin3DStore((s) => s.selectedBuildingId);
-  const selectedFloorLevel = useTwin3DStore((s) => s.selectedFloorLevel);
 
   const deskMeshRef = useRef();
-  const seatPadRef = useRef();
-  const seatBackRef = useRef();
+  const chairMeshRef = useRef();
   const teacherDeskRef = useRef();
 
   // Aggregate all furniture items with global scene transformation data
-  const { deskTransforms, seatTransforms, teacherDeskTransforms } = useMemo(() => {
+  const { deskTransforms, chairTransforms, teacherDeskTransforms } = useMemo(() => {
     const desks = [];
-    const seats = [];
+    const chairs = [];
     const teachers = [];
 
     PROCESSED_BUILDINGS.forEach((b) => {
-      // If a building is selected, we can optionally focus or render all
       b.floors.forEach((f) => {
         const floorY = (f.level - 1) * FLOOR_HEIGHT + (f.level - 1) * explodedHeight * 3.5;
 
@@ -33,27 +29,27 @@ export function InstancedFurniture() {
           const layout = room.layout;
           if (!layout) return;
 
-          // Desks
+          // Student Benches / Desks
           layout.benches.forEach((bench) => {
             desks.push({
               x: roomWorldX + bench.position[0],
-              y: floorY + 0.73,
+              y: floorY,
               z: roomWorldZ + bench.position[2],
               w: bench.width,
               d: bench.depth
             });
           });
 
-          // Seats
+          // Student Chairs (Pad + Backrest + 4 Legs)
           layout.seats.forEach((seat) => {
-            seats.push({
+            chairs.push({
               x: roomWorldX + seat.position[0],
-              y: floorY + seat.position[1],
+              y: floorY,
               z: roomWorldZ + seat.position[2]
             });
           });
 
-          // Teacher Desk
+          // Teacher Podium Desk
           if (layout.teacherDesk) {
             teachers.push({
               x: roomWorldX + layout.teacherDesk.position[0],
@@ -70,18 +66,74 @@ export function InstancedFurniture() {
 
     return {
       deskTransforms: desks,
-      seatTransforms: seats,
+      chairTransforms: chairs,
       teacherDeskTransforms: teachers
     };
   }, [explodedHeight]);
 
-  // Update instance matrices on geometry update or exploded height slide
+  // Procedural Student Bench Desk Geometry (Top slab + heavy-duty powder-coated steel legs)
+  const deskGeometry = useMemo(() => {
+    // 1. Tabletop
+    const top = new THREE.BoxGeometry(1, 0.045, 1);
+    top.translate(0, 0.725, 0);
+
+    // 2. Left leg frame
+    const leftLeg = new THREE.BoxGeometry(0.04, 0.70, 0.85);
+    leftLeg.translate(-0.46, 0.35, 0);
+
+    // 3. Right leg frame
+    const rightLeg = new THREE.BoxGeometry(0.04, 0.70, 0.85);
+    rightLeg.translate(0.46, 0.35, 0);
+
+    // 4. Modesty panel / cross support
+    const panel = new THREE.BoxGeometry(0.92, 0.28, 0.02);
+    panel.translate(0, 0.52, -0.38);
+
+    return mergeGeometries([top, leftLeg, rightLeg, panel]);
+  }, []);
+
+  // Procedural University Chair Geometry (Cushion at 0.45 + backrest at 0.67 + 4 steel legs)
+  const chairGeometry = useMemo(() => {
+    // 1. Seat Cushion (Center at Y = 0.45)
+    const cushion = new THREE.BoxGeometry(0.42, 0.04, 0.40);
+    cushion.translate(0, 0.45, 0);
+
+    // 2. 4 Metal Legs down to floor Y = 0
+    const legFL = new THREE.BoxGeometry(0.03, 0.43, 0.03);
+    legFL.translate(-0.17, 0.215, -0.16);
+
+    const legFR = new THREE.BoxGeometry(0.03, 0.43, 0.03);
+    legFR.translate(0.17, 0.215, -0.16);
+
+    const legBL = new THREE.BoxGeometry(0.03, 0.43, 0.03);
+    legBL.translate(-0.17, 0.215, 0.16);
+
+    const legBR = new THREE.BoxGeometry(0.03, 0.43, 0.03);
+    legBR.translate(0.17, 0.215, 0.16);
+
+    // 3. Backrest Upright Supports
+    const spineL = new THREE.BoxGeometry(0.025, 0.26, 0.025);
+    spineL.translate(-0.15, 0.58, 0.18);
+
+    const spineR = new THREE.BoxGeometry(0.025, 0.26, 0.025);
+    spineR.translate(0.15, 0.58, 0.18);
+
+    // 4. Curved Backrest Pad
+    const backrest = new THREE.BoxGeometry(0.40, 0.22, 0.03);
+    backrest.translate(0, 0.67, 0.18);
+
+    return mergeGeometries([cushion, legFL, legFR, legBL, legBR, spineL, spineR, backrest]);
+  }, []);
+
+  const teacherGeom = useMemo(() => new THREE.BoxGeometry(1, 1, 1), []);
+
+  // Update instance matrices
   useLayoutEffect(() => {
     // 1. Update Desks
     if (deskMeshRef.current && deskTransforms.length > 0) {
       deskTransforms.forEach((item, idx) => {
         tempObj.position.set(item.x, item.y, item.z);
-        tempObj.scale.set(item.w, 0.05, item.d);
+        tempObj.scale.set(item.w, 1.0, item.d);
         tempObj.rotation.set(0, 0, 0);
         tempObj.updateMatrix();
         deskMeshRef.current.setMatrixAt(idx, tempObj.matrix);
@@ -89,31 +141,19 @@ export function InstancedFurniture() {
       deskMeshRef.current.instanceMatrix.needsUpdate = true;
     }
 
-    // 2. Update Seat Pads
-    if (seatPadRef.current && seatTransforms.length > 0) {
-      seatTransforms.forEach((item, idx) => {
+    // 2. Update Chairs
+    if (chairMeshRef.current && chairTransforms.length > 0) {
+      chairTransforms.forEach((item, idx) => {
         tempObj.position.set(item.x, item.y, item.z);
-        tempObj.scale.set(0.42, 0.04, 0.40);
+        tempObj.scale.set(1.0, 1.0, 1.0);
         tempObj.rotation.set(0, 0, 0);
         tempObj.updateMatrix();
-        seatPadRef.current.setMatrixAt(idx, tempObj.matrix);
+        chairMeshRef.current.setMatrixAt(idx, tempObj.matrix);
       });
-      seatPadRef.current.instanceMatrix.needsUpdate = true;
+      chairMeshRef.current.instanceMatrix.needsUpdate = true;
     }
 
-    // 3. Update Seat Backrests
-    if (seatBackRef.current && seatTransforms.length > 0) {
-      seatTransforms.forEach((item, idx) => {
-        tempObj.position.set(item.x, item.y + 0.22, item.z + 0.18);
-        tempObj.scale.set(0.40, 0.24, 0.03);
-        tempObj.rotation.set(0, 0, 0);
-        tempObj.updateMatrix();
-        seatBackRef.current.setMatrixAt(idx, tempObj.matrix);
-      });
-      seatBackRef.current.instanceMatrix.needsUpdate = true;
-    }
-
-    // 4. Update Teacher Desks
+    // 3. Update Teacher Desks
     if (teacherDeskRef.current && teacherDeskTransforms.length > 0) {
       teacherDeskTransforms.forEach((item, idx) => {
         tempObj.position.set(item.x, item.y, item.z);
@@ -124,57 +164,39 @@ export function InstancedFurniture() {
       });
       teacherDeskRef.current.instanceMatrix.needsUpdate = true;
     }
-  }, [deskTransforms, seatTransforms, teacherDeskTransforms]);
-
-  const deskGeom = useMemo(() => new THREE.BoxGeometry(1, 1, 1), []);
-  const teacherGeom = useMemo(() => new THREE.BoxGeometry(1, 1, 1), []);
+  }, [deskTransforms, chairTransforms, teacherDeskTransforms]);
 
   return (
     <group name="instanced-campus-furniture">
-      {/* Student Desks */}
+      {/* Student Benches / Desks */}
       {deskTransforms.length > 0 && (
         <instancedMesh
           ref={deskMeshRef}
-          args={[deskGeom, null, deskTransforms.length]}
+          args={[deskGeometry, null, deskTransforms.length]}
           castShadow
           receiveShadow
         >
           <meshStandardMaterial
-            color="#1e2230"
-            roughness={0.4}
-            metalness={0.2}
-            envMapIntensity={0.5}
+            color="#2e384d"
+            roughness={0.45}
+            metalness={0.25}
+            envMapIntensity={0.6}
           />
         </instancedMesh>
       )}
 
-      {/* Seat Pads */}
-      {seatTransforms.length > 0 && (
+      {/* Student Chairs (Seat pad + legs + backrest) */}
+      {chairTransforms.length > 0 && (
         <instancedMesh
-          ref={seatPadRef}
-          args={[deskGeom, null, seatTransforms.length]}
+          ref={chairMeshRef}
+          args={[chairGeometry, null, chairTransforms.length]}
           castShadow
           receiveShadow
         >
           <meshStandardMaterial
-            color="#10141f"
-            roughness={0.6}
-            metalness={0.1}
-          />
-        </instancedMesh>
-      )}
-
-      {/* Seat Backrests */}
-      {seatTransforms.length > 0 && (
-        <instancedMesh
-          ref={seatBackRef}
-          args={[deskGeom, null, seatTransforms.length]}
-          castShadow
-        >
-          <meshStandardMaterial
-            color="#151a28"
+            color="#192030"
             roughness={0.5}
-            metalness={0.1}
+            metalness={0.2}
           />
         </instancedMesh>
       )}
@@ -188,8 +210,8 @@ export function InstancedFurniture() {
           receiveShadow
         >
           <meshStandardMaterial
-            color="#2a334a"
-            roughness={0.35}
+            color="#273248"
+            roughness={0.4}
             metalness={0.3}
           />
         </instancedMesh>
@@ -197,4 +219,3 @@ export function InstancedFurniture() {
     </group>
   );
 }
-

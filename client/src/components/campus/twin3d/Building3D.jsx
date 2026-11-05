@@ -22,7 +22,14 @@ export function Building3D({ building, telemetry }) {
   const students = useTwin3DStore((s) => s.students);
 
   const isSelected = selectedBuildingId === id;
-  const isInspectingInterior = isSelected && (selectedFloorLevel !== null || selectedClassroomId !== null);
+  const isInspectingFloor = isSelected && selectedFloorLevel !== null;
+  const isCutaway = xrayMode || isInspectingFloor || (isSelected && selectedClassroomId !== null);
+
+  // Determine active render height: when inspecting a floor, cutoff facade at the selected floor
+  const activeFloorCount = isInspectingFloor ? Math.min(floorCount, selectedFloorLevel) : floorCount;
+  const activeHeight = activeFloorCount * FLOOR_HEIGHT;
+  const totalHeight = floorCount * FLOOR_HEIGHT;
+  const roofY = totalHeight + (floorCount - 1) * explodedHeight * 3.5;
 
   // Label and style from single central config
   const labelConfig = useMemo(() => {
@@ -47,14 +54,42 @@ export function Building3D({ building, telemetry }) {
     return students.filter((s) => s.buildingId === id);
   }, [students, id]);
 
-  const totalHeight = floorCount * FLOOR_HEIGHT;
-  const roofY = totalHeight + (floorCount - 1) * explodedHeight * 3.5;
-  const isCutaway = xrayMode || isInspectingInterior;
-
   // Courtyard geometry
   const hasCourtyard = courtyard && courtyard.enabled;
   const cw = hasCourtyard ? courtyard.width : 0;
   const cd = hasCourtyard ? courtyard.depth : 0;
+
+  // Exterior pilaster / brick column positions along North, South, West, East facades
+  const brickColumns = useMemo(() => {
+    const cols = [];
+    const spacing = 7.0; // distance between columns
+    const halfW = width / 2;
+    const halfD = depth / 2;
+
+    // Corner columns
+    cols.push([-halfW, activeHeight / 2, -halfD]);
+    cols.push([halfW, activeHeight / 2, -halfD]);
+    cols.push([-halfW, activeHeight / 2, halfD]);
+    cols.push([halfW, activeHeight / 2, halfD]);
+
+    // North & South intermediate columns
+    const xSteps = Math.floor(width / spacing);
+    for (let i = 1; i < xSteps; i++) {
+      const x = -halfW + i * (width / xSteps);
+      cols.push([x, activeHeight / 2, -halfD]);
+      cols.push([x, activeHeight / 2, halfD]);
+    }
+
+    // West & East intermediate columns
+    const zSteps = Math.floor(depth / spacing);
+    for (let j = 1; j < zSteps; j++) {
+      const z = -halfD + j * (depth / zSteps);
+      cols.push([-halfW, activeHeight / 2, z]);
+      cols.push([halfW, activeHeight / 2, z]);
+    }
+
+    return cols;
+  }, [width, depth, activeHeight]);
 
   // Animation frame loop for courtyard flag waving and fountain ripple
   useFrame((state) => {
@@ -80,13 +115,21 @@ export function Building3D({ building, telemetry }) {
         selectBuilding(id);
       }}
     >
-      {/* 1. Foundation Concrete Slab */}
-      <mesh position={[0, -0.25, 0]} receiveShadow>
-        <boxGeometry args={[width + 1.6, 0.5, depth + 1.6]} />
-        <meshStandardMaterial color="#0b0e17" roughness={0.9} />
-      </mesh>
+      {/* 1. Heavy Rusticated Brick Plinth Foundation */}
+      <group position={[0, -0.4, 0]}>
+        {/* Foundation Base Concrete */}
+        <mesh receiveShadow>
+          <boxGeometry args={[width + 2.0, 0.8, depth + 2.0]} />
+          <meshStandardMaterial color="#0b0e17" roughness={0.9} />
+        </mesh>
+        {/* Red Brick Water Table / Plinth Trim */}
+        <mesh position={[0, 0.42, 0]} receiveShadow>
+          <boxGeometry args={[width + 0.8, 0.12, depth + 0.8]} />
+          <meshStandardMaterial color="#8b2f15" roughness={0.7} />
+        </mesh>
+      </group>
 
-      {/* 2. Floors & Interior Layout */}
+      {/* 2. Floors & Interior Classroom Layout */}
       {floors.map((floor) => (
         <Floor3D
           key={floor.level}
@@ -98,7 +141,7 @@ export function Building3D({ building, telemetry }) {
         />
       ))}
 
-      {/* 3. Landscaped Central Courtyard Quad Garden (For Block A) */}
+      {/* 3. Landscaped Central Courtyard Quad Garden (Block A) */}
       {hasCourtyard && (
         <group name="courtyard-quad-garden" position={[0, 0.02, 0]}>
           {/* Green Lawn */}
@@ -117,14 +160,12 @@ export function Building3D({ building, telemetry }) {
             <meshStandardMaterial color="#1f293d" roughness={0.6} />
           </mesh>
 
-          {/* Central Architectural Water Fountain */}
+          {/* Central Water Fountain */}
           <group position={[0, 0.2, 0]}>
-            {/* Fountain Stone Basin */}
             <mesh receiveShadow castShadow>
               <cylinderGeometry args={[2.4, 2.6, 0.4, 24]} />
               <meshStandardMaterial color="#2d3748" roughness={0.5} />
             </mesh>
-            {/* Water Pool */}
             <mesh ref={fountainWaterRef} position={[0, 0.21, 0]}>
               <cylinderGeometry args={[2.1, 2.1, 0.05, 24]} />
               <meshStandardMaterial
@@ -137,7 +178,6 @@ export function Building3D({ building, telemetry }) {
                 metalness={0.8}
               />
             </mesh>
-            {/* Central Spout Column */}
             <mesh position={[0, 0.5, 0]} castShadow>
               <cylinderGeometry args={[0.3, 0.4, 0.6, 12]} />
               <meshStandardMaterial color="#475569" metalness={0.6} roughness={0.3} />
@@ -146,22 +186,18 @@ export function Building3D({ building, telemetry }) {
 
           {/* Institution Flag Pole */}
           <group position={[4.5, 0, 4.5]}>
-            {/* Base Pedestal */}
             <mesh position={[0, 0.2, 0]} castShadow>
               <boxGeometry args={[1.0, 0.4, 1.0]} />
               <meshStandardMaterial color="#475569" />
             </mesh>
-            {/* Stainless Steel Pole */}
             <mesh position={[0, 4.0, 0]} castShadow>
               <cylinderGeometry args={[0.06, 0.08, 7.6, 12]} />
               <meshStandardMaterial color="#cbd5e1" metalness={0.9} roughness={0.2} />
             </mesh>
-            {/* Golden Finial */}
             <mesh position={[0, 7.85, 0]}>
               <sphereGeometry args={[0.14, 10, 10]} />
               <meshStandardMaterial color="#fbbf24" metalness={0.9} roughness={0.1} />
             </mesh>
-            {/* Waving Flag */}
             <mesh ref={flagMeshRef} position={[0.75, 7.0, 0]} castShadow>
               <boxGeometry args={[1.5, 0.9, 0.04]} />
               <meshStandardMaterial color="#006bff" emissive="#006bff" emissiveIntensity={0.2} />
@@ -180,7 +216,6 @@ export function Building3D({ building, telemetry }) {
                 <boxGeometry args={[1.6, 0.1, 0.45]} />
                 <meshStandardMaterial color="#78350f" roughness={0.6} />
               </mesh>
-              {/* Bench Legs */}
               <mesh position={[-0.6, -0.15, 0]}>
                 <boxGeometry args={[0.1, 0.3, 0.4]} />
                 <meshStandardMaterial color="#1e293b" metalness={0.8} />
@@ -199,12 +234,10 @@ export function Building3D({ building, telemetry }) {
             [-5.5, 0, 5.5]
           ].map((p, i) => (
             <group key={`tree-${i}`} position={p}>
-              {/* Trunk */}
               <mesh position={[0, 1.2, 0]} castShadow>
                 <cylinderGeometry args={[0.16, 0.24, 2.4, 8]} />
                 <meshStandardMaterial color="#451a03" roughness={0.9} />
               </mesh>
-              {/* Foliage Canopy */}
               <mesh position={[0, 2.8, 0]} castShadow>
                 <dodecahedronGeometry args={[1.4, 1]} />
                 <meshStandardMaterial color="#15803d" roughness={0.7} />
@@ -214,83 +247,117 @@ export function Building3D({ building, telemetry }) {
         </group>
       )}
 
-      {/* 4. Translucent Architectural Glass Curtain Walls & Mullions */}
-      <group name="glass-curtain-facade">
-        {/* Exterior Perimeter Walls with Cutaway Transparency */}
-        {/* North Facade */}
-        <mesh position={[0, totalHeight / 2, -depth / 2]} castShadow={!isCutaway}>
-          <boxGeometry args={[width, totalHeight, 0.15]} />
-          <meshStandardMaterial
-            color="#60a5fa"
-            transparent
-            opacity={isCutaway ? 0.06 : 0.25}
-            roughness={0.1}
-            metalness={0.85}
-          />
-        </mesh>
-
-        {/* South Facade */}
-        <mesh position={[0, totalHeight / 2, depth / 2]} castShadow={!isCutaway}>
-          <boxGeometry args={[width, totalHeight, 0.15]} />
-          <meshStandardMaterial
-            color="#60a5fa"
-            transparent
-            opacity={isCutaway ? 0.06 : 0.25}
-            roughness={0.1}
-            metalness={0.85}
-          />
-        </mesh>
-
-        {/* West Facade */}
-        <mesh position={[-width / 2, totalHeight / 2, 0]} castShadow={!isCutaway}>
-          <boxGeometry args={[0.15, totalHeight, depth]} />
-          <meshStandardMaterial
-            color="#60a5fa"
-            transparent
-            opacity={isCutaway ? 0.06 : 0.25}
-            roughness={0.1}
-            metalness={0.85}
-          />
-        </mesh>
-
-        {/* East Facade */}
-        <mesh position={[width / 2, totalHeight / 2, 0]} castShadow={!isCutaway}>
-          <boxGeometry args={[0.15, totalHeight, depth]} />
-          <meshStandardMaterial
-            color="#60a5fa"
-            transparent
-            opacity={isCutaway ? 0.06 : 0.25}
-            roughness={0.1}
-            metalness={0.85}
-          />
-        </mesh>
-
-        {/* Corner Concrete Architectural Columns */}
-        {[
-          [-width / 2, totalHeight / 2, -depth / 2],
-          [width / 2, totalHeight / 2, -depth / 2],
-          [-width / 2, totalHeight / 2, depth / 2],
-          [width / 2, totalHeight / 2, depth / 2]
-        ].map((c, i) => (
-          <mesh key={`col-${i}`} position={c} castShadow>
-            <boxGeometry args={[0.6, totalHeight, 0.6]} />
-            <meshStandardMaterial color="#1e2433" roughness={0.5} />
+      {/* 4. REALISTIC ARCHITECTURAL BRICK FACADE & STRUCTURAL COLUMNS */}
+      <group name="brick-architectural-facade">
+        {/* Exterior Brick Pilasters / Structural Columns */}
+        {brickColumns.map((c, i) => (
+          <mesh key={`brick-col-${i}`} position={c} castShadow receiveShadow>
+            <boxGeometry args={[0.75, activeHeight, 0.75]} />
+            <meshStandardMaterial
+              color="#9a3412" // Rich Terracotta Engineering Brick Tone
+              roughness={0.75}
+              metalness={0.1}
+            />
           </mesh>
         ))}
 
-        {/* Floor Slab Edge Concrete Bands */}
-        {floors.map((f) => (
-          <mesh
-            key={`band-${f.level}`}
-            position={[0, (f.level - 1) * FLOOR_HEIGHT + (f.level - 1) * explodedHeight * 3.5, 0]}
-          >
-            <boxGeometry args={[width + 0.2, 0.25, depth + 0.2]} />
-            <meshStandardMaterial color="#334155" metalness={0.4} roughness={0.4} />
-          </mesh>
-        ))}
+        {/* Horizontal Concrete Floor Slabs & Brick Spandrel Panels */}
+        {floors.slice(0, activeFloorCount).map((f) => {
+          const fY = (f.level - 1) * FLOOR_HEIGHT + (f.level - 1) * explodedHeight * 3.5;
+          return (
+            <group key={`facade-level-${f.level}`} position={[0, fY, 0]}>
+              {/* Floor Slab Edge Cornice Band (Precast Stone) */}
+              <mesh position={[0, 0.1, 0]}>
+                <boxGeometry args={[width + 0.35, 0.26, depth + 0.35]} />
+                <meshStandardMaterial color="#334155" roughness={0.5} metalness={0.3} />
+              </mesh>
+
+              {/* Terracotta Brick Spandrel Wall Course (below windows on this floor) */}
+              {/* North Brick Spandrel */}
+              <mesh position={[0, 0.55, -depth / 2]} castShadow>
+                <boxGeometry args={[width, 0.8, 0.25]} />
+                <meshStandardMaterial color="#943212" roughness={0.78} />
+              </mesh>
+              {/* South Brick Spandrel */}
+              <mesh position={[0, 0.55, depth / 2]} castShadow>
+                <boxGeometry args={[width, 0.8, 0.25]} />
+                <meshStandardMaterial color="#943212" roughness={0.78} />
+              </mesh>
+              {/* West Brick Spandrel */}
+              <mesh position={[-width / 2, 0.55, 0]} castShadow>
+                <boxGeometry args={[0.25, 0.8, depth]} />
+                <meshStandardMaterial color="#943212" roughness={0.78} />
+              </mesh>
+              {/* East Brick Spandrel */}
+              <mesh position={[width / 2, 0.55, 0]} castShadow>
+                <boxGeometry args={[0.25, 0.8, depth]} />
+                <meshStandardMaterial color="#943212" roughness={0.78} />
+              </mesh>
+
+              {/* Concrete Window Sill Lintel */}
+              <mesh position={[0, 0.98, -depth / 2]}>
+                <boxGeometry args={[width + 0.1, 0.1, 0.3]} />
+                <meshStandardMaterial color="#64748b" roughness={0.4} />
+              </mesh>
+              <mesh position={[0, 0.98, depth / 2]}>
+                <boxGeometry args={[width + 0.1, 0.1, 0.3]} />
+                <meshStandardMaterial color="#64748b" roughness={0.4} />
+              </mesh>
+            </group>
+          );
+        })}
+
+        {/* Glazed Architectural Ribbon Window Panels */}
+        {/* North Facade Windows */}
+        <mesh position={[0, activeHeight / 2, -depth / 2 + 0.05]} castShadow={!isCutaway}>
+          <boxGeometry args={[width - 0.5, activeHeight * 0.72, 0.06]} />
+          <meshStandardMaterial
+            color="#38bdf8"
+            transparent
+            opacity={isCutaway ? 0.06 : 0.28}
+            roughness={0.1}
+            metalness={0.9}
+          />
+        </mesh>
+
+        {/* South Facade Windows */}
+        <mesh position={[0, activeHeight / 2, depth / 2 - 0.05]} castShadow={!isCutaway}>
+          <boxGeometry args={[width - 0.5, activeHeight * 0.72, 0.06]} />
+          <meshStandardMaterial
+            color="#38bdf8"
+            transparent
+            opacity={isCutaway ? 0.06 : 0.28}
+            roughness={0.1}
+            metalness={0.9}
+          />
+        </mesh>
+
+        {/* West Facade Windows */}
+        <mesh position={[-width / 2 + 0.05, activeHeight / 2, 0]} castShadow={!isCutaway}>
+          <boxGeometry args={[0.06, activeHeight * 0.72, depth - 0.5]} />
+          <meshStandardMaterial
+            color="#38bdf8"
+            transparent
+            opacity={isCutaway ? 0.06 : 0.28}
+            roughness={0.1}
+            metalness={0.9}
+          />
+        </mesh>
+
+        {/* East Facade Windows */}
+        <mesh position={[width / 2 - 0.05, activeHeight / 2, 0]} castShadow={!isCutaway}>
+          <boxGeometry args={[0.06, activeHeight * 0.72, depth - 0.5]} />
+          <meshStandardMaterial
+            color="#38bdf8"
+            transparent
+            opacity={isCutaway ? 0.06 : 0.28}
+            roughness={0.1}
+            metalness={0.9}
+          />
+        </mesh>
       </group>
 
-      {/* 5. Exterior Straight Architectural Staircase (as in Reference) */}
+      {/* 5. Exterior Straight Architectural Staircase */}
       <group position={[width / 2 + 1.2, 0, 0]}>
         {[0, 1, 2, 3, 4, 5, 6, 7].map((step) => (
           <mesh
@@ -310,38 +377,34 @@ export function Building3D({ building, telemetry }) {
         </mesh>
       </group>
 
-      {/* 6. Rooftop Solar Arrays, Water Tanks & Parapet Wall */}
+      {/* 6. Rooftop Infrastructure (Solar Panels, Tanks & Parapet - hidden during cutaway / floor view) */}
       {!isCutaway && (
         <group position={[0, roofY, 0]} name="rooftop-infrastructure">
-          {/* Roof Slab */}
+          {/* Concrete Roof Slab */}
           <mesh position={[0, 0.1, 0]} castShadow receiveShadow>
             <boxGeometry args={[width + 0.4, 0.25, depth + 0.4]} />
             <meshStandardMaterial color="#0c0e17" roughness={0.8} />
           </mesh>
 
-          {/* Perimeter Parapet Coping Wall */}
-          {/* North Parapet */}
+          {/* Brick Parapet Wall with Concrete Coping */}
           <mesh position={[0, 0.45, -depth / 2]} castShadow>
-            <boxGeometry args={[width + 0.4, 0.6, 0.25]} />
-            <meshStandardMaterial color="#1e293b" roughness={0.6} />
+            <boxGeometry args={[width + 0.4, 0.6, 0.28]} />
+            <meshStandardMaterial color="#8b2f15" roughness={0.75} />
           </mesh>
-          {/* South Parapet */}
           <mesh position={[0, 0.45, depth / 2]} castShadow>
-            <boxGeometry args={[width + 0.4, 0.6, 0.25]} />
-            <meshStandardMaterial color="#1e293b" roughness={0.6} />
+            <boxGeometry args={[width + 0.4, 0.6, 0.28]} />
+            <meshStandardMaterial color="#8b2f15" roughness={0.75} />
           </mesh>
-          {/* West Parapet */}
           <mesh position={[-width / 2, 0.45, 0]} castShadow>
-            <boxGeometry args={[0.25, 0.6, depth]} />
-            <meshStandardMaterial color="#1e293b" roughness={0.6} />
+            <boxGeometry args={[0.28, 0.6, depth]} />
+            <meshStandardMaterial color="#8b2f15" roughness={0.75} />
           </mesh>
-          {/* East Parapet */}
           <mesh position={[width / 2, 0.45, 0]} castShadow>
-            <boxGeometry args={[0.25, 0.6, depth]} />
-            <meshStandardMaterial color="#1e293b" roughness={0.6} />
+            <boxGeometry args={[0.28, 0.6, depth]} />
+            <meshStandardMaterial color="#8b2f15" roughness={0.75} />
           </mesh>
 
-          {/* Tilted Rooftop Solar Panel Arrays (3 High-Efficiency Rows) */}
+          {/* Tilted Rooftop Solar Panel Arrays */}
           {[-8, 0, 8].map((zOffset, rIdx) => (
             <group key={`solar-row-${rIdx}`} position={[0, 0.5, zOffset]} rotation={[-0.26, 0, 0]}>
               <mesh castShadow receiveShadow>
@@ -354,7 +417,6 @@ export function Building3D({ building, telemetry }) {
                   metalness={0.9}
                 />
               </mesh>
-              {/* Aluminum Panel Grid Lines */}
               <mesh position={[0, 0.05, 0]}>
                 <boxGeometry args={[width * 0.74, 0.02, 3.1]} />
                 <meshBasicMaterial color="#38bdf8" wireframe opacity={0.3} transparent />
@@ -362,19 +424,16 @@ export function Building3D({ building, telemetry }) {
             </group>
           ))}
 
-          {/* Institutional Water Tanks */}
+          {/* Water Tanks */}
           <group position={[width * 0.32, 0.9, -depth * 0.32]}>
-            {/* Tank 1 */}
             <mesh position={[-1.2, 0, 0]} castShadow>
               <cylinderGeometry args={[1.1, 1.1, 1.6, 16]} />
               <meshStandardMaterial color="#0284c7" metalness={0.5} roughness={0.3} />
             </mesh>
-            {/* Tank 2 */}
             <mesh position={[1.2, 0, 0]} castShadow>
               <cylinderGeometry args={[1.1, 1.1, 1.6, 16]} />
               <meshStandardMaterial color="#0284c7" metalness={0.5} roughness={0.3} />
             </mesh>
-            {/* Steel Support Frame */}
             <mesh position={[0, -0.6, 0]}>
               <boxGeometry args={[4.2, 0.3, 2.6]} />
               <meshStandardMaterial color="#475569" metalness={0.8} />
@@ -389,29 +448,29 @@ export function Building3D({ building, telemetry }) {
         </group>
       )}
 
-      {/* 7. Grand Main Entrance (Canopy, Steps, Ramp, Double Doors) */}
+      {/* 7. Grand Main Entrance (Brick Portico Pillars, Steps, Canopy) */}
       <group position={[0, 0, depth / 2]} name="main-entrance">
         {/* Cantilever Entrance Canopy */}
         <mesh position={[0, 3.0, 2.6]} castShadow>
           <boxGeometry args={[10.5, 0.25, 4.2]} />
           <meshStandardMaterial color="#006bff" emissive="#006bff" emissiveIntensity={0.2} metalness={0.6} />
         </mesh>
-        {/* Canopy LED Strip */}
+        {/* Canopy Accent LED Strip */}
         <mesh position={[0, 2.85, 4.4]}>
           <boxGeometry args={[10.0, 0.05, 0.15]} />
           <meshStandardMaterial color="#9ff0ec" emissive="#9ff0ec" emissiveIntensity={1.5} />
         </mesh>
-        {/* Canopy Support Columns */}
+        {/* Brick Portico Support Columns */}
         <mesh position={[-4.8, 1.4, 4.4]} castShadow>
-          <cylinderGeometry args={[0.1, 0.1, 2.8, 12]} />
-          <meshStandardMaterial color="#cbd5e1" metalness={0.8} />
+          <boxGeometry args={[0.6, 2.8, 0.6]} />
+          <meshStandardMaterial color="#9a3412" roughness={0.7} />
         </mesh>
         <mesh position={[4.8, 1.4, 4.4]} castShadow>
-          <cylinderGeometry args={[0.1, 0.1, 2.8, 12]} />
-          <meshStandardMaterial color="#cbd5e1" metalness={0.8} />
+          <boxGeometry args={[0.6, 2.8, 0.6]} />
+          <meshStandardMaterial color="#9a3412" roughness={0.7} />
         </mesh>
 
-        {/* Grand Concrete Entrance Steps (3 Tiers) */}
+        {/* Concrete Steps (3 Tiers) */}
         <mesh position={[0, 0.12, 1.2]} receiveShadow>
           <boxGeometry args={[8.5, 0.24, 2.4]} />
           <meshStandardMaterial color="#1e293b" roughness={0.6} />
@@ -421,20 +480,19 @@ export function Building3D({ building, telemetry }) {
           <meshStandardMaterial color="#1e293b" roughness={0.6} />
         </mesh>
 
-        {/* Accessible Wheelchair Ramp on the side */}
+        {/* Accessible Wheelchair Ramp */}
         <group position={[-5.8, 0, 1.2]}>
           <mesh position={[0, 0.12, 0]} rotation={[0.08, 0, 0]} receiveShadow>
             <boxGeometry args={[1.6, 0.2, 3.2]} />
             <meshStandardMaterial color="#334155" roughness={0.7} />
           </mesh>
-          {/* Ramp Railing */}
           <mesh position={[-0.8, 0.6, 0]}>
             <boxGeometry args={[0.05, 0.8, 3.0]} />
             <meshStandardMaterial color="#94a3b8" metalness={0.8} />
           </mesh>
         </group>
 
-        {/* Double Glass Entrance Doors */}
+        {/* Double Entrance Glass Doors */}
         <mesh position={[-1.2, 1.5, 0.08]}>
           <boxGeometry args={[2.0, 2.8, 0.08]} />
           <meshStandardMaterial color="#38bdf8" transparent opacity={0.4} roughness={0.1} metalness={0.8} />
@@ -444,7 +502,7 @@ export function Building3D({ building, telemetry }) {
           <meshStandardMaterial color="#38bdf8" transparent opacity={0.4} roughness={0.1} metalness={0.8} />
         </mesh>
 
-        {/* Small Door-Level Entrance Label */}
+        {/* Door Entrance Label */}
         {showLabels && (
           <Html position={[0, 3.6, 2.6]} center distanceFactor={22}>
             <div className="pointer-events-none px-2.5 py-1 rounded-lg bg-[#131219]/90 border border-[#9ff0ec]/30 text-[10px] font-mono text-[#9ff0ec] whitespace-nowrap shadow-lg">
@@ -457,7 +515,7 @@ export function Building3D({ building, telemetry }) {
       {/* 8. Floating Billboard Block Name Label */}
       {showLabels && (
         <Html
-          position={[0, roofY + 3.0, 0]}
+          position={[0, (isCutaway ? activeHeight : roofY) + 3.0, 0]}
           center
           distanceFactor={28}
           zIndexRange={[70, 0]}
@@ -473,7 +531,6 @@ export function Building3D({ building, telemetry }) {
                 : 'bg-[#131219]/90 border-white/15 text-[#b9b8bb] hover:border-[#9ff0ec]/50 hover:bg-[#181a26]'
             }`}
           >
-            {/* Colored Accent Block Badge */}
             <div
               className="flex items-center justify-center w-8 h-8 rounded-xl font-mono font-bold text-xs text-white shadow-md"
               style={{ backgroundColor: labelConfig.accentColor || '#38bdf8' }}

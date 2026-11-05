@@ -14,9 +14,10 @@ export function Floor3D({ floor, buildingWidth, buildingDepth, buildingId, court
   // Compute exploded vertical translation
   const floorY = (level - 1) * FLOOR_HEIGHT + (level - 1) * explodedHeight * 3.5;
 
-  // In X-Ray mode, if a specific floor is selected, hide floors above it
-  const isAboveSelected = selectedBuildingId === buildingId && selectedFloorLevel !== null && level > selectedFloorLevel;
-  if (xrayMode && isAboveSelected) {
+  // When a specific floor in this building is selected, hide any floors ABOVE it so the interior is completely open and visible
+  const isFloorInspected = selectedBuildingId === buildingId && selectedFloorLevel !== null;
+  const isAboveSelected = isFloorInspected && level > selectedFloorLevel;
+  if (isAboveSelected || (xrayMode && isAboveSelected)) {
     return null;
   }
 
@@ -42,25 +43,41 @@ export function Floor3D({ floor, buildingWidth, buildingDepth, buildingId, court
           {/* North Wing */}
           <mesh position={[0, -0.1, -(cd / 2 + sideD / 2)]} receiveShadow>
             <boxGeometry args={[slabW, 0.2, sideD]} />
-            <meshStandardMaterial color={isSelectedFloor ? '#1c2233' : '#141724'} roughness={0.7} metalness={0.2} />
+            <meshStandardMaterial
+              color={isSelectedFloor ? '#1e283d' : '#141724'}
+              roughness={0.65}
+              metalness={0.2}
+            />
           </mesh>
 
           {/* South Wing */}
           <mesh position={[0, -0.1, (cd / 2 + sideD / 2)]} receiveShadow>
             <boxGeometry args={[slabW, 0.2, sideD]} />
-            <meshStandardMaterial color={isSelectedFloor ? '#1c2233' : '#141724'} roughness={0.7} metalness={0.2} />
+            <meshStandardMaterial
+              color={isSelectedFloor ? '#1e283d' : '#141724'}
+              roughness={0.65}
+              metalness={0.2}
+            />
           </mesh>
 
           {/* West Wing */}
           <mesh position={[-(cw / 2 + sideW / 2), -0.1, 0]} receiveShadow>
             <boxGeometry args={[sideW, 0.2, cd]} />
-            <meshStandardMaterial color={isSelectedFloor ? '#1c2233' : '#141724'} roughness={0.7} metalness={0.2} />
+            <meshStandardMaterial
+              color={isSelectedFloor ? '#1e283d' : '#141724'}
+              roughness={0.65}
+              metalness={0.2}
+            />
           </mesh>
 
           {/* East Wing */}
           <mesh position={[(cw / 2 + sideW / 2), -0.1, 0]} receiveShadow>
             <boxGeometry args={[sideW, 0.2, cd]} />
-            <meshStandardMaterial color={isSelectedFloor ? '#1c2233' : '#141724'} roughness={0.7} metalness={0.2} />
+            <meshStandardMaterial
+              color={isSelectedFloor ? '#1e283d' : '#141724'}
+              roughness={0.65}
+              metalness={0.2}
+            />
           </mesh>
 
           {/* Inner Courtyard Protective Glass Railing Loop */}
@@ -68,22 +85,22 @@ export function Floor3D({ floor, buildingWidth, buildingDepth, buildingId, court
             {/* North Railing */}
             <mesh position={[0, 0.5, -cd / 2]}>
               <boxGeometry args={[cw, 1.0, 0.06]} />
-              <meshStandardMaterial color="#60a5fa" transparent opacity={0.25} roughness={0.1} metalness={0.8} />
+              <meshStandardMaterial color="#60a5fa" transparent opacity={0.3} roughness={0.1} metalness={0.8} />
             </mesh>
             {/* South Railing */}
             <mesh position={[0, 0.5, cd / 2]}>
               <boxGeometry args={[cw, 1.0, 0.06]} />
-              <meshStandardMaterial color="#60a5fa" transparent opacity={0.25} roughness={0.1} metalness={0.8} />
+              <meshStandardMaterial color="#60a5fa" transparent opacity={0.3} roughness={0.1} metalness={0.8} />
             </mesh>
             {/* West Railing */}
             <mesh position={[-cw / 2, 0.5, 0]}>
               <boxGeometry args={[0.06, 1.0, cd]} />
-              <meshStandardMaterial color="#60a5fa" transparent opacity={0.25} roughness={0.1} metalness={0.8} />
+              <meshStandardMaterial color="#60a5fa" transparent opacity={0.3} roughness={0.1} metalness={0.8} />
             </mesh>
             {/* East Railing */}
             <mesh position={[cw / 2, 0.5, 0]}>
               <boxGeometry args={[0.06, 1.0, cd]} />
-              <meshStandardMaterial color="#60a5fa" transparent opacity={0.25} roughness={0.1} metalness={0.8} />
+              <meshStandardMaterial color="#60a5fa" transparent opacity={0.3} roughness={0.1} metalness={0.8} />
             </mesh>
           </group>
         </group>
@@ -92,8 +109,8 @@ export function Floor3D({ floor, buildingWidth, buildingDepth, buildingId, court
         <mesh position={[0, -0.1, 0]} receiveShadow>
           <boxGeometry args={[slabW, 0.2, slabD]} />
           <meshStandardMaterial
-            color={isSelectedFloor ? '#1c2233' : '#141724'}
-            roughness={0.7}
+            color={isSelectedFloor ? '#1e283d' : '#141724'}
+            roughness={0.65}
             metalness={0.2}
           />
         </mesh>
@@ -120,10 +137,14 @@ export function Floor3D({ floor, buildingWidth, buildingDepth, buildingId, court
             <meshStandardMaterial color="#334155" roughness={0.4} />
           </mesh>
         ))}
-        {/* Floor level indicator tag on stair core */}
+        {/* Floor level indicator badge on stair core */}
         <mesh position={[2.15, 0.4, 0]}>
           <boxGeometry args={[0.05, 0.8, 1.2]} />
-          <meshStandardMaterial color="#006bff" emissive="#006bff" emissiveIntensity={0.3} />
+          <meshStandardMaterial
+            color={isSelectedFloor ? '#9ff0ec' : '#006bff'}
+            emissive={isSelectedFloor ? '#9ff0ec' : '#006bff'}
+            emissiveIntensity={isSelectedFloor ? 0.8 : 0.3}
+          />
         </mesh>
       </group>
 

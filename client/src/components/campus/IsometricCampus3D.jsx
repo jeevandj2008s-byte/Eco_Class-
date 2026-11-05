@@ -329,6 +329,21 @@ export function IsometricCampus3D({ telemetry }) {
         ctx.lineWidth = isBSelected ? 2 : 1;
         ctx.stroke();
 
+        // Architectural Terracotta Brick Plinth Course
+        const bp1 = project3D(bx - hw - 0.2, 0.05, bz - hd - 0.2, viewW, viewH);
+        const bp2 = project3D(bx + hw + 0.2, 0.05, bz - hd - 0.2, viewW, viewH);
+        const bp3 = project3D(bx + hw + 0.2, 0.05, bz + hd + 0.2, viewW, viewH);
+        const bp4 = project3D(bx - hw - 0.2, 0.05, bz + hd + 0.2, viewW, viewH);
+        ctx.strokeStyle = '#9a3412';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(bp1.x, bp1.y);
+        ctx.lineTo(bp2.x, bp2.y);
+        ctx.lineTo(bp3.x, bp3.y);
+        ctx.lineTo(bp4.x, bp4.y);
+        ctx.closePath();
+        ctx.stroke();
+
         // Courtyard Quad Garden for Block A
         if (b.courtyard?.enabled) {
           const cw2 = b.courtyard.width / 2;
@@ -359,7 +374,7 @@ export function IsometricCampus3D({ telemetry }) {
         b.floors.forEach((floor) => {
           const floorY = (floor.level - 1) * FLOOR_HEIGHT + (floor.level - 1) * explodedHeight * 3.5;
           const isAbove = isBSelected && selectedFloorLevel !== null && floor.level > selectedFloorLevel;
-          if (xrayMode && isAbove) return;
+          if (isAbove) return;
 
           const isFSelected = isBSelected && selectedFloorLevel === floor.level;
 
@@ -448,6 +463,27 @@ export function IsometricCampus3D({ telemetry }) {
                 ctx.fill();
                 ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
                 ctx.stroke();
+              });
+            }
+
+            // Rotating Classroom Ceiling Fans
+            if (ANIMATION_CONFIG.enabled) {
+              [-room.depth * 0.2, room.depth * 0.22].forEach((fanZ) => {
+                const fanCenter = project3D(rx, floorY + 2.85, rz + fanZ, viewW, viewH);
+                const fanAngle = time * 7.5;
+                ctx.strokeStyle = 'rgba(226, 232, 240, 0.8)';
+                ctx.lineWidth = 1.5;
+                for (let a = 0; a < 3; a++) {
+                  const ang = fanAngle + (a * Math.PI * 2) / 3;
+                  ctx.beginPath();
+                  ctx.moveTo(fanCenter.x, fanCenter.y);
+                  ctx.lineTo(fanCenter.x + Math.cos(ang) * 8, fanCenter.y + Math.sin(ang) * 8);
+                  ctx.stroke();
+                }
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.arc(fanCenter.x, fanCenter.y, 2, 0, Math.PI * 2);
+                ctx.fill();
               });
             }
 

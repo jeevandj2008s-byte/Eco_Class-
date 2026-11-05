@@ -27,7 +27,6 @@ export function CameraRig() {
   const flyOverProgress = useRef(0);
 
   useEffect(() => {
-    // Expose callable helper without forcing it on load
     window.__triggerCampusFlyOver = () => {
       setIsFlyOver(true);
       flyOverProgress.current = 0;
@@ -39,7 +38,7 @@ export function CameraRig() {
 
   // Recalculate target when selection changes
   useEffect(() => {
-    setIsFlyOver(false); // Stop flyover on selection
+    setIsFlyOver(false);
     let newLookAt = new THREE.Vector3(0, 2, 0);
     let newCamPos = new THREE.Vector3(0, 68, 88);
 
@@ -63,7 +62,7 @@ export function CameraRig() {
           const studentWorldZ = roomWorldZ + seatRelZ;
 
           newLookAt.set(studentWorldX, studentWorldY, studentWorldZ);
-          newCamPos.set(studentWorldX, studentWorldY + 1.2, studentWorldZ + 2.2);
+          newCamPos.set(studentWorldX + 1.2, studentWorldY + 1.2, studentWorldZ + 2.2);
         }
       }
     } else if (selectedClassroomId) {
@@ -74,22 +73,27 @@ export function CameraRig() {
         const roomWorldX = building.position[0] + classroom.offset[0];
         const roomWorldZ = building.position[2] + classroom.offset[2];
 
-        newLookAt.set(roomWorldX, floorY + 1.4, roomWorldZ);
-        newCamPos.set(roomWorldX, floorY + 8.2, roomWorldZ + 11.5);
+        newLookAt.set(roomWorldX, floorY + 1.2, roomWorldZ);
+        newCamPos.set(roomWorldX + 2.2, floorY + 6.2, roomWorldZ + 8.2);
       }
     } else if (selectedFloorLevel && selectedBuildingId) {
       const building = BUILDINGS_CONFIG.find((b) => b.id === selectedBuildingId);
       if (building) {
         const floorY = (selectedFloorLevel - 1) * FLOOR_HEIGHT + (selectedFloorLevel - 1) * explodedHeight * 3.5;
-        newLookAt.set(building.position[0], floorY + 1.8, building.position[2]);
-        newCamPos.set(building.position[0], floorY + 16, building.position[2] + 28);
+        newLookAt.set(building.position[0], floorY + 1.2, building.position[2]);
+        // 3/4 Isometric cutaway angle framing all classrooms, benches, and seated students
+        newCamPos.set(
+          building.position[0] + building.width * 0.3,
+          floorY + 15.0,
+          building.position[2] + building.depth * 0.65
+        );
       }
     } else if (selectedBuildingId) {
       const building = BUILDINGS_CONFIG.find((b) => b.id === selectedBuildingId);
       if (building) {
         const buildingCenterY = (building.floorCount * FLOOR_HEIGHT) / 2;
         newLookAt.set(building.position[0], buildingCenterY, building.position[2]);
-        newCamPos.set(building.position[0], buildingCenterY + 22, building.position[2] + 38);
+        newCamPos.set(building.position[0] + 10, buildingCenterY + 22, building.position[2] + 40);
       }
     }
 

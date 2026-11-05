@@ -31,32 +31,26 @@ const AVATAR_COLORS = [
   '#67e8f9'  // Cyan
 ];
 
-const LOCAL_STORAGE_KEY = 'aurasync_twin_students_v1';
+const LOCAL_STORAGE_KEY = 'aurasync_twin_students_v2';
 
 /**
- * Generate a realistic demo roster of students mapped to benches and seats
+ * Generate a realistic demo roster of students mapped to benches and seats across all campus buildings & floors
  */
 export function generateSeedStudents() {
   const students = [];
   let nameIndex = 0;
   let usnCounter = 1;
 
-  // We seed specifically MB-101, MB-102, MB-201, MB-202, B2-101, B2-201
-  const targetClassroomIds = ['MB-101', 'MB-102', 'MB-201', 'MB-202', 'B2-101', 'B2-201'];
-
   for (const b of PROCESSED_BUILDINGS) {
     for (const f of b.floors) {
       for (const room of f.classrooms) {
-        if (!targetClassroomIds.includes(room.id)) continue;
-
         const layout = room.layout;
-        if (!layout || !layout.seats) continue;
+        if (!layout || !layout.seats || layout.seats.length === 0) continue;
 
-        // Occupy roughly 60% - 75% of seats in the room
+        // Occupy roughly 65% - 75% of seats in the room
         const totalSeats = layout.seats.length;
-        const targetCount = Math.min(totalSeats, Math.max(12, Math.floor(totalSeats * 0.7)));
+        const targetCount = Math.min(totalSeats, Math.max(8, Math.floor(totalSeats * 0.70)));
 
-        // Shuffle seats deterministically or sequentially
         const availableSeats = [...layout.seats];
 
         for (let i = 0; i < targetCount; i++) {
@@ -66,7 +60,14 @@ export function generateSeedStudents() {
           const fullName = `${firstName} ${lastName}`;
           nameIndex++;
 
-          const deptCode = room.id.startsWith('MB-2') ? 'AI' : room.id.startsWith('MB-1') ? 'CS' : 'EC';
+          let deptCode = 'CS';
+          if (room.id.startsWith('MB-2')) deptCode = 'AI';
+          else if (room.id.startsWith('MB-3')) deptCode = 'IS';
+          else if (room.id.startsWith('MB-4')) deptCode = 'RES';
+          else if (room.id.startsWith('B2')) deptCode = 'EC';
+          else if (room.id.startsWith('ME')) deptCode = 'ME';
+          else if (room.id.startsWith('B3')) deptCode = 'MBA';
+
           const deptName = room.department || 'Engineering';
           const usnStr = `1BI22${deptCode}${String(usnCounter++).padStart(3, '0')}`;
           const color = AVATAR_COLORS[(nameIndex + i) % AVATAR_COLORS.length];
@@ -77,8 +78,8 @@ export function generateSeedStudents() {
             rollNo: usnStr,
             usn: usnStr,
             department: deptName,
-            year: '3rd Year',
-            section: 'A',
+            year: f.level === 1 ? '1st Year' : f.level === 2 ? '2nd Year' : f.level === 3 ? '3rd Year' : '4th Year',
+            section: seat.column === 0 ? 'A' : 'B',
             avatarColor: color,
             buildingId: b.id,
             floorLevel: f.level,
@@ -109,7 +110,7 @@ export function getInitialStudents() {
     const cached = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (cached) {
       const parsed = JSON.parse(cached);
-      if (Array.isArray(parsed) && parsed.length > 0) {
+      if (Array.isArray(parsed) && parsed.length >= 25) {
         return parsed;
       }
     }
@@ -137,4 +138,3 @@ export function saveStudentsToStorage(students) {
     console.error('[SeedStudents] Failed to save students:', err);
   }
 }
-

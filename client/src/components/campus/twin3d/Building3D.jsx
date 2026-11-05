@@ -6,19 +6,120 @@ import { Floor3D } from './Floor3D.jsx';
 import { FLOOR_HEIGHT, ANIMATION_CONFIG } from '../../../config/buildings.config.js';
 import { useTwin3DStore } from '../../../store/useTwin3DStore.js';
 
+/**
+ * Architectural Theme Colors per Campus Building
+ * Believable solid opaque concrete, stone and brick finishes with subtle distinction
+ */
+const BLOCK_THEMES = {
+  'bit-main': {
+    wallColor: '#dfdcd5',      // Warm architectural limestone concrete
+    trimColor: '#1e2638',      // Deep slate architectural trim
+    windowGlass: '#0a101d',    // Dark reflective glass panes
+    windowFrame: '#2c3547',
+    corniceColor: '#c8c4bc',
+    accent: '#38bdf8',
+    roofSlab: '#1e2433',
+    plinthColor: '#121622'
+  },
+  'bit-block-central': {
+    wallColor: '#d6d3cb',      // Warm buff architectural finish
+    trimColor: '#283344',
+    windowGlass: '#0b111e',
+    windowFrame: '#334055',
+    corniceColor: '#c2beb5',
+    accent: '#a78bfa',
+    roofSlab: '#1c2230',
+    plinthColor: '#121622'
+  },
+  'bit-mechanical': {
+    wallColor: '#d2cfc7',      // Engineering sandstone grey
+    trimColor: '#242e3f',
+    windowGlass: '#090e1a',
+    windowFrame: '#374357',
+    corniceColor: '#bebab0',
+    accent: '#34d399',
+    roofSlab: '#1b202c',
+    plinthColor: '#121622'
+  },
+  'bit-block-east': {
+    wallColor: '#ddd9d0',      // Academic cream concrete
+    trimColor: '#2a3447',
+    windowGlass: '#0b111e',
+    windowFrame: '#364359',
+    corniceColor: '#c6c2b8',
+    accent: '#fbbf24',
+    roofSlab: '#1e2433',
+    plinthColor: '#121622'
+  },
+  'bit-block-strip': {
+    wallColor: '#d9d6ce',      // Platinum concrete
+    trimColor: '#202a3a',
+    windowGlass: '#0a0f1c',
+    windowFrame: '#2d3a4d',
+    corniceColor: '#c2beb4',
+    accent: '#10b981',
+    roofSlab: '#1c2230',
+    plinthColor: '#121622'
+  },
+  'bit-block-southeast': {
+    wallColor: '#d4d0c7',      // Neutral warm grey concrete
+    trimColor: '#253042',
+    windowGlass: '#0b111d',
+    windowFrame: '#344155',
+    corniceColor: '#bdb8ae',
+    accent: '#f97316',
+    roofSlab: '#1a1f2b',
+    plinthColor: '#121622'
+  },
+  'bit-guest-house': {
+    wallColor: '#e3dfd7',      // Ivory residential plaster & brick
+    trimColor: '#2b364a',
+    windowGlass: '#0c1220',
+    windowFrame: '#3b4960',
+    corniceColor: '#cac6bc',
+    accent: '#14b8a6',
+    roofSlab: '#1d2331',
+    plinthColor: '#121622'
+  },
+  'bit-parking': {
+    wallColor: '#1f2637',      // Structural dark steel & concrete facility
+    trimColor: '#006bff',
+    windowGlass: '#006bff',
+    windowFrame: '#1b2232',
+    corniceColor: '#161d2b',
+    accent: '#006bff',
+    roofSlab: '#141a26',
+    plinthColor: '#0f131d'
+  }
+};
+
 export function Building3D({ building, telemetry }) {
-  const { id, name, code, shortName, baselineKw, accentColor = '#38bdf8', position, width, depth, floorCount, floors = [], courtyard } = building;
+  const {
+    id,
+    name,
+    code,
+    shortName,
+    baselineKw,
+    accentColor = '#38bdf8',
+    position,
+    width,
+    depth,
+    floorCount,
+    floors = [],
+    courtyard
+  } = building;
 
   const flagMeshRef = useRef();
   const fountainWaterRef = useRef();
+  const roofGroupRef = useRef();
+  const liftAnimRef = useRef(0);
+
   const [hoveredFloor, setHoveredFloor] = useState(null);
   const [isBuildingHovered, setIsBuildingHovered] = useState(false);
 
   const selectedBuildingId = useTwin3DStore((s) => s.selectedBuildingId);
   const selectedFloorLevel = useTwin3DStore((s) => s.selectedFloorLevel);
   const selectedClassroomId = useTwin3DStore((s) => s.selectedClassroomId);
-  const xrayMode = useTwin3DStore((s) => s.xrayMode);
-  const explodedHeight = useTwin3DStore((s) => s.explodedHeight);
   const showLabels = useTwin3DStore((s) => s.showLabels);
   const selectBuilding = useTwin3DStore((s) => s.selectBuilding);
   const selectFloor = useTwin3DStore((s) => s.selectFloor);
@@ -26,14 +127,11 @@ export function Building3D({ building, telemetry }) {
 
   const isSelected = selectedBuildingId === id;
   const isInspectingFloor = isSelected && selectedFloorLevel !== null;
-  const isCutaway = xrayMode || isInspectingFloor || (isSelected && selectedClassroomId !== null);
 
-  const activeFloorCount = isInspectingFloor ? Math.min(floorCount, selectedFloorLevel) : floorCount;
-  const activeHeight = activeFloorCount * FLOOR_HEIGHT;
   const totalHeight = floorCount * FLOOR_HEIGHT;
-  const roofY = totalHeight + (floorCount - 1) * explodedHeight * 3.5;
+  const theme = BLOCK_THEMES[id] || BLOCK_THEMES['bit-main'];
 
-  // Real-time telemetry kW
+  // Telemetry kW
   const buildingKw = useMemo(() => {
     if (!telemetry?.buildings) return baselineKw || 40;
     if (Array.isArray(telemetry.buildings)) {
@@ -52,45 +150,86 @@ export function Building3D({ building, telemetry }) {
   const cw = hasCourtyard ? courtyard.width : 0;
   const cd = hasCourtyard ? courtyard.depth : 0;
 
-  // Exterior vertical architectural columns
-  const facadePilasters = useMemo(() => {
-    const cols = [];
-    const spacing = 7.0;
-    const halfW = width / 2;
-    const halfD = depth / 2;
+  // Architectural facade window layout calculations
+  const facadeWindows = useMemo(() => {
+    const windowConfigs = [];
+    const windowWidth = 2.4;
+    const windowHeight = 1.6;
+    const sillHeight = 0.85;
+    const spacing = 4.2;
 
-    cols.push([-halfW, activeHeight / 2, -halfD]);
-    cols.push([halfW, activeHeight / 2, -halfD]);
-    cols.push([-halfW, activeHeight / 2, halfD]);
-    cols.push([halfW, activeHeight / 2, halfD]);
+    for (let f = 1; f <= floorCount; f++) {
+      const floorBaseY = (f - 1) * FLOOR_HEIGHT;
+      const winY = floorBaseY + sillHeight + windowHeight / 2;
 
-    const xSteps = Math.floor(width / spacing);
-    for (let i = 1; i < xSteps; i++) {
-      const x = -halfW + i * (width / xSteps);
-      cols.push([x, activeHeight / 2, -halfD]);
-      cols.push([x, activeHeight / 2, halfD]);
+      // North & South Facades (along X axis)
+      const xCount = Math.max(2, Math.floor((width - 4.0) / spacing));
+      const xStart = -((xCount - 1) * spacing) / 2;
+      for (let i = 0; i < xCount; i++) {
+        const xPos = xStart + i * spacing;
+        // North
+        windowConfigs.push({
+          pos: [xPos, winY, -depth / 2 - 0.02],
+          size: [windowWidth, windowHeight, 0.12],
+          floor: f,
+          side: 'north'
+        });
+        // South (leave entrance opening on ground floor)
+        if (!(f === 1 && Math.abs(xPos) < 5.0)) {
+          windowConfigs.push({
+            pos: [xPos, winY, depth / 2 + 0.02],
+            size: [windowWidth, windowHeight, 0.12],
+            floor: f,
+            side: 'south'
+          });
+        }
+      }
+
+      // East & West Facades (along Z axis)
+      const zCount = Math.max(2, Math.floor((depth - 4.0) / spacing));
+      const zStart = -((zCount - 1) * spacing) / 2;
+      for (let j = 0; j < zCount; j++) {
+        const zPos = zStart + j * spacing;
+        // West
+        windowConfigs.push({
+          pos: [-width / 2 - 0.02, winY, zPos],
+          size: [0.12, windowHeight, windowWidth],
+          floor: f,
+          side: 'west'
+        });
+        // East
+        windowConfigs.push({
+          pos: [width / 2 + 0.02, winY, zPos],
+          size: [0.12, windowHeight, windowWidth],
+          floor: f,
+          side: 'east'
+        });
+      }
     }
 
-    const zSteps = Math.floor(depth / spacing);
-    for (let j = 1; j < zSteps; j++) {
-      const z = -halfD + j * (depth / zSteps);
-      cols.push([-halfW, activeHeight / 2, z]);
-      cols.push([halfW, activeHeight / 2, z]);
+    return windowConfigs;
+  }, [width, depth, floorCount]);
+
+  // Smooth animation for floor cutaway lift-away
+  useFrame((state, delta) => {
+    // Courtyard flag wave
+    if (ANIMATION_CONFIG.enabled && ANIMATION_CONFIG.flagWave && flagMeshRef.current) {
+      flagMeshRef.current.rotation.y = Math.sin(state.clock.getElapsedTime() * 3.0) * 0.15;
     }
 
-    return cols;
-  }, [width, depth, activeHeight]);
-
-  useFrame((state) => {
-    if (!ANIMATION_CONFIG.enabled) return;
-    const t = state.clock.getElapsedTime();
-
-    if (ANIMATION_CONFIG.flagWave && flagMeshRef.current) {
-      flagMeshRef.current.rotation.y = Math.sin(t * 3.0) * 0.15;
+    // Courtyard fountain water shimmer
+    if (ANIMATION_CONFIG.enabled && ANIMATION_CONFIG.fountainWater && fountainWaterRef.current) {
+      fountainWaterRef.current.material.opacity = 0.55 + Math.sin(state.clock.getElapsedTime() * 3.5) * 0.15;
     }
 
-    if (ANIMATION_CONFIG.fountainWater && fountainWaterRef.current) {
-      fountainWaterRef.current.material.opacity = 0.55 + Math.sin(t * 3.5) * 0.15;
+    // Smooth lift-away easing for roof
+    const targetLift = isInspectingFloor ? 1.0 : 0.0;
+    liftAnimRef.current = THREE.MathUtils.damp(liftAnimRef.current, targetLift, 5.0, delta);
+
+    if (roofGroupRef.current) {
+      const liftY = liftAnimRef.current * 18.0;
+      roofGroupRef.current.position.y = totalHeight + liftY;
+      roofGroupRef.current.visible = liftAnimRef.current < 0.95;
     }
   });
 
@@ -111,13 +250,14 @@ export function Building3D({ building, telemetry }) {
         selectBuilding(id);
       }}
     >
-      {/* 1. Heavy Volumetric Foundation Plinth */}
+      {/* 1. Heavy Solid Foundation Plinth */}
       <group position={[0, -0.4, 0]}>
         <mesh receiveShadow>
           <boxGeometry args={[width + 1.8, 0.8, depth + 1.8]} />
           <meshStandardMaterial
-            color="#0b0e17"
+            color={theme.plinthColor}
             roughness={0.9}
+            metalness={0.1}
           />
         </mesh>
         <mesh position={[0, 0.42, 0]} receiveShadow>
@@ -132,7 +272,122 @@ export function Building3D({ building, telemetry }) {
         </mesh>
       </group>
 
-      {/* 2. Stacked Volumetric Floors (Each with its Classrooms, Real Benches & Seated Students) */}
+      {/* 2. SOLID OPAQUE EXTERIOR FAÇADE (Rendered when building is closed or at lower floors) */}
+      <group name="solid-exterior-facade">
+        {floors.map((f) => {
+          const isThisFloorCutaway = isInspectingFloor && selectedFloorLevel === f.level;
+          const isThisFloorAbove = isInspectingFloor && f.level > selectedFloorLevel;
+          // Hide exterior walls on the cutaway floor so classrooms are visible from above
+          if (isThisFloorCutaway || isThisFloorAbove) return null;
+
+          const fBaseY = (f.level - 1) * FLOOR_HEIGHT;
+          const fMidY = fBaseY + FLOOR_HEIGHT / 2;
+          const wallThick = 0.35;
+
+          return (
+            <group key={`solid-floor-${f.level}`}>
+              {/* North Wall */}
+              <mesh position={[0, fMidY, -depth / 2 + wallThick / 2]} castShadow receiveShadow>
+                <boxGeometry args={[width, FLOOR_HEIGHT, wallThick]} />
+                <meshStandardMaterial
+                  color={theme.wallColor}
+                  roughness={0.78}
+                  metalness={0.08}
+                />
+              </mesh>
+
+              {/* South Wall */}
+              {f.level === 1 ? (
+                // Ground floor South wall with entrance cutout
+                <group position={[0, fMidY, depth / 2 - wallThick / 2]}>
+                  <mesh position={[-(width / 4 + 3.0), 0, 0]} castShadow receiveShadow>
+                    <boxGeometry args={[width / 2 - 6.0, FLOOR_HEIGHT, wallThick]} />
+                    <meshStandardMaterial color={theme.wallColor} roughness={0.78} metalness={0.08} />
+                  </mesh>
+                  <mesh position={[(width / 4 + 3.0), 0, 0]} castShadow receiveShadow>
+                    <boxGeometry args={[width / 2 - 6.0, FLOOR_HEIGHT, wallThick]} />
+                    <meshStandardMaterial color={theme.wallColor} roughness={0.78} metalness={0.08} />
+                  </mesh>
+                  {/* Lintel above main entrance */}
+                  <mesh position={[0, FLOOR_HEIGHT / 2 - 0.5, 0]} castShadow receiveShadow>
+                    <boxGeometry args={[12.0, 1.0, wallThick]} />
+                    <meshStandardMaterial color={theme.trimColor} roughness={0.6} metalness={0.2} />
+                  </mesh>
+                </group>
+              ) : (
+                <mesh position={[0, fMidY, depth / 2 - wallThick / 2]} castShadow receiveShadow>
+                  <boxGeometry args={[width, FLOOR_HEIGHT, wallThick]} />
+                  <meshStandardMaterial
+                    color={theme.wallColor}
+                    roughness={0.78}
+                    metalness={0.08}
+                  />
+                </mesh>
+              )}
+
+              {/* West Wall */}
+              <mesh position={[-width / 2 + wallThick / 2, fMidY, 0]} castShadow receiveShadow>
+                <boxGeometry args={[wallThick, FLOOR_HEIGHT, depth]} />
+                <meshStandardMaterial
+                  color={theme.wallColor}
+                  roughness={0.78}
+                  metalness={0.08}
+                />
+              </mesh>
+
+              {/* East Wall */}
+              <mesh position={[width / 2 - wallThick / 2, fMidY, 0]} castShadow receiveShadow>
+                <boxGeometry args={[wallThick, FLOOR_HEIGHT, depth]} />
+                <meshStandardMaterial
+                  color={theme.wallColor}
+                  roughness={0.78}
+                  metalness={0.08}
+                />
+              </mesh>
+
+              {/* Floor Slab Edge Cornice Line */}
+              <mesh position={[0, fBaseY + 0.1, 0]} receiveShadow>
+                <boxGeometry args={[width + 0.35, 0.22, depth + 0.35]} />
+                <meshStandardMaterial color={theme.corniceColor} roughness={0.6} metalness={0.2} />
+              </mesh>
+            </group>
+          );
+        })}
+
+        {/* Recessed Dark Reflective Windows (Only shown when floor is not in cutaway) */}
+        {facadeWindows.map((win, idx) => {
+          const isWinFloorCutaway = isInspectingFloor && selectedFloorLevel === win.floor;
+          const isWinFloorAbove = isInspectingFloor && win.floor > selectedFloorLevel;
+          if (isWinFloorCutaway || isWinFloorAbove) return null;
+
+          return (
+            <group key={`win-${idx}`} position={win.pos}>
+              {/* Outer Window Frame */}
+              <mesh castShadow>
+                <boxGeometry args={win.size} />
+                <meshStandardMaterial color={theme.windowFrame} roughness={0.5} metalness={0.5} />
+              </mesh>
+              {/* Dark Reflective Glass Pane */}
+              <mesh position={[0, 0, win.side === 'north' ? 0.02 : win.side === 'south' ? -0.02 : 0]}>
+                <boxGeometry
+                  args={[
+                    win.side === 'east' || win.side === 'west' ? win.size[0] + 0.02 : win.size[0] - 0.2,
+                    win.size[1] - 0.2,
+                    win.side === 'east' || win.side === 'west' ? win.size[2] - 0.2 : win.size[2] + 0.02
+                  ]}
+                />
+                <meshStandardMaterial
+                  color={theme.windowGlass}
+                  roughness={0.15}
+                  metalness={0.85}
+                />
+              </mesh>
+            </group>
+          );
+        })}
+      </group>
+
+      {/* 3. Stacked Volumetric Floors (Interiors are revealed ONLY when this floor is tapped) */}
       {floors.map((floor) => (
         <Floor3D
           key={floor.level}
@@ -141,10 +396,11 @@ export function Building3D({ building, telemetry }) {
           buildingDepth={depth}
           buildingId={id}
           courtyard={courtyard}
+          theme={theme}
         />
       ))}
 
-      {/* 3. Central Courtyard Quadrangle (Block A) */}
+      {/* 4. Central Courtyard Quadrangle (BIT Main Block) */}
       {hasCourtyard && (
         <group name="courtyard-quad-garden" position={[0, 0.02, 0]}>
           <mesh receiveShadow>
@@ -195,232 +451,208 @@ export function Building3D({ building, telemetry }) {
         </group>
       )}
 
-      {/* 4. SOLID VOLUMETRIC FACADE, COLUMNS & INTERACTIVE FLOOR BANDS */}
-      <group name="volumetric-facade">
-        {/* Exterior Columns */}
-        {facadePilasters.map((c, i) => (
-          <mesh key={`col-${i}`} position={c} castShadow={!isCutaway} receiveShadow>
-            <boxGeometry args={[0.5, activeHeight, 0.5]} />
-            <meshStandardMaterial color="#1e2433" roughness={0.5} metalness={0.3} />
-          </mesh>
-        ))}
+      {/* 5. INTERACTIVE FLOOR HIGHLIGHT BANDS & HOVER CARDS */}
+      {floors.map((f) => {
+        const fY = (f.level - 1) * FLOOR_HEIGHT;
+        const isFSelected = isSelected && selectedFloorLevel === f.level;
+        const isFHovered = hoveredFloor === f.level;
 
-        {/* Floor Slab Edges & Amber Glow Bands for Each Floor */}
-        {floors.slice(0, activeFloorCount).map((f) => {
-          const fY = (f.level - 1) * FLOOR_HEIGHT + (f.level - 1) * explodedHeight * 3.5;
-          const isFSelected = isSelected && selectedFloorLevel === f.level;
-          const isFHovered = hoveredFloor === f.level;
+        const floorStudents = students.filter(
+          (s) => s.buildingId === id && s.floorLevel === f.level
+        );
+        const totalFloorSeats = (f.classrooms || []).reduce(
+          (acc, r) => acc + (r.layout?.seats?.length || 24),
+          0
+        );
+        const floorPct = totalFloorSeats > 0 ? Math.round((floorStudents.length / totalFloorSeats) * 100) : 0;
 
-          // Compute floor metrics for card
-          const floorStudents = students.filter(
-            (s) => s.buildingId === id && s.floorLevel === f.level
-          );
-          const totalFloorSeats = (f.classrooms || []).reduce(
-            (acc, r) => acc + (r.layout?.seats?.length || 24),
-            0
-          );
-          const floorPct = totalFloorSeats > 0 ? Math.round((floorStudents.length / totalFloorSeats) * 100) : 0;
+        return (
+          <group key={`facade-band-${f.level}`} position={[0, fY, 0]}>
+            {/* Interactive Amber Glow Hover Band on Facade */}
+            <mesh
+              position={[0, 0.1, depth / 2 + 0.22]}
+              onPointerOver={(e) => {
+                e.stopPropagation();
+                setHoveredFloor(f.level);
+              }}
+              onPointerOut={(e) => {
+                e.stopPropagation();
+                setHoveredFloor(null);
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                selectFloor(id, f.level);
+              }}
+            >
+              <boxGeometry args={[width * 0.96, 0.2, 0.12]} />
+              <meshStandardMaterial
+                color={isFSelected ? '#006bff' : isFHovered ? '#f59e0b' : theme.accent}
+                emissive={isFSelected ? '#006bff' : isFHovered ? '#f59e0b' : theme.accent}
+                emissiveIntensity={isFSelected ? 2.0 : isFHovered ? 1.8 : 0.2}
+              />
+            </mesh>
 
-          return (
-            <group key={`facade-band-${f.level}`} position={[0, fY, 0]}>
-              {/* Floor Slab Edge Cornice */}
-              <mesh position={[0, 0.1, 0]}>
-                <boxGeometry args={[width + 0.3, 0.26, depth + 0.3]} />
-                <meshStandardMaterial
-                  color={isFSelected ? '#006bff' : isFHovered ? '#f59e0b' : '#273144'}
-                  roughness={0.4}
-                  metalness={0.6}
-                />
-              </mesh>
-
-              {/* AMBER / CYAN GLOWING HIGHLIGHT BAND (Matching reference video) */}
-              <mesh
-                position={[0, 0.1, depth / 2 + 0.2]}
-                onPointerOver={(e) => {
-                  e.stopPropagation();
-                  setHoveredFloor(f.level);
-                }}
-                onPointerOut={(e) => {
-                  e.stopPropagation();
-                  setHoveredFloor(null);
-                }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  selectFloor(id, f.level);
-                }}
+            {/* Floating Floor Hover Card */}
+            {isFHovered && !isInspectingFloor && (
+              <Html
+                position={[0, 1.4, depth / 2 + 1.2]}
+                center
+                distanceFactor={22}
+                zIndexRange={[100, 0]}
               >
-                <boxGeometry args={[width * 0.98, 0.16, 0.12]} />
-                <meshStandardMaterial
-                  color={isFSelected ? '#006bff' : isFHovered ? '#f59e0b' : '#38bdf8'}
-                  emissive={isFSelected ? '#006bff' : isFHovered ? '#f59e0b' : '#38bdf8'}
-                  emissiveIntensity={isFSelected ? 2.0 : isFHovered ? 1.8 : 0.3}
-                />
-              </mesh>
-
-              {/* FLOATING FLOOR HOVER CARD (Level 2 Block View - matching reference video) */}
-              {isFHovered && !isInspectingFloor && (
-                <Html
-                  position={[0, 1.4, depth / 2 + 1.2]}
-                  center
-                  distanceFactor={22}
-                  zIndexRange={[100, 0]}
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    selectFloor(id, f.level);
+                  }}
+                  className="cursor-pointer p-3.5 rounded-2xl bg-[#10131d]/95 border border-[#f59e0b] shadow-[0_16px_40px_rgba(0,0,0,0.85),0_0_24px_rgba(245,158,11,0.4)] backdrop-blur-xl flex flex-col gap-2 min-w-[220px] animate-fade-in select-none"
                 >
-                  <div
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#f59e0b]">
+                      Floor {f.level}
+                    </span>
+                    <span className="px-1.5 py-0.5 rounded bg-[#f59e0b]/20 text-[#f59e0b] text-[9px] font-mono font-bold">
+                      {floorPct}% Full
+                    </span>
+                  </div>
+
+                  <div className="text-xs font-extrabold text-white leading-snug">
+                    {f.name || `Floor Level ${f.level}`}
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 text-[10px] font-mono border-t border-white/10 pt-2 text-[#c9c3da]">
+                    <div>
+                      <span className="block text-[#8e8d92]">Classes</span>
+                      <span className="font-bold text-white">{f.classrooms?.length || 0} Rooms</span>
+                    </div>
+                    <div>
+                      <span className="block text-[#8e8d92]">Students</span>
+                      <span className="font-bold text-[#9ff0ec]">{floorStudents.length} / {totalFloorSeats}</span>
+                    </div>
+                  </div>
+
+                  <button
                     onClick={(e) => {
                       e.stopPropagation();
                       selectFloor(id, f.level);
                     }}
-                    className="cursor-pointer p-3.5 rounded-2xl bg-[#10131d]/95 border border-[#f59e0b] shadow-[0_16px_40px_rgba(0,0,0,0.85),0_0_24px_rgba(245,158,11,0.4)] backdrop-blur-xl flex flex-col gap-2 min-w-[220px] animate-fade-in select-none"
+                    className="w-full py-1.5 rounded-xl bg-[#f59e0b] hover:bg-[#d97706] text-black font-bold text-[11px] font-mono tracking-tight transition-all shadow-md flex items-center justify-center gap-1.5 mt-1"
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#f59e0b]">
-                        Floor {f.level}
-                      </span>
-                      <span className="px-1.5 py-0.5 rounded bg-[#f59e0b]/20 text-[#f59e0b] text-[9px] font-mono font-bold">
-                        {floorPct}% Full
-                      </span>
-                    </div>
+                    <span>Open Floor Cutaway</span>
+                    <span>→</span>
+                  </button>
+                </div>
+              </Html>
+            )}
+          </group>
+        );
+      })}
 
-                    <div className="text-xs font-extrabold text-white leading-snug">
-                      {f.name || `Floor Level ${f.level}`}
-                    </div>
+      {/* 6. SOLID ROOFTOP INFRASTRUCTURE (Lifts away smoothly during floor cutaway) */}
+      <group ref={roofGroupRef} position={[0, totalHeight, 0]} name="rooftop-infrastructure">
+        {/* Concrete Roof Slab */}
+        <mesh position={[0, 0.12, 0]} castShadow receiveShadow>
+          <boxGeometry args={[width + 0.4, 0.28, depth + 0.4]} />
+          <meshStandardMaterial color={theme.roofSlab} roughness={0.85} metalness={0.15} />
+        </mesh>
 
-                    <div className="grid grid-cols-2 gap-2 text-[10px] font-mono border-t border-white/10 pt-2 text-[#c9c3da]">
-                      <div>
-                        <span className="block text-[#8e8d92]">Classes</span>
-                        <span className="font-bold text-white">{f.classrooms?.length || 0} Rooms</span>
-                      </div>
-                      <div>
-                        <span className="block text-[#8e8d92]">Students</span>
-                        <span className="font-bold text-[#9ff0ec]">{floorStudents.length} / {totalFloorSeats}</span>
-                      </div>
-                    </div>
+        {/* Solid Parapet Walls */}
+        <mesh position={[0, 0.6, -depth / 2]} castShadow>
+          <boxGeometry args={[width + 0.4, 0.9, 0.3]} />
+          <meshStandardMaterial color={theme.trimColor} roughness={0.7} />
+        </mesh>
+        <mesh position={[0, 0.6, depth / 2]} castShadow>
+          <boxGeometry args={[width + 0.4, 0.9, 0.3]} />
+          <meshStandardMaterial color={theme.trimColor} roughness={0.7} />
+        </mesh>
+        <mesh position={[-width / 2, 0.6, 0]} castShadow>
+          <boxGeometry args={[0.3, 0.9, depth]} />
+          <meshStandardMaterial color={theme.trimColor} roughness={0.7} />
+        </mesh>
+        <mesh position={[width / 2, 0.6, 0]} castShadow>
+          <boxGeometry args={[0.3, 0.9, depth]} />
+          <meshStandardMaterial color={theme.trimColor} roughness={0.7} />
+        </mesh>
 
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        selectFloor(id, f.level);
-                      }}
-                      className="w-full py-1.5 rounded-xl bg-[#f59e0b] hover:bg-[#d97706] text-black font-bold text-[11px] font-mono tracking-tight transition-all shadow-md flex items-center justify-center gap-1.5 mt-1"
-                    >
-                      <span>Explore Floor Cutaway</span>
-                      <span>→</span>
-                    </button>
-                  </div>
-                </Html>
-              )}
-            </group>
-          );
-        })}
+        {/* Elevator & Staircase Penthouse Overrun */}
+        <mesh position={[-width / 4, 1.4, 0]} castShadow receiveShadow>
+          <boxGeometry args={[5.5, 2.6, 6.0]} />
+          <meshStandardMaterial color={theme.trimColor} roughness={0.65} metalness={0.2} />
+        </mesh>
 
-        {/* Glazed Architectural Windows */}
-        <mesh position={[0, activeHeight / 2, -depth / 2]} castShadow={!isCutaway}>
-          <boxGeometry args={[width, activeHeight, 0.08]} />
-          <meshStandardMaterial
-            color="#38bdf8"
-            transparent
-            opacity={isCutaway ? 0.04 : 0.28}
-            roughness={0.1}
-            metalness={0.9}
-          />
-        </mesh>
-        <mesh position={[0, activeHeight / 2, depth / 2]} castShadow={!isCutaway}>
-          <boxGeometry args={[width, activeHeight, 0.08]} />
-          <meshStandardMaterial
-            color="#38bdf8"
-            transparent
-            opacity={isCutaway ? 0.04 : 0.28}
-            roughness={0.1}
-            metalness={0.9}
-          />
-        </mesh>
-        <mesh position={[-width / 2, activeHeight / 2, 0]} castShadow={!isCutaway}>
-          <boxGeometry args={[0.08, activeHeight, depth]} />
-          <meshStandardMaterial
-            color="#38bdf8"
-            transparent
-            opacity={isCutaway ? 0.04 : 0.28}
-            roughness={0.1}
-            metalness={0.9}
-          />
-        </mesh>
-        <mesh position={[width / 2, activeHeight / 2, 0]} castShadow={!isCutaway}>
-          <boxGeometry args={[0.08, activeHeight, depth]} />
-          <meshStandardMaterial
-            color="#38bdf8"
-            transparent
-            opacity={isCutaway ? 0.04 : 0.28}
-            roughness={0.1}
-            metalness={0.9}
-          />
-        </mesh>
+        {/* HVAC Chillers / Mechanical Units */}
+        <group position={[width / 4, 0.9, 0]}>
+          <mesh castShadow receiveShadow>
+            <boxGeometry args={[4.2, 1.6, 3.2]} />
+            <meshStandardMaterial color="#475569" roughness={0.4} metalness={0.7} />
+          </mesh>
+          <mesh position={[0, 0.9, 0]}>
+            <cylinderGeometry args={[1.0, 1.0, 0.2, 16]} />
+            <meshStandardMaterial color="#1e293b" metalness={0.9} />
+          </mesh>
+        </group>
+
+        {/* Solar Panel Arrays */}
+        {[-8, 0, 8].map((zOffset, rIdx) => (
+          <group key={`solar-${rIdx}`} position={[0, 0.6, zOffset]} rotation={[-0.26, 0, 0]}>
+            <mesh castShadow receiveShadow>
+              <boxGeometry args={[width * 0.75, 0.08, 3.2]} />
+              <meshStandardMaterial
+                color="#1e3a8a"
+                emissive="#1d4ed8"
+                emissiveIntensity={0.25}
+                roughness={0.15}
+                metalness={0.9}
+              />
+            </mesh>
+          </group>
+        ))}
       </group>
 
-      {/* 5. Volumetric Solid Rooftop with Parapet Walls, Solar Arrays & Chiller Units */}
-      {!isCutaway && (
-        <group position={[0, roofY, 0]} name="rooftop-infrastructure">
-          {/* Concrete Roof Slab */}
-          <mesh position={[0, 0.1, 0]} castShadow receiveShadow>
-            <boxGeometry args={[width + 0.4, 0.25, depth + 0.4]} />
-            <meshStandardMaterial color="#0c0e17" roughness={0.8} />
-          </mesh>
-
-          {/* Parapet Walls */}
-          <mesh position={[0, 0.5, -depth / 2]} castShadow>
-            <boxGeometry args={[width + 0.4, 0.8, 0.25]} />
-            <meshStandardMaterial color="#1e293b" roughness={0.6} />
-          </mesh>
-          <mesh position={[0, 0.5, depth / 2]} castShadow>
-            <boxGeometry args={[width + 0.4, 0.8, 0.25]} />
-            <meshStandardMaterial color="#1e293b" roughness={0.6} />
-          </mesh>
-          <mesh position={[-width / 2, 0.5, 0]} castShadow>
-            <boxGeometry args={[0.25, 0.8, depth]} />
-            <meshStandardMaterial color="#1e293b" roughness={0.6} />
-          </mesh>
-          <mesh position={[width / 2, 0.5, 0]} castShadow>
-            <boxGeometry args={[0.25, 0.8, depth]} />
-            <meshStandardMaterial color="#1e293b" roughness={0.6} />
-          </mesh>
-
-          {/* Solar Panel Arrays */}
-          {[-8, 0, 8].map((zOffset, rIdx) => (
-            <group key={`solar-${rIdx}`} position={[0, 0.5, zOffset]} rotation={[-0.26, 0, 0]}>
-              <mesh castShadow receiveShadow>
-                <boxGeometry args={[width * 0.75, 0.08, 3.2]} />
-                <meshStandardMaterial
-                  color="#1e3a8a"
-                  emissive="#1d4ed8"
-                  emissiveIntensity={0.25}
-                  roughness={0.15}
-                  metalness={0.9}
-                />
-              </mesh>
-            </group>
-          ))}
-        </group>
-      )}
-
-      {/* 6. Grand Main Entrance */}
+      {/* 7. Solid Grand Main Entrance */}
       <group position={[0, 0, depth / 2]} name="main-entrance">
-        <mesh position={[0, 3.0, 2.6]} castShadow>
-          <boxGeometry args={[10.5, 0.25, 4.2]} />
-          <meshStandardMaterial color="#006bff" emissive="#006bff" emissiveIntensity={0.2} metalness={0.6} />
+        {/* Entrance Steps / Plinth */}
+        <mesh position={[0, 0.14, 1.6]} receiveShadow>
+          <boxGeometry args={[11.0, 0.28, 3.2]} />
+          <meshStandardMaterial color="#334155" roughness={0.7} />
         </mesh>
-        <mesh position={[0, 2.85, 4.4]}>
-          <boxGeometry args={[10.0, 0.05, 0.15]} />
+        <mesh position={[0, 0.32, 1.2]} receiveShadow>
+          <boxGeometry args={[9.5, 0.28, 2.2]} />
+          <meshStandardMaterial color="#475569" roughness={0.6} />
+        </mesh>
+
+        {/* Supporting Entrance Columns */}
+        <mesh position={[-4.5, 1.7, 3.2]} castShadow>
+          <cylinderGeometry args={[0.25, 0.3, 3.0, 16]} />
+          <meshStandardMaterial color="#cbd5e1" metalness={0.6} roughness={0.3} />
+        </mesh>
+        <mesh position={[4.5, 1.7, 3.2]} castShadow>
+          <cylinderGeometry args={[0.25, 0.3, 3.0, 16]} />
+          <meshStandardMaterial color="#cbd5e1" metalness={0.6} roughness={0.3} />
+        </mesh>
+
+        {/* Entrance Portico Canopy */}
+        <mesh position={[0, 3.2, 2.6]} castShadow>
+          <boxGeometry args={[11.5, 0.3, 4.2]} />
+          <meshStandardMaterial color={theme.trimColor} roughness={0.5} metalness={0.4} />
+        </mesh>
+        {/* Architectural Glow Strip on Canopy */}
+        <mesh position={[0, 3.05, 4.6]}>
+          <boxGeometry args={[11.0, 0.06, 0.15]} />
           <meshStandardMaterial color="#9ff0ec" emissive="#9ff0ec" emissiveIntensity={1.5} />
         </mesh>
-        <mesh position={[0, 0.12, 1.2]} receiveShadow>
-          <boxGeometry args={[8.5, 0.24, 2.4]} />
-          <meshStandardMaterial color="#1e293b" roughness={0.6} />
+
+        {/* Glass Entrance Doors */}
+        <mesh position={[0, 1.5, 0.05]} castShadow>
+          <boxGeometry args={[5.0, 2.6, 0.12]} />
+          <meshStandardMaterial color="#0f172a" roughness={0.1} metalness={0.9} />
         </mesh>
       </group>
 
-      {/* 7. FLOATING BILLBOARD BLOCK NAME LABEL & CAMPUS HOVER CARD */}
+      {/* 8. FLOATING BILLBOARD BLOCK NAME LABEL & TELEMETRY BADGE */}
       {showLabels && !isInspectingFloor && (
         <Html
-          position={[0, roofY + 3.0, 0]}
+          position={[0, totalHeight + 3.2, 0]}
           center
           distanceFactor={28}
           zIndexRange={[80, 0]}

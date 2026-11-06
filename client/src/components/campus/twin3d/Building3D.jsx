@@ -112,6 +112,7 @@ export function Building3D({ building, telemetry }) {
   const flagMeshRef = useRef();
   const fountainWaterRef = useRef();
   const roofGroupRef = useRef();
+  const buildingGroupRef = useRef();
   const liftAnimRef = useRef(0);
 
   const [hoveredFloor, setHoveredFloor] = useState(null);
@@ -222,6 +223,17 @@ export function Building3D({ building, telemetry }) {
       fountainWaterRef.current.material.opacity = 0.55 + Math.sin(state.clock.getElapsedTime() * 3.5) * 0.15;
     }
 
+    // Smooth hover micro-elevation
+    if (buildingGroupRef.current) {
+      const targetHoverY = isBuildingHovered ? 0.35 : 0.0;
+      buildingGroupRef.current.position.y = THREE.MathUtils.damp(
+        buildingGroupRef.current.position.y,
+        targetHoverY,
+        7.0,
+        delta
+      );
+    }
+
     // Smooth lift-away easing for roof
     const targetLift = isInspectingFloor ? 1.0 : 0.0;
     liftAnimRef.current = THREE.MathUtils.damp(liftAnimRef.current, targetLift, 5.0, delta);
@@ -235,6 +247,7 @@ export function Building3D({ building, telemetry }) {
 
   return (
     <group
+      ref={buildingGroupRef}
       name={`building-${id}`}
       position={[position[0], 0, position[2]]}
       onPointerOver={(e) => {
@@ -250,6 +263,12 @@ export function Building3D({ building, telemetry }) {
         selectBuilding(id);
       }}
     >
+      {/* 0. Ambient Ground Contact Drop Shadow */}
+      <mesh position={[0, -0.42, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[width + 3.2, depth + 3.2]} />
+        <meshBasicMaterial color="#000000" transparent opacity={0.4} depthWrite={false} />
+      </mesh>
+
       {/* 1. Heavy Solid Foundation Plinth */}
       <group position={[0, -0.4, 0]}>
         <mesh receiveShadow>
@@ -649,45 +668,57 @@ export function Building3D({ building, telemetry }) {
         </mesh>
       </group>
 
-      {/* 8. FLOATING BILLBOARD BLOCK NAME LABEL & TELEMETRY BADGE */}
+      {/* 8. SLEEK NON-OVERLAPPING 3D BILLBOARD TAG (Expands on Hover/Select) */}
       {showLabels && !isInspectingFloor && (
         <Html
-          position={[0, totalHeight + 3.2, 0]}
+          position={[0, totalHeight + 2.8, 0]}
           center
-          distanceFactor={28}
+          distanceFactor={30}
           zIndexRange={[80, 0]}
         >
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-              selectBuilding(id);
-            }}
-            className={`cursor-pointer px-4 py-2.5 rounded-2xl border backdrop-blur-xl flex items-center gap-3 transition-all select-none shadow-[0_16px_40px_rgba(0,0,0,0.8)] ${
-              isSelected
-                ? 'bg-[#006bff]/95 border-[#9ff0ec] text-white shadow-[0_0_30px_rgba(0,107,255,0.7)] scale-110'
-                : isBuildingHovered
-                ? 'bg-[#181d2c]/95 border-[#9ff0ec] text-white scale-105'
-                : 'bg-[#131219]/90 border-white/15 text-[#b9b8bb] hover:border-[#9ff0ec]/50'
-            }`}
-          >
+          {isBuildingHovered || isSelected ? (
+            /* Expanded Interactive Card on Hover/Select */
             <div
-              className="flex items-center justify-center w-8 h-8 rounded-xl font-mono font-bold text-xs text-white shadow-md"
-              style={{ backgroundColor: accentColor || '#38bdf8' }}
+              onClick={(e) => {
+                e.stopPropagation();
+                selectBuilding(id);
+              }}
+              className="cursor-pointer px-3.5 py-2 rounded-2xl bg-[#131219]/95 border border-[#9ff0ec] text-white shadow-[0_16px_40px_rgba(0,0,0,0.85),0_0_24px_rgba(0,107,255,0.4)] backdrop-blur-xl flex items-center gap-2.5 transition-all select-none scale-105 animate-fade-in"
             >
-              {code || shortName}
-            </div>
+              <div
+                className="flex items-center justify-center w-7 h-7 rounded-xl font-mono font-bold text-xs text-white shadow-md"
+                style={{ backgroundColor: accentColor || '#38bdf8' }}
+              >
+                {code || shortName}
+              </div>
 
-            <div className="flex flex-col text-left leading-tight">
-              <span className="text-xs font-bold text-white tracking-tight">{name}</span>
-              <div className="text-[10px] text-[#9ff0ec] font-mono flex items-center gap-1.5 mt-0.5">
-                <span>{floorCount} Floors</span>
-                <span>•</span>
-                <span>{buildingStudents.length} Students</span>
-                <span>•</span>
-                <span className="text-amber-400 font-bold">{buildingKw} kW</span>
+              <div className="flex flex-col text-left leading-tight">
+                <span className="text-xs font-bold text-white tracking-tight">{name}</span>
+                <div className="text-[10px] text-[#9ff0ec] font-mono flex items-center gap-1.5 mt-0.5">
+                  <span>{floorCount}F</span>
+                  <span>•</span>
+                  <span>{buildingStudents.length} Students</span>
+                  <span>•</span>
+                  <span className="text-amber-400 font-bold">{buildingKw} kW</span>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            /* Minimal Non-Overlapping Tag Pill by Default */
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+                selectBuilding(id);
+              }}
+              className="cursor-pointer px-2.5 py-1 rounded-xl bg-[#10131d]/90 hover:bg-[#181d2c] border border-white/20 hover:border-[#9ff0ec] text-white backdrop-blur-md shadow-lg flex items-center gap-1.5 transition-all select-none whitespace-nowrap text-[11px] font-mono"
+            >
+              <span
+                className="w-2 h-2 rounded-full shrink-0"
+                style={{ backgroundColor: accentColor || '#38bdf8' }}
+              />
+              <span className="font-bold tracking-tight text-white/90">{code || shortName}</span>
+            </div>
+          )}
         </Html>
       )}
     </group>

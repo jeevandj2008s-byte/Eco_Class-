@@ -25,3 +25,4 @@ export function setupCamera(renderer) {
 }
 
 export default setupCamera;
+

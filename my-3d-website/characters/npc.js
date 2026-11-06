@@ -33,3 +33,4 @@ export function setupNPCs(scene) {
 }
 
 export default setupNPCs;
+

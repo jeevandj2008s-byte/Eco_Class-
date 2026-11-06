@@ -14,3 +14,4 @@ export function getPerformanceSettings() {
 }
 
 export default getPerformanceSettings;
+

@@ -45,3 +45,4 @@ export function createCharacterMesh(color = 0x38bdf8) {
 }
 
 export default createCharacterMesh;
+

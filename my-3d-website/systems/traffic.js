@@ -60,3 +60,4 @@ export function setupTraffic(scene) {
 }
 
 export default setupTraffic;
+

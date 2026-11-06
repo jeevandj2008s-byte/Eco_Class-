@@ -51,3 +51,4 @@ export function setupFurniture(scene) {
 }
 
 export default setupFurniture;
+

@@ -44,3 +44,4 @@ export function setupEnvironment(scene) {
 }
 
 export default setupEnvironment;
+

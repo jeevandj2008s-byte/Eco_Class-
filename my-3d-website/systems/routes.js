@@ -15,3 +15,4 @@ export const CAMPUS_ROUTES = {
 };
 
 export default CAMPUS_ROUTES;
+

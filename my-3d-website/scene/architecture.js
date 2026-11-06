@@ -85,3 +85,4 @@ export function setupArchitecture(scene) {
 }
 
 export default setupArchitecture;
+

@@ -22,3 +22,4 @@ export function createCharacterController(characters = []) {
 }
 
 export default createCharacterController;
+

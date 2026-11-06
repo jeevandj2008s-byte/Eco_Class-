@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AuraSync BIT Campus — 3D Architectural Digital Twin</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+    }
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #07080e;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    /* Minimal HUD Overlay */
+    .hud-title {
+      position: absolute;
+      top: 20px;
+      left: 24px;
+      color: #ffffff;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .hud-title h1 {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .hud-title p {
+      font-size: 11px;
+      color: #9ff0ec;
+      font-family: monospace;
+      margin-top: 2px;
+    }
+    .hud-controls {
+      position: absolute;
+      bottom: 20px;
+      left: 24px;
+      color: #94a3b8;
+      font-size: 11px;
+      font-family: monospace;
+      pointer-events: none;
+      z-index: 10;
+      background: rgba(19, 18, 25, 0.85);
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+    }
+  </style>
+</head>
+<body>
+  <div class="hud-title">
+    <h1>AuraSync Campus 3D</h1>
+    <p>Bangalore Institute of Technology • Architectural Digital Twin</p>
+  </div>
+  <div class="hud-controls">
+    Drag to Orbit • Scroll to Zoom • Right-Click to Pan
+  </div>
+
+  <!-- Entry Point Script -->
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

@@ -1,34 +1,40 @@
 import React, { useState, useMemo } from 'react';
 import {
-  Building2,
+  Zap,
+  MapPin,
   Layers,
-  Users,
+  ShieldCheck,
+  Building2,
+  ArrowRight,
+  Search,
   Eye,
   Sliders,
   Tag,
-  Activity,
   UserPlus,
   Upload,
   Download,
   RotateCcw,
-  Search,
-  ChevronRight,
-  ChevronDown,
   DoorOpen,
-  Zap,
   BarChart3,
   Compass,
-  ArrowRight
+  ChevronRight,
+  ChevronDown,
+  Sparkles
 } from 'lucide-react';
 import { useTwin3DStore } from '../../../store/useTwin3DStore.js';
 import { PROCESSED_BUILDINGS, findClassroomHierarchy } from '../../../config/buildings.config.js';
+
+const BLOB_PATHS = [
+  'M 16,16 C 35,14 55,24 75,20 C 95,16 110,6 126,10 C 138,14 144,26 142,40 C 140,52 126,58 110,58 L 18,58 C 6,58 0,48 0,36 C 0,24 6,18 16,16 Z',
+  'M 18,22 C 32,22 46,26 62,24 C 76,22 88,2 108,2 C 128,2 142,14 142,30 C 142,46 128,56 112,56 L 20,56 C 8,56 0,46 0,34 C 0,22 8,22 18,22 Z',
+  'M 12,32 C 18,18 36,4 62,2 C 90,0 114,12 128,24 C 140,34 142,44 136,54 C 130,58 116,58 100,58 L 22,58 C 8,58 0,48 0,38 C 0,35 6,34 12,32 Z'
+];
 
 export function CampusFunctionsDock({ telemetry }) {
   const [activeTab, setActiveTab] = useState('hierarchy'); // 'hierarchy' | 'controls' | 'telemetry' | 'inspector'
   const [search, setSearch] = useState('');
   const [rosterSearch, setRosterSearch] = useState('');
   const [expandedBuildings, setExpandedBuildings] = useState({ 'bit-main': true });
-  const [expandedFloors, setExpandedFloors] = useState({ 'bit-main-1': true });
 
   // Store state
   const selectedBuildingId = useTwin3DStore((s) => s.selectedBuildingId);
@@ -42,10 +48,6 @@ export function CampusFunctionsDock({ telemetry }) {
   const setExplodedHeight = useTwin3DStore((s) => s.setExplodedHeight);
   const showLabels = useTwin3DStore((s) => s.showLabels);
   const setShowLabels = useTwin3DStore((s) => s.setShowLabels);
-  const showStudents = useTwin3DStore((s) => s.showStudents);
-  const setShowStudents = useTwin3DStore((s) => s.setShowStudents);
-  const animateStudents = useTwin3DStore((s) => s.animateStudents);
-  const setAnimateStudents = useTwin3DStore((s) => s.setAnimateStudents);
 
   const selectCampus = useTwin3DStore((s) => s.selectCampus);
   const selectBuilding = useTwin3DStore((s) => s.selectBuilding);
@@ -59,42 +61,27 @@ export function CampusFunctionsDock({ telemetry }) {
   const exportJson = useTwin3DStore((s) => s.exportJson);
   const resetToSeedData = useTwin3DStore((s) => s.resetToSeedData);
 
-  // Selected building and floor
   const selectedBuilding = PROCESSED_BUILDINGS.find((b) => b.id === selectedBuildingId);
   const selectedFloor = selectedBuilding?.floors?.find((f) => f.level === selectedFloorLevel);
   const selectedClassroom = selectedClassroomId ? findClassroomHierarchy(selectedClassroomId)?.classroom : null;
-  const selectedStudent = selectedStudentId ? students.find((s) => s.id === selectedStudentId) : null;
 
   const toggleBuilding = (bId) => {
     setExpandedBuildings((prev) => ({ ...prev, [bId]: !prev[bId] }));
-  };
-
-  const toggleFloor = (fKey) => {
-    setExpandedFloors((prev) => ({ ...prev, [fKey]: !prev[fKey] }));
   };
 
   // Filter hierarchy
   const filteredBuildings = useMemo(() => {
     if (!search.trim()) return PROCESSED_BUILDINGS;
     const q = search.toLowerCase();
-    return PROCESSED_BUILDINGS.map((b) => {
-      const matchB = b.name.toLowerCase().includes(q) || b.code.toLowerCase().includes(q);
-      const filteredFloors = b.floors.map((f) => {
-        const matchF = f.name?.toLowerCase().includes(q);
-        const filteredRooms = f.classrooms.filter(
-          (r) =>
-            r.name.toLowerCase().includes(q) ||
-            r.code.toLowerCase().includes(q) ||
-            r.department?.toLowerCase().includes(q)
-        );
-        return { ...f, classrooms: matchB || matchF ? f.classrooms : filteredRooms };
-      });
-      const hasRooms = filteredFloors.some((f) => f.classrooms.length > 0);
-      return matchB || hasRooms ? { ...b, floors: filteredFloors } : null;
-    }).filter(Boolean);
+    return PROCESSED_BUILDINGS.filter(
+      (b) =>
+        b.name.toLowerCase().includes(q) ||
+        b.code.toLowerCase().includes(q) ||
+        b.shortName?.toLowerCase().includes(q)
+    );
   }, [search]);
 
-  // Students in selected classroom or building
+  // Students in selected context
   const relevantStudents = useMemo(() => {
     if (selectedClassroomId) {
       return students.filter((s) => s.classroomId === selectedClassroomId);
@@ -117,529 +104,589 @@ export function CampusFunctionsDock({ telemetry }) {
   }, [relevantStudents, rosterSearch]);
 
   return (
-    <div className="w-full max-w-7xl mx-auto flex flex-col gap-4 select-none animate-fade-in">
-      {/* 1. Master Tab Bar Arranged Under 3D Map */}
-      <div className="w-full flex items-center justify-between flex-wrap gap-2 p-2 rounded-2xl bg-[#131219]/90 border border-white/[0.14] backdrop-blur-xl shadow-[0_16px_36px_rgba(0,0,0,0.6)]">
-        <div className="flex items-center gap-1.5 flex-wrap">
+    <div className="w-full max-w-7xl mx-auto flex flex-col gap-8 select-none animate-fade-in relative z-10">
+      {/* Subtle Ambient Violet Glow Hairline at top */}
+      <div className="w-3/4 max-w-4xl h-[1px] bg-gradient-to-r from-transparent via-[#9ff0ec]/30 to-transparent mx-auto" />
+      <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-96 h-20 bg-[#6f5adc]/15 blur-3xl pointer-events-none rounded-full" />
+
+      {/* Section Header: Matching AuraSync Digital Twin Architecture */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 px-1">
+        <div>
+          <span className="text-xs font-bold text-[#bdf7ee] uppercase tracking-widest flex items-center gap-2">
+            <Sparkles className="w-3.5 h-3.5 text-[#9ff0ec]" />
+            <span>Digital Twin Operations</span>
+          </span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-[1.15] mt-2">
+            AuraSync Campus<br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#bdf7ee] to-[#9ff0ec]">
+              Digital Twin Architecture
+            </span>
+          </h2>
+          <p className="mt-3 text-xs sm:text-sm text-[#b9b8bb] flex items-center gap-1.5 font-normal">
+            <span>Verified microgrid telemetry, institutional governance, and Net-Zero 2030 standards.</span>
+            <ArrowRight className="w-3.5 h-3.5 text-[#9ff0ec]" />
+          </p>
+        </div>
+
+        {/* Master Navigation Tabs */}
+        <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-[#131219]/90 border border-white/[0.14] backdrop-blur-md shadow-[0_16px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.08)] self-start sm:self-end flex-wrap">
           <button
             onClick={() => setActiveTab('hierarchy')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer ${
+            className={`btn-pop px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer ${
               activeTab === 'hierarchy'
-                ? 'bg-[#006bff] text-white shadow-[0_0_16px_rgba(0,107,255,0.5)] font-bold'
-                : 'text-[#b9b8bb] hover:text-white hover:bg-white/5'
+                ? 'bg-white/[0.14] text-white font-bold border border-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]'
+                : 'text-[#b9b8bb] hover:text-white hover:bg-white/[0.06]'
             }`}
           >
-            <Building2 className="w-4 h-4" />
-            <span>Campus Hierarchy</span>
+            <Building2 className="w-3.5 h-3.5 text-[#9ff0ec]" />
+            <span>Campus Blocks</span>
           </button>
 
           <button
             onClick={() => setActiveTab('controls')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer ${
+            className={`btn-pop px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer ${
               activeTab === 'controls'
-                ? 'bg-[#006bff] text-white shadow-[0_0_16px_rgba(0,107,255,0.5)] font-bold'
-                : 'text-[#b9b8bb] hover:text-white hover:bg-white/5'
+                ? 'bg-white/[0.14] text-white font-bold border border-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]'
+                : 'text-[#b9b8bb] hover:text-white hover:bg-white/[0.06]'
             }`}
           >
-            <Sliders className="w-4 h-4" />
-            <span>3D Studio Controls</span>
+            <Sliders className="w-3.5 h-3.5 text-[#6f5adc]" />
+            <span>3D Controls</span>
           </button>
 
           <button
             onClick={() => setActiveTab('telemetry')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer ${
+            className={`btn-pop px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer ${
               activeTab === 'telemetry'
-                ? 'bg-[#006bff] text-white shadow-[0_0_16px_rgba(0,107,255,0.5)] font-bold'
-                : 'text-[#b9b8bb] hover:text-white hover:bg-white/5'
+                ? 'bg-white/[0.14] text-white font-bold border border-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]'
+                : 'text-[#b9b8bb] hover:text-white hover:bg-white/[0.06]'
             }`}
           >
-            <BarChart3 className="w-4 h-4" />
-            <span>Telemetry & Roster</span>
+            <BarChart3 className="w-3.5 h-3.5 text-[#bdf7ee]" />
+            <span>Telemetry</span>
           </button>
 
           {(selectedFloorLevel !== null || selectedClassroomId !== null) && (
             <button
               onClick={() => setActiveTab('inspector')}
-              className={`px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer ${
+              className={`btn-pop px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer ${
                 activeTab === 'inspector'
-                  ? 'bg-amber-500 text-black shadow-[0_0_16px_rgba(245,158,11,0.5)] font-bold'
-                  : 'text-amber-400 hover:text-white hover:bg-amber-500/10 border border-amber-500/30'
+                  ? 'bg-gradient-to-r from-amber-500/20 to-amber-600/30 text-amber-300 font-bold border border-amber-500/40 shadow-lg'
+                  : 'text-amber-400 hover:text-white hover:bg-amber-500/10'
               }`}
             >
-              <DoorOpen className="w-4 h-4" />
+              <DoorOpen className="w-3.5 h-3.5" />
               <span>
                 {selectedClassroom
-                  ? `Room: ${selectedClassroom.code || selectedClassroom.name}`
+                  ? `Room ${selectedClassroom.code || selectedClassroom.name}`
                   : `Floor ${selectedFloorLevel} Cutaway`}
               </span>
             </button>
           )}
-        </div>
 
-        {/* Global Quick Action: Reset Campus View */}
-        <div className="flex items-center gap-2">
           {selectedBuildingId && (
             <button
               onClick={selectCampus}
-              className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-mono text-[#9ff0ec] border border-white/10 transition-colors flex items-center gap-1.5 cursor-pointer"
+              className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-mono text-[#9ff0ec] border border-white/10 transition-colors flex items-center gap-1.5 ml-2 cursor-pointer"
             >
               <Compass className="w-3.5 h-3.5" />
-              <span>Full Campus</span>
+              <span>Overview</span>
             </button>
           )}
         </div>
       </div>
 
-      {/* 2. TAB CONTENT PANELS */}
-      <div className="w-full rounded-3xl bg-[#10131d]/90 border border-white/10 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.7)] backdrop-blur-xl min-h-[280px]">
-        {/* TAB 1: CAMPUS HIERARCHY */}
-        {activeTab === 'hierarchy' && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between flex-wrap gap-3 pb-3 border-b border-white/10">
-              <div>
-                <h3 className="text-sm font-bold text-white tracking-tight">
-                  Campus Architectural Hierarchy
-                </h3>
-                <p className="text-xs text-[#8e8d92] mt-0.5">
-                  Select any building, floor or classroom to smoothly fly the 3D camera into its geometry.
-                </p>
+      {/* ============================================================== */}
+      {/* TAB 1: 4 ELEVATED DARK GLASS CARDS (MATCHING REFERENCE IMAGE 2) */}
+      {/* ============================================================== */}
+      {activeTab === 'hierarchy' && (
+        <div className="space-y-6">
+          {/* Quick Search */}
+          <div className="flex items-center justify-between gap-4 px-1">
+            <span className="text-xs text-[#b9b8bb] font-mono">
+              Displaying all 8 procedural volumetric building blocks
+            </span>
+            <div className="relative w-full sm:w-72">
+              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+              <input
+                type="text"
+                placeholder="Search building name or code..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full pl-9 pr-3 py-2 text-xs rounded-2xl bg-[#131219]/80 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#9ff0ec] backdrop-blur-md"
+              />
+            </div>
+          </div>
+
+          {/* Cards Grid: Matching the signature 420px tall cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+            {filteredBuildings.map((b, idx) => {
+              const bStudents = students.filter((s) => s.buildingId === b.id);
+              const isSelectedB = selectedBuildingId === b.id;
+              const blobPath = BLOB_PATHS[idx % BLOB_PATHS.length];
+              const isEven = idx % 2 === 0;
+
+              return (
+                <div
+                  key={b.id}
+                  className={`w-full min-h-[420px] rounded-[28px] bg-[#131219]/80 border ${
+                    isSelectedB
+                      ? 'border-[#006bff] shadow-[0_0_35px_rgba(0,107,255,0.45)]'
+                      : isEven
+                      ? 'border-white/[0.12] hover:border-[#6f5adc]/60'
+                      : 'border-white/[0.12] hover:border-[#9ff0ec]/60'
+                  } shadow-[0_16px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.08)] p-7 sm:p-8 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:-translate-y-1.5 group select-none`}
+                >
+                  {/* Top: Brand Logo / Module Identifier */}
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.1] flex items-center justify-center">
+                          <Building2 className={`w-4 h-4 ${isEven ? 'text-[#9ff0ec]' : 'text-[#6f5adc]'}`} />
+                        </div>
+                        <span className="font-extrabold text-sm tracking-tight text-white uppercase">
+                          {b.code || b.shortName}
+                        </span>
+                      </div>
+                      <span className="text-[10px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-white/[0.04] text-[#9ff0ec] border border-white/[0.12]">
+                        {b.baselineKw} kW
+                      </span>
+                    </div>
+
+                    {/* Middle: Big bold metric number & description */}
+                    <div className="mt-7 mb-6">
+                      <div
+                        className={`text-3xl sm:text-4xl font-black tracking-tight leading-tight ${
+                          isEven ? 'text-white' : 'text-[#9ff0ec]'
+                        }`}
+                      >
+                        {b.shortName || b.name}
+                      </div>
+                      <p className="mt-3 text-xs sm:text-sm text-[#d3d3d7] leading-relaxed font-normal">
+                        {b.name}. {b.floorCount} volumetric stacked floors with active classroom digital twins and telemetry monitoring.
+                      </p>
+
+                      {/* Stats Badges */}
+                      <div className="flex items-center gap-2 mt-4 text-[10px] font-mono text-[#b9b8bb]">
+                        <span className="px-2 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.08]">
+                          {b.floorCount} Floors
+                        </span>
+                        <span className="px-2 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.08]">
+                          {bStudents.length} Students
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Floor Cutaway Presets if expanded */}
+                  <div className="mb-4 space-y-1 border-t border-white/[0.08] pt-3">
+                    <div className="text-[10px] font-mono uppercase tracking-wider text-[#8e8d92] flex items-center justify-between">
+                      <span>Interactive Levels</span>
+                      <button
+                        onClick={() => toggleBuilding(b.id)}
+                        className="hover:text-white"
+                      >
+                        {expandedBuildings[b.id] ? 'Hide' : 'Show'}
+                      </button>
+                    </div>
+
+                    {expandedBuildings[b.id] &&
+                      b.floors.map((fl) => (
+                        <button
+                          key={fl.level}
+                          onClick={() => selectFloor(b.id, fl.level)}
+                          className="w-full text-left py-1 px-2 rounded-lg hover:bg-white/5 text-[11px] font-mono text-[#c9c3da] hover:text-[#9ff0ec] flex items-center justify-between transition-colors"
+                        >
+                          <span>Floor {fl.level} Cutaway</span>
+                          <span className="text-[10px] text-white/40">
+                            {fl.classrooms?.length || 0} Rooms →
+                          </span>
+                        </button>
+                      ))}
+                  </div>
+
+                  {/* Bottom: The signature organic blob button (Exact from Reference Image 2) */}
+                  <div
+                    onClick={() => selectBuilding(b.id)}
+                    className="relative inline-flex items-center mt-auto self-start cursor-pointer"
+                  >
+                    <svg
+                      viewBox="0 0 150 60"
+                      className={`w-[136px] h-[52px] ${
+                        isEven ? 'text-[#6f5adc]' : 'text-[#4d19b1]'
+                      } transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]`}
+                      fill="currentColor"
+                    >
+                      <path d={blobPath} />
+                    </svg>
+                    <span className="absolute inset-0 flex items-center justify-start pl-5 text-xs font-bold text-white gap-2 pointer-events-none tracking-tight">
+                      <span>Focus Block</span>
+                      <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================== */}
+      {/* TAB 2: 3D STUDIO CONTROLS (ELEVATED DARK GLASS CARDS)          */}
+      {/* ============================================================== */}
+      {activeTab === 'controls' && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
+          {/* Card 1: X-Ray Cutaway */}
+          <div className="rounded-[28px] bg-[#131219]/80 border border-white/[0.12] hover:border-[#6f5adc]/60 shadow-[0_16px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.08)] p-7 sm:p-8 flex flex-col justify-between group">
+            <div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.1] flex items-center justify-center">
+                    <Eye className="w-4 h-4 text-[#9ff0ec]" />
+                  </div>
+                  <span className="font-extrabold text-sm tracking-tight text-white uppercase">
+                    Cutaway Engine
+                  </span>
+                </div>
+                <span className="text-[10px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-white/[0.04] text-[#9ff0ec] border border-white/[0.12]">
+                  {xrayMode ? 'Active' : 'Solid'}
+                </span>
               </div>
 
-              {/* Search Bar */}
-              <div className="relative w-full sm:w-64">
-                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
-                <input
-                  type="text"
-                  placeholder="Search blocks, rooms..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#9ff0ec]"
-                />
+              <div className="mt-8 mb-6">
+                <div className="text-4xl font-black tracking-tight text-white">
+                  X-Ray Vision
+                </div>
+                <p className="mt-3 text-xs sm:text-sm text-[#d3d3d7] leading-relaxed">
+                  Opens building slabs and exterior walls to reveal classroom furniture and seated student occupancy simultaneously.
+                </p>
               </div>
             </div>
 
-            {/* Buildings Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5">
-              {filteredBuildings.map((b) => {
-                const isBSelected = selectedBuildingId === b.id;
-                const isExpanded = !!expandedBuildings[b.id];
-                const bStudents = students.filter((s) => s.buildingId === b.id);
+            <button
+              onClick={() => setXrayMode()}
+              className="px-6 py-3 rounded-full bg-[#6f5adc] hover:bg-[#5e48cb] text-white text-xs font-bold transition-all shadow-[0_8px_20px_rgba(111,90,220,0.4)] flex items-center gap-2 self-start cursor-pointer"
+            >
+              <span>{xrayMode ? 'Restore Solid Shell' : 'Enable X-Ray Mode'}</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
 
-                return (
-                  <div
-                    key={b.id}
-                    className={`rounded-2xl border transition-all p-4 flex flex-col justify-between ${
-                      isBSelected
-                        ? 'bg-[#006bff]/15 border-[#006bff] shadow-[0_0_24px_rgba(0,107,255,0.3)]'
-                        : 'bg-white/[0.03] hover:bg-white/[0.06] border-white/10'
+          {/* Card 2: Exploded View Slider */}
+          <div className="rounded-[28px] bg-[#131219]/80 border border-white/[0.12] hover:border-[#9ff0ec]/60 shadow-[0_16px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.08)] p-7 sm:p-8 flex flex-col justify-between group">
+            <div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.1] flex items-center justify-center">
+                    <Layers className="w-4 h-4 text-[#6f5adc]" />
+                  </div>
+                  <span className="font-extrabold text-sm tracking-tight text-white uppercase">
+                    Floor Exploder
+                  </span>
+                </div>
+                <span className="text-[10px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-white/[0.04] text-[#9ff0ec] border border-white/[0.12]">
+                  {explodedHeight.toFixed(1)}x Gap
+                </span>
+              </div>
+
+              <div className="mt-8 mb-4">
+                <div className="text-4xl font-black tracking-tight text-[#9ff0ec]">
+                  Axonometric
+                </div>
+                <p className="mt-3 text-xs sm:text-sm text-[#d3d3d7] leading-relaxed">
+                  Slide floor slabs vertically apart into an architectural exploded drawing.
+                </p>
+              </div>
+
+              {/* Slider */}
+              <div className="my-4 space-y-2">
+                <input
+                  type="range"
+                  min="0"
+                  max="4.0"
+                  step="0.2"
+                  value={explodedHeight}
+                  onChange={(e) => setExplodedHeight(parseFloat(e.target.value))}
+                  className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#9ff0ec]"
+                />
+                <div className="flex items-center justify-between gap-1 pt-1">
+                  <button
+                    onClick={() => setExplodedHeight(0)}
+                    className="flex-1 py-1 text-[10px] font-mono rounded-lg bg-white/5 hover:bg-white/10 text-[#c9c3da]"
+                  >
+                    Reset (0)
+                  </button>
+                  <button
+                    onClick={() => setExplodedHeight(1.5)}
+                    className="flex-1 py-1 text-[10px] font-mono rounded-lg bg-white/5 hover:bg-white/10 text-[#c9c3da]"
+                  >
+                    Split (1.5x)
+                  </button>
+                  <button
+                    onClick={() => setExplodedHeight(3.0)}
+                    className="flex-1 py-1 text-[10px] font-mono rounded-lg bg-white/5 hover:bg-white/10 text-[#c9c3da]"
+                  >
+                    Expand (3x)
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setShowLabels()}
+              className="px-6 py-3 rounded-full bg-[#4d19b1] hover:bg-[#401399] text-white text-xs font-bold transition-all shadow-md flex items-center gap-2 self-start cursor-pointer mt-2"
+            >
+              <span>{showLabels ? 'Hide Labels' : 'Show 3D Labels'}</span>
+            </button>
+          </div>
+
+          {/* Card 3: Dataset Operations */}
+          <div className="rounded-[28px] bg-[#131219]/80 border border-white/[0.12] hover:border-[#bdf7ee]/60 shadow-[0_16px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.08)] p-7 sm:p-8 flex flex-col justify-between group">
+            <div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.1] flex items-center justify-center">
+                    <ShieldCheck className="w-4 h-4 text-[#bdf7ee]" />
+                  </div>
+                  <span className="font-extrabold text-sm tracking-tight text-white uppercase">
+                    Roster Hub
+                  </span>
+                </div>
+                <span className="text-[10px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-white/[0.04] text-[#bdf7ee] border border-white/[0.12]">
+                  {students.length} Enrolled
+                </span>
+              </div>
+
+              <div className="mt-8 mb-6">
+                <div className="text-4xl font-black tracking-tight text-[#bdf7ee]">
+                  Operations
+                </div>
+                <p className="mt-3 text-xs sm:text-sm text-[#d3d3d7] leading-relaxed">
+                  Add individual student figures to desks, import CSV rosters, or export microgrid telemetry states.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 mt-4">
+                <button
+                  onClick={() => openAddModal()}
+                  className="py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-all"
+                >
+                  <UserPlus className="w-3.5 h-3.5" />
+                  <span>Add Student</span>
+                </button>
+                <button
+                  onClick={() => openImportModal()}
+                  className="py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-all"
+                >
+                  <Upload className="w-3.5 h-3.5" />
+                  <span>CSV Import</span>
+                </button>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 mt-4">
+              <button
+                onClick={exportJson}
+                className="py-2 px-3 rounded-xl bg-white/5 hover:bg-white/10 text-[#c9c3da] text-xs font-mono transition-colors"
+              >
+                Export JSON
+              </button>
+              <button
+                onClick={resetToSeedData}
+                className="py-2 px-3 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 text-xs font-mono transition-colors border border-rose-500/20"
+              >
+                Reset Data
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================== */}
+      {/* TAB 3: TELEMETRY & STUDENT ROSTER                              */}
+      {/* ============================================================== */}
+      {activeTab === 'telemetry' && (
+        <div className="rounded-[28px] bg-[#131219]/80 border border-white/[0.12] shadow-[0_16px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.08)] p-7 sm:p-8 backdrop-blur-xl">
+          <div className="flex items-center justify-between flex-wrap gap-4 border-b border-white/[0.08] pb-5">
+            <div>
+              <span className="text-xs font-bold text-[#9ff0ec] uppercase tracking-widest">
+                Microgrid Data Layer
+              </span>
+              <h3 className="text-2xl font-black text-white tracking-tight mt-1">
+                Student Enrollment & Department Distribution
+              </h3>
+            </div>
+
+            <div className="relative w-full sm:w-72">
+              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+              <input
+                type="text"
+                placeholder="Search students by name or USN..."
+                value={rosterSearch}
+                onChange={(e) => setRosterSearch(e.target.value)}
+                className="w-full pl-9 pr-3 py-2 text-xs rounded-2xl bg-white/5 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#9ff0ec]"
+              />
+            </div>
+          </div>
+
+          <div className="overflow-x-auto mt-6">
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr className="border-b border-white/10 text-[#8e8d92] font-mono text-[10px]">
+                  <th className="pb-3">STUDENT NAME</th>
+                  <th className="pb-3">USN / ROLL NO</th>
+                  <th className="pb-3">DEPARTMENT</th>
+                  <th className="pb-3">CLASSROOM</th>
+                  <th className="pb-3">SEAT ID</th>
+                  <th className="pb-3 text-right">3D SPATIAL ACTION</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5">
+                {filteredRoster.map((stu) => (
+                  <tr
+                    key={stu.id}
+                    className={`hover:bg-white/[0.04] transition-colors ${
+                      selectedStudentId === stu.id ? 'bg-[#006bff]/20' : ''
                     }`}
                   >
-                    <div>
-                      {/* Building Header */}
-                      <div className="flex items-center justify-between">
-                        <div
-                          className="px-2 py-0.5 rounded-lg text-[10px] font-mono font-bold text-white shadow-sm"
-                          style={{ backgroundColor: b.accentColor || '#38bdf8' }}
-                        >
-                          {b.code || b.shortName}
-                        </div>
-                        <span className="text-[11px] font-mono text-amber-400 font-bold">
-                          {b.baselineKw} kW
+                    <td className="py-3 flex items-center gap-2.5">
+                      <div
+                        className="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs text-white"
+                        style={{ backgroundColor: stu.avatarColor || '#38bdf8' }}
+                      >
+                        {stu.name.charAt(0)}
+                      </div>
+                      <span className="font-semibold text-white">{stu.name}</span>
+                    </td>
+                    <td className="py-3 font-mono text-[#9ff0ec]">{stu.usn || stu.rollNo}</td>
+                    <td className="py-3 text-[#c9c3da]">{stu.department}</td>
+                    <td className="py-3 font-mono text-white/80">{stu.classroomId}</td>
+                    <td className="py-3 font-mono text-white/60">{stu.seatId || 'Assigned'}</td>
+                    <td className="py-3 text-right">
+                      <button
+                        onClick={() => selectStudent(stu.id)}
+                        className="px-3 py-1.5 rounded-xl bg-[#6f5adc]/20 hover:bg-[#6f5adc] text-[#9ff0ec] hover:text-white border border-[#6f5adc]/40 text-xs font-mono transition-all cursor-pointer"
+                      >
+                        Zoom to Desk →
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================== */}
+      {/* TAB 4: ACTIVE FLOOR & ROOM CUTAWAY INSPECTOR                   */}
+      {/* ============================================================== */}
+      {activeTab === 'inspector' && (
+        <div className="rounded-[28px] bg-[#131219]/80 border border-white/[0.12] shadow-[0_16px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.08)] p-7 sm:p-8 backdrop-blur-xl">
+          {selectedClassroom ? (
+            <div>
+              <div className="flex items-center justify-between border-b border-white/[0.08] pb-5">
+                <div>
+                  <span className="text-xs font-bold text-[#9ff0ec] uppercase tracking-widest">
+                    Level 4 Classroom Focus
+                  </span>
+                  <h3 className="text-3xl font-black text-white tracking-tight mt-1">
+                    {selectedClassroom.code || selectedClassroom.name}
+                  </h3>
+                  <p className="text-xs text-[#b9b8bb] mt-0.5">
+                    {selectedClassroom.department} • Floor Level {selectedFloorLevel}
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => selectFloor(selectedBuildingId, selectedFloorLevel)}
+                  className="px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-xs font-semibold text-white transition-colors"
+                >
+                  ← Back to Floor Cutaway
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
+                <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 text-center">
+                  <span className="text-xs text-[#8e8d92] block font-mono">SEAT CAPACITY</span>
+                  <span className="text-3xl font-black text-white mt-1 block">
+                    {selectedClassroom.layout?.seats?.length || 24}
+                  </span>
+                </div>
+                <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 text-center">
+                  <span className="text-xs text-[#8e8d92] block font-mono">SEATED STUDENTS</span>
+                  <span className="text-3xl font-black text-emerald-400 mt-1 block">
+                    {relevantStudents.length}
+                  </span>
+                </div>
+                <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 text-center">
+                  <span className="text-xs text-[#8e8d92] block font-mono">FREE SEATS</span>
+                  <span className="text-3xl font-black text-amber-400 mt-1 block">
+                    {Math.max(0, (selectedClassroom.layout?.seats?.length || 24) - relevantStudents.length)}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ) : selectedFloor ? (
+            <div>
+              <div className="flex items-center justify-between border-b border-white/[0.08] pb-5">
+                <div>
+                  <span className="text-xs font-bold text-amber-400 uppercase tracking-widest">
+                    Level 3 Isometric Floor Cutaway
+                  </span>
+                  <h3 className="text-3xl font-black text-white tracking-tight mt-1">
+                    {selectedBuilding?.name} • Floor {selectedFloor.level}
+                  </h3>
+                  <p className="text-xs text-[#b9b8bb] mt-0.5">
+                    Showing interior classrooms from above with 3D benches and seated students.
+                  </p>
+                </div>
+
+                <button
+                  onClick={selectCampus}
+                  className="px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-xs font-semibold text-white transition-colors"
+                >
+                  ← Full Campus Overview
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                {selectedFloor.classrooms.map((room) => {
+                  const rStudents = students.filter((s) => s.classroomId === room.id);
+                  const totalSeats = room.layout?.seats?.length || 24;
+                  const pct = Math.round((rStudents.length / totalSeats) * 100);
+
+                  return (
+                    <div
+                      key={room.id}
+                      className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-between gap-4 hover:border-[#6f5adc]/50 transition-all"
+                    >
+                      <div>
+                        <h4 className="text-sm font-bold text-white">{room.code || room.name}</h4>
+                        <span className="text-xs text-[#8e8d92] block">{room.department}</span>
+                        <span className="text-xs font-mono text-[#9ff0ec] mt-1 block">
+                          {rStudents.length} / {totalSeats} seats ({pct}% full)
                         </span>
                       </div>
 
-                      <h4 className="text-sm font-bold text-white tracking-tight mt-2 leading-snug">
-                        {b.name}
-                      </h4>
-                      <div className="text-[11px] text-[#8e8d92] font-mono mt-0.5">
-                        {b.floorCount} Floors • {bStudents.length} Students
-                      </div>
-                    </div>
-
-                    {/* Actions & Floor List Toggle */}
-                    <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between gap-2">
                       <button
-                        onClick={() => selectBuilding(b.id)}
-                        className="flex-1 py-1.5 px-3 rounded-xl bg-[#006bff] hover:bg-[#0058d4] text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-md cursor-pointer transition-all"
+                        onClick={() => selectClassroom(room.id)}
+                        className="px-4 py-2 rounded-full bg-[#6f5adc] hover:bg-[#5e48cb] text-white text-xs font-bold transition-all shadow-md cursor-pointer"
                       >
-                        <span>Focus Block</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
-
-                      <button
-                        onClick={() => toggleBuilding(b.id)}
-                        className="p-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors"
-                        title="Toggle Floor Tree"
-                      >
-                        {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+                        Enter Room →
                       </button>
                     </div>
-
-                    {/* Expandable Floor & Room List */}
-                    {isExpanded && (
-                      <div className="mt-3 pt-2 border-t border-white/5 space-y-2">
-                        {b.floors.map((fl) => (
-                          <div key={fl.level} className="text-xs">
-                            <div
-                              onClick={() => selectFloor(b.id, fl.level)}
-                              className={`p-2 rounded-xl flex items-center justify-between cursor-pointer transition-colors ${
-                                selectedBuildingId === b.id && selectedFloorLevel === fl.level
-                                  ? 'bg-[#006bff]/30 text-white font-bold border border-[#006bff]'
-                                  : 'hover:bg-white/5 text-[#c9c3da]'
-                              }`}
-                            >
-                              <span className="font-mono text-[11px]">Floor {fl.level} Cutaway</span>
-                              <span className="text-[10px] text-[#8e8d92]">
-                                {fl.classrooms?.length || 0} Rooms →
-                              </span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* TAB 2: 3D STUDIO CONTROLS */}
-        {activeTab === 'controls' && (
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-sm font-bold text-white tracking-tight">
-                3D Scene Studio & Visual Controls
-              </h3>
-              <p className="text-xs text-[#8e8d92] mt-0.5">
-                Toggle cutaway visualization modes, floor explosion height, and student dataset actions.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {/* 1. X-Ray Mode Card */}
-              <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-white">X-Ray Cutaway Mode</span>
-                    <Eye className="w-4 h-4 text-[#9ff0ec]" />
-                  </div>
-                  <p className="text-[11px] text-[#8e8d92] mt-1">
-                    Opens floor slabs and exterior walls to inspect all classroom layouts simultaneously.
-                  </p>
-                </div>
-                <button
-                  onClick={() => setXrayMode()}
-                  className={`mt-4 py-2 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center justify-center gap-2 ${
-                    xrayMode
-                      ? 'bg-[#006bff] text-white shadow-[0_0_16px_rgba(0,107,255,0.6)] font-bold'
-                      : 'bg-white/10 hover:bg-white/15 text-white'
-                  }`}
-                >
-                  <Eye className="w-3.5 h-3.5" />
-                  <span>{xrayMode ? 'X-Ray Enabled' : 'Enable X-Ray'}</span>
-                </button>
-              </div>
-
-              {/* 2. Exploded View Slider Card */}
-              <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-white">Exploded Floor Slider</span>
-                    <span className="text-xs font-mono text-[#9ff0ec] font-bold">
-                      {explodedHeight.toFixed(1)}x
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-[#8e8d92] mt-1">
-                    Slides floor slabs vertically apart into an architectural exploded axonometric drawing.
-                  </p>
-                </div>
-                <div className="mt-3 space-y-2">
-                  <input
-                    type="range"
-                    min="0"
-                    max="4.0"
-                    step="0.2"
-                    value={explodedHeight}
-                    onChange={(e) => setExplodedHeight(parseFloat(e.target.value))}
-                    className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#9ff0ec]"
-                  />
-                  <div className="flex items-center justify-between gap-1">
-                    <button
-                      onClick={() => setExplodedHeight(0)}
-                      className="flex-1 py-1 text-[10px] font-mono rounded bg-white/5 hover:bg-white/10 text-[#c9c3da]"
-                    >
-                      Reset (0)
-                    </button>
-                    <button
-                      onClick={() => setExplodedHeight(1.5)}
-                      className="flex-1 py-1 text-[10px] font-mono rounded bg-white/5 hover:bg-white/10 text-[#c9c3da]"
-                    >
-                      Split (1.5x)
-                    </button>
-                    <button
-                      onClick={() => setExplodedHeight(3.0)}
-                      className="flex-1 py-1 text-[10px] font-mono rounded bg-white/5 hover:bg-white/10 text-[#c9c3da]"
-                    >
-                      Expanded (3x)
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* 3. Billboard Labels Toggle */}
-              <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-white">Billboard Block Labels</span>
-                    <Tag className="w-4 h-4 text-amber-400" />
-                  </div>
-                  <p className="text-[11px] text-[#8e8d92] mt-1">
-                    Toggles 3D floating title cards and occupancy badges above campus buildings.
-                  </p>
-                </div>
-                <button
-                  onClick={() => setShowLabels()}
-                  className={`mt-4 py-2 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center justify-center gap-2 ${
-                    showLabels
-                      ? 'bg-amber-500 text-black font-bold shadow-md'
-                      : 'bg-white/10 hover:bg-white/15 text-white'
-                  }`}
-                >
-                  <Tag className="w-3.5 h-3.5" />
-                  <span>{showLabels ? 'Labels Visible' : 'Labels Hidden'}</span>
-                </button>
+                  );
+                })}
               </div>
             </div>
-
-            {/* Student & Dataset Actions */}
-            <div className="pt-4 border-t border-white/10">
-              <span className="text-xs font-bold text-white uppercase tracking-wider block mb-3 text-[#9ff0ec]">
-                Dataset & Student Roster Operations
-              </span>
-              <div className="flex items-center gap-2.5 flex-wrap">
-                <button
-                  onClick={() => openAddModal()}
-                  className="px-4 py-2 rounded-xl bg-[#006bff] hover:bg-[#0058d4] text-white text-xs font-semibold flex items-center gap-2 shadow-md cursor-pointer transition-all"
-                >
-                  <UserPlus className="w-4 h-4" />
-                  <span>Add Student to Seat</span>
-                </button>
-
-                <button
-                  onClick={() => openImportModal()}
-                  className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer"
-                >
-                  <Upload className="w-4 h-4" />
-                  <span>Bulk CSV Import</span>
-                </button>
-
-                <button
-                  onClick={exportJson}
-                  className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer"
-                >
-                  <Download className="w-4 h-4" />
-                  <span>Export JSON</span>
-                </button>
-
-                <button
-                  onClick={resetToSeedData}
-                  className="px-4 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-300 text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer"
-                >
-                  <RotateCcw className="w-4 h-4 text-rose-400" />
-                  <span>Reset Seed Data</span>
-                </button>
-              </div>
+          ) : (
+            <div className="text-center py-12 text-[#8e8d92] text-xs">
+              Tap any floor on the 3D building model above to open its cutaway view.
             </div>
-          </div>
-        )}
-
-        {/* TAB 3: TELEMETRY & ROSTER */}
-        {activeTab === 'telemetry' && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between flex-wrap gap-3 pb-3 border-b border-white/10">
-              <div>
-                <h3 className="text-sm font-bold text-white tracking-tight">
-                  Live Telemetry & Student Roster
-                </h3>
-                <p className="text-xs text-[#8e8d92] mt-0.5">
-                  {students.length} total students enrolled across 8 campus blocks.
-                </p>
-              </div>
-
-              {/* Roster Search */}
-              <div className="relative w-full sm:w-64">
-                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
-                <input
-                  type="text"
-                  placeholder="Filter by name, USN..."
-                  value={rosterSearch}
-                  onChange={(e) => setRosterSearch(e.target.value)}
-                  className="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#9ff0ec]"
-                />
-              </div>
-            </div>
-
-            {/* Students Table */}
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead>
-                  <tr className="border-b border-white/10 text-[#8e8d92] font-mono text-[10px]">
-                    <th className="pb-2">STUDENT</th>
-                    <th className="pb-2">USN</th>
-                    <th className="pb-2">DEPARTMENT</th>
-                    <th className="pb-2">CLASSROOM</th>
-                    <th className="pb-2">ACTION</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/5">
-                  {filteredRoster.map((stu) => (
-                    <tr
-                      key={stu.id}
-                      className={`hover:bg-white/[0.04] transition-colors ${
-                        selectedStudentId === stu.id ? 'bg-[#006bff]/20' : ''
-                      }`}
-                    >
-                      <td className="py-2.5 flex items-center gap-2">
-                        <div
-                          className="w-6 h-6 rounded-lg flex items-center justify-center font-bold text-[10px] text-white"
-                          style={{ backgroundColor: stu.avatarColor || '#38bdf8' }}
-                        >
-                          {stu.name.charAt(0)}
-                        </div>
-                        <span className="font-semibold text-white">{stu.name}</span>
-                      </td>
-                      <td className="py-2.5 font-mono text-[#9ff0ec]">{stu.usn || stu.rollNo}</td>
-                      <td className="py-2.5 text-[#c9c3da]">{stu.department}</td>
-                      <td className="py-2.5 font-mono text-white/80">{stu.classroomId}</td>
-                      <td className="py-2.5">
-                        <button
-                          onClick={() => selectStudent(stu.id)}
-                          className="px-2.5 py-1 rounded-lg bg-[#006bff]/20 hover:bg-[#006bff] text-[#9ff0ec] hover:text-white border border-[#006bff]/40 text-[10px] font-mono transition-all cursor-pointer"
-                        >
-                          Zoom in 3D
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
-        {/* TAB 4: ACTIVE FLOOR / ROOM INSPECTOR */}
-        {activeTab === 'inspector' && (
-          <div className="space-y-4">
-            {selectedClassroom ? (
-              // Classroom Inside Details
-              <div>
-                <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                  <div>
-                    <span className="text-[10px] font-mono font-bold text-[#9ff0ec] uppercase">
-                      Classroom Inspection Mode
-                    </span>
-                    <h3 className="text-lg font-black text-white tracking-tight mt-0.5">
-                      {selectedClassroom.code || selectedClassroom.name}
-                    </h3>
-                    <p className="text-xs text-[#8e8d92]">
-                      {selectedClassroom.department} • Floor {selectedFloorLevel}
-                    </p>
-                  </div>
-
-                  <button
-                    onClick={() => selectFloor(selectedBuildingId, selectedFloorLevel)}
-                    className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-xs text-white transition-colors"
-                  >
-                    ← Back to Floor Cutaway
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-3 gap-3 my-4 text-center font-mono text-xs">
-                  <div className="p-3 rounded-2xl bg-white/5 border border-white/5">
-                    <span className="text-[10px] text-[#8e8d92] block">Capacity</span>
-                    <span className="text-base font-bold text-white">
-                      {selectedClassroom.layout?.seats?.length || 24} Seats
-                    </span>
-                  </div>
-                  <div className="p-3 rounded-2xl bg-white/5 border border-white/5">
-                    <span className="text-[10px] text-[#8e8d92] block">Occupied</span>
-                    <span className="text-base font-bold text-emerald-400">
-                      {relevantStudents.length}
-                    </span>
-                  </div>
-                  <div className="p-3 rounded-2xl bg-white/5 border border-white/5">
-                    <span className="text-[10px] text-[#8e8d92] block">Available</span>
-                    <span className="text-base font-bold text-amber-400">
-                      {Math.max(0, (selectedClassroom.layout?.seats?.length || 24) - relevantStudents.length)}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ) : selectedFloor ? (
-              // Floor Cutaway Details
-              <div>
-                <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                  <div>
-                    <span className="text-[10px] font-mono font-bold text-amber-400 uppercase">
-                      Isometric Floor Cutaway
-                    </span>
-                    <h3 className="text-lg font-black text-white tracking-tight mt-0.5">
-                      {selectedBuilding?.name} • Level {selectedFloor.level}
-                    </h3>
-                    <p className="text-xs text-[#8e8d92]">
-                      Upper floors lifted away. Showing open classrooms from above.
-                    </p>
-                  </div>
-
-                  <button
-                    onClick={selectCampus}
-                    className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-xs text-white transition-colors"
-                  >
-                    ← Back to Full Campus
-                  </button>
-                </div>
-
-                {/* Classrooms on this floor */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
-                  {selectedFloor.classrooms.map((room) => {
-                    const rStudents = students.filter((s) => s.classroomId === room.id);
-                    const totalSeats = room.layout?.seats?.length || 24;
-                    const pct = Math.round((rStudents.length / totalSeats) * 100);
-
-                    return (
-                      <div
-                        key={room.id}
-                        className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-between gap-3"
-                      >
-                        <div>
-                          <h4 className="text-xs font-bold text-white">{room.code || room.name}</h4>
-                          <span className="text-[10px] text-[#8e8d92] block">{room.department}</span>
-                          <span className="text-[10px] font-mono text-[#9ff0ec]">
-                            {rStudents.length} / {totalSeats} seats ({pct}%)
-                          </span>
-                        </div>
-
-                        <button
-                          onClick={() => selectClassroom(room.id)}
-                          className="px-3 py-1.5 rounded-xl bg-[#006bff] hover:bg-[#0058d4] text-white text-xs font-semibold transition-all cursor-pointer shadow-md"
-                        >
-                          Enter Room
-                        </button>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            ) : (
-              <div className="text-center py-8 text-[#8e8d92] text-xs">
-                Select any floor on the 3D map or Campus Hierarchy to inspect its interior.
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
-

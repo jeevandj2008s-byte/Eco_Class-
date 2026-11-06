@@ -76,3 +76,4 @@ export function createStandingTeacherGeometry() {
 
   return mergeGeometries([legs, torso, head, pointerArm]);
 }
+

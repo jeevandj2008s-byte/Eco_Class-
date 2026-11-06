@@ -86,3 +86,4 @@ export const THREE_CONFIG = {
     fanSpeed: 7.5
   }
 };
+

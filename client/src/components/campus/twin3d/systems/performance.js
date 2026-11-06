@@ -44,3 +44,4 @@ export function detectDeviceProfile() {
 }
 
 export default detectDeviceProfile;
+

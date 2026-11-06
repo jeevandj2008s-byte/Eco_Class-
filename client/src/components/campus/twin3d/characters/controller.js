@@ -34,3 +34,4 @@ export function updateCharacters(delta, meshRef, studentData, elapsedTime, isAni
 }
 
 export default updateCharacters;
+

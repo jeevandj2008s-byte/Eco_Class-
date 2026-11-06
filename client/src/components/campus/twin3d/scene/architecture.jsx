@@ -57,3 +57,4 @@ export function Architecture({ telemetry }) {
 }
 
 export default Architecture;
+

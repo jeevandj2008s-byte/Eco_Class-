@@ -58,3 +58,4 @@ export function CeilingFan({ position = [0, 2.2, 0] }) {
 }
 
 export default FurnitureSystem;
+

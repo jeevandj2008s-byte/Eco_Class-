@@ -381,20 +381,10 @@ export function ParkingLot() {
 
       {/* 9. Floating 3D Parking Facility Badge & Sign */}
       {showLabels && (
-        <Html position={[0, 5.5, 0]} center distanceFactor={28}>
-          <div className="pointer-events-none px-3.5 py-1.5 rounded-2xl bg-[#131219]/90 border border-white/15 text-white backdrop-blur-xl flex items-center gap-2.5 shadow-xl select-none">
-            <div
-              className="w-7 h-7 rounded-xl flex items-center justify-center font-bold text-xs text-white"
-              style={{ backgroundColor: labelConfig.accentColor || '#006bff' }}
-            >
-              {labelConfig.code || 'P'}
-            </div>
-            <div className="flex flex-col items-start leading-tight">
-              <span className="text-xs font-bold text-white tracking-tight">{labelConfig.name}</span>
-              <span className="text-[10px] text-[#9ff0ec] font-mono">
-                {parkedCars.length}/{rows * baysPerRow} Cars • {parkedBikes.length} Bikes
-              </span>
-            </div>
+        <Html position={[0, 4.8, 0]} center distanceFactor={30}>
+          <div className="pointer-events-none px-2.5 py-1 rounded-xl bg-[#10131d]/90 border border-white/20 text-white backdrop-blur-md shadow-md flex items-center gap-1.5 select-none whitespace-nowrap text-[11px] font-mono">
+            <span className="w-2 h-2 rounded-full bg-[#006bff]" />
+            <span className="font-bold">Parking ({parkedCars.length} Cars)</span>
           </div>
         </Html>
       )}

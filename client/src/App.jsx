@@ -111,7 +111,8 @@ export default function App() {
 
   // Real-time Socket.IO Connection (Section A.1: path /socket.io, relative origin)
   useEffect(() => {
-    const socket = io('/', {
+    const socketUrl = import.meta.env.VITE_API_URL || '/';
+    const socket = io(socketUrl, {
       path: '/socket.io',
       auth: { token },
       transports: ['websocket', 'polling']

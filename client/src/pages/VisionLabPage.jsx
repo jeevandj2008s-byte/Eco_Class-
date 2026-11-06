@@ -130,7 +130,8 @@ export default function VisionLabPage() {
 
   // Connect Socket for Live Phone Stream Listening (Relative path /socket.io over HTTPS proxy)
   useEffect(() => {
-    const socket = io('/', {
+    const socketUrl = import.meta.env.VITE_API_URL || '/';
+    const socket = io(socketUrl, {
       path: '/socket.io',
       transports: ['websocket', 'polling']
     });

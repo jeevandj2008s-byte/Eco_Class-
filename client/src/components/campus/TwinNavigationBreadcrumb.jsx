@@ -21,7 +21,7 @@ export function TwinNavigationBreadcrumb() {
   const student = selectedStudentId ? students.find((s) => s.id === selectedStudentId) : null;
 
   return (
-    <div className="absolute top-4 left-4 z-20 flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-[#131219]/90 border border-white/[0.14] shadow-[0_12px_32px_rgba(0,0,0,0.6)] backdrop-blur-xl text-xs font-medium text-[#b9b8bb] select-none">
+    <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-[#131219]/90 border border-white/[0.14] shadow-[0_12px_32px_rgba(0,0,0,0.6)] backdrop-blur-xl text-xs font-medium text-[#b9b8bb] select-none max-w-full overflow-x-auto">
       {/* Root Campus */}
       <button
         onClick={selectCampus}

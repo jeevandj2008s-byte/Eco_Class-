@@ -33,9 +33,9 @@ Bangalore Institute of Technology (BIT) Energy Twin is an institutional microgri
 
 - **Frontend Client (`/client`)**:
   - React 18 with Vite build tooling and Tailwind CSS.
-  - Zustand for zero-latency reactive state management (`useCampusStore`, `useAuthStore`, `useIslandStore`).
-  - Lucide React iconography and Recharts for time-series power analytics.
-  - Strata dark glass aesthetic with subtle ambient canvas particle layers.
+  - Zustand for zero-latency reactive state management (`useCampusStore`, `useTwin3DStore`, `useAuthStore`).
+  - Three.js & React Three Fiber modular 3D campus twin.
+  - Strata dark glass aesthetic with institutional classic typography (`Plus Jakarta Sans`, `Outfit`, `Cinzel`, `JetBrains Mono`).
 
 - **Backend API & IoT Engine (`/server`)**:
   - Node.js & Express server operating on port 5000.
@@ -48,12 +48,23 @@ Bangalore Institute of Technology (BIT) Energy Twin is an institutional microgri
 - **Campus Center**: 12.9552° N, 77.5743° E (V.V. Puram, Bengaluru, Karnataka - 560004).
 - **Baseline Tariff**: BESCOM HT commercial power at ₹8.25 / kWh.
 - **Emission Factor**: Central Electricity Authority (CEA) grid baseline of 0.71 kg CO₂e / kWh.
-- **Blocks Monitored**:
-  1. BIT Main Block
-  2. Administration Block
-  3. Engineering Block A
-  4. Engineering Block B
-  5. Sports Complex & Amenities
-  6. Campus Hostel & Mess
-  7. EV Charging & Microgrid Hub
 
+## 3. Modular 3D Architecture & Dedicated Class View
+
+- **Modular Square Block Classrooms (`Classroom3D.jsx`)**:
+  - Distinct architectural room enclosures with warm slate/terrazzo floors and perimeter skirting.
+  - Low-cutaway front walls (0.32m) providing 100% unobstructed camera sightlines into the room interior.
+  - Smoothly rotating 3-blade aerodynamic ceiling fans (`useFrame`).
+  - Seated humanoid student figures with varied department attire, open notebooks, and glowing laptops.
+  - Animated teacher figure gesturing at the green chalkboard with chalk stick and swivel motion.
+  - Complete electrical infrastructure: Sub-Distribution Board (DB) with circuit breakers, Smart IoT Energy Meter with real-time digital kW readout and pulsing green LED, and EMT conduit pipe runs.
+  - Sleek, compact, non-overlapping room badges positioned at the rear wall cap (`distanceFactor={42}`).
+
+- **Dedicated Class View (`CameraRig.jsx`)**:
+  - Smooth cinematic camera transition directly into individual classrooms upon selection.
+  - One-click Class View switcher pills in `TwinNavigationBreadcrumb.jsx`.
+
+- **Atmospheric Celestial Sun & Lighting (`scene/environment.jsx`)**:
+  - Visible 3D Sun disc and radial golden solar corona at `[75, 110, 65]`.
+  - Realistic atmospheric sky dome with horizon radiance.
+  - 3-point architectural exterior lighting: warm sunlight (intensity `2.6`), sky ambient fill (`0.95`), cool bluish fill (`0.65`), and warm interior classroom point lights.

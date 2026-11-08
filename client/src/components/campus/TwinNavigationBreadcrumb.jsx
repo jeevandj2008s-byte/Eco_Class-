@@ -16,12 +16,14 @@ export function TwinNavigationBreadcrumb() {
   const selectClassroom = useTwin3DStore((s) => s.selectClassroom);
 
   const building = BUILDINGS_CONFIG.find((b) => b.id === selectedBuildingId);
+  const currentFloor = building?.floors?.find((f) => f.level === selectedFloorLevel);
+  const floorClassrooms = currentFloor?.classrooms || [];
   const classroomHierarchy = selectedClassroomId ? findClassroomHierarchy(selectedClassroomId) : null;
   const classroom = classroomHierarchy?.classroom;
   const student = selectedStudentId ? students.find((s) => s.id === selectedStudentId) : null;
 
   return (
-    <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-[#131219]/90 border border-white/[0.14] shadow-[0_12px_32px_rgba(0,0,0,0.6)] backdrop-blur-xl text-xs font-medium text-[#b9b8bb] select-none max-w-full overflow-x-auto">
+    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#131219]/95 border border-white/[0.16] shadow-[0_12px_32px_rgba(0,0,0,0.7)] backdrop-blur-xl text-xs font-medium text-[#b9b8bb] select-none max-w-full overflow-x-auto">
       {/* Root Campus */}
       <button
         onClick={selectCampus}
@@ -71,20 +73,37 @@ export function TwinNavigationBreadcrumb() {
         </>
       )}
 
+      {/* Quick Class View Pills when on Floor Level (Allows Instant Jump to Class View) */}
+      {building && selectedFloorLevel && floorClassrooms.length > 0 && !selectedClassroomId && (
+        <div className="flex items-center gap-1 pl-1 ml-1 border-l border-white/20">
+          <span className="text-[10px] text-white/50 font-mono">Classes:</span>
+          {floorClassrooms.map((cr) => (
+            <button
+              key={cr.id}
+              onClick={() => selectClassroom(cr.id)}
+              className="px-2 py-0.5 rounded-lg bg-white/5 hover:bg-[#006bff]/30 text-[10px] font-mono text-[#9ff0ec] border border-white/10 hover:border-[#9ff0ec]/50 transition-all cursor-pointer shadow-sm hover:scale-105"
+              title={`Switch to Class View: ${cr.code || cr.name}`}
+            >
+              {cr.code || cr.name}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* Classroom Level */}
       {classroom && (
         <>
           <ChevronRight className="w-3.5 h-3.5 text-white/30" />
           <button
             onClick={() => selectClassroom(classroom.id)}
-            className={`flex items-center gap-1.5 px-2 py-1 rounded-lg transition-colors cursor-pointer ${
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition-colors cursor-pointer ${
               selectedClassroomId && !selectedStudentId
-                ? 'bg-[#006bff]/20 text-[#9ff0ec] font-semibold border border-[#9ff0ec]/30'
+                ? 'bg-[#006bff]/30 text-[#9ff0ec] font-bold border border-[#9ff0ec]/50 shadow-[0_0_12px_rgba(0,107,255,0.4)]'
                 : 'hover:text-white hover:bg-white/5'
             }`}
           >
             <DoorOpen className="w-3.5 h-3.5" />
-            <span>{classroom.code || classroom.name}</span>
+            <span>Class {classroom.code || classroom.name}</span>
           </button>
         </>
       )}
@@ -118,3 +137,4 @@ export function TwinNavigationBreadcrumb() {
   );
 }
 
+export default TwinNavigationBreadcrumb;

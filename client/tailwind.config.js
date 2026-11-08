@@ -100,9 +100,12 @@ export default {
         'cal-product': '0 12px 32px -4px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08)'
       },
       fontFamily: {
-        sans: ['var(--font-sans)', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        display: ['var(--font-sans)', 'Inter', 'system-ui', 'sans-serif'],
-        mono: ['var(--font-mono)', 'JetBrains Mono', 'monospace']
+        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        classic: ['"Outfit"', '"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        display: ['"Outfit"', '"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        serif: ['"Playfair Display"', 'Georgia', 'serif'],
+        cinzel: ['"Cinzel"', 'serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace']
       },
       animation: {
         'pulse-subtle': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',

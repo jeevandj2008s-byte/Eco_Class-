@@ -67,7 +67,7 @@ export function CameraRig() {
         }
       }
     } else if (selectedClassroomId) {
-      // 2. CLASSROOM INSIDE VIEW
+      // 2. DEDICATED CLASSROOM VIEW (Close-up Isometric Dollhouse Cutaway)
       const hierarchy = findClassroomHierarchy(selectedClassroomId);
       if (hierarchy) {
         const { building, floor, classroom } = hierarchy;
@@ -75,21 +75,25 @@ export function CameraRig() {
         const roomWorldX = building.position[0] + classroom.offset[0];
         const roomWorldZ = building.position[2] + classroom.offset[2];
 
-        // Eased view looking over benches toward the whiteboard
-        newLookAt.set(roomWorldX, floorY + 1.1, roomWorldZ - 0.5);
-        newCamPos.set(roomWorldX, floorY + 3.8, roomWorldZ + classroom.depth * 0.48);
+        // Focus inside the classroom: unobstructed angle looking across benches to teacher and chalkboard
+        newLookAt.set(roomWorldX, floorY + 0.85, roomWorldZ - 0.3);
+        newCamPos.set(
+          roomWorldX + (classroom.width || 7.5) * 0.2,
+          floorY + 3.2,
+          roomWorldZ + (classroom.depth || 6.5) * 0.72
+        );
       }
     } else if (selectedFloorLevel && selectedBuildingId) {
-      // 3. FLOOR CUTAWAY ISOMETRIC DOLLHOUSE VIEW
+      // 3. FLOOR VIEW (Optimized closer 3/4 dollhouse framing showing square block rooms)
       const building = BUILDINGS_CONFIG.find((b) => b.id === selectedBuildingId);
       if (building) {
         const floorY = (selectedFloorLevel - 1) * FLOOR_HEIGHT + (selectedFloorLevel - 1) * explodedHeight * 3.5;
-        newLookAt.set(building.position[0], floorY + 1.2, building.position[2]);
-        // 3/4 Isometric dollhouse cutaway angle
+        newLookAt.set(building.position[0], floorY + 1.0, building.position[2]);
+        // Crisp 35° isometric angle close enough to see moving fans and desks inside each block
         newCamPos.set(
-          building.position[0] + building.width * 0.42,
-          floorY + 16.0,
-          building.position[2] + building.depth * 0.65
+          building.position[0] + building.width * 0.35,
+          floorY + 11.2,
+          building.position[2] + building.depth * 0.52
         );
       }
     } else if (selectedBuildingId) {
@@ -113,15 +117,18 @@ export function CameraRig() {
     if (!controlsRef.current) return;
 
     if (isFlyOver) {
-      flyOverProgress.current += delta * 0.25;
-      const angle = flyOverProgress.current;
-      const radius = 105;
-      camera.position.x = Math.sin(angle) * radius;
-      camera.position.z = Math.cos(angle) * radius;
-      camera.position.y = 70 + Math.sin(angle * 2) * 8;
-      controlsRef.current.target.set(0, 5, 0);
+      flyOverProgress.current += delta * 0.12;
+      const t = flyOverProgress.current;
+      const radius = 95;
+      const camX = Math.sin(t) * radius;
+      const camZ = Math.cos(t) * radius;
+      const camY = 48 + Math.sin(t * 2) * 12;
+
+      camera.position.set(camX, camY, camZ);
+      controlsRef.current.target.set(0, 8, 0);
       controlsRef.current.update();
-      if (flyOverProgress.current > Math.PI * 2) {
+
+      if (t >= Math.PI * 2) {
         setIsFlyOver(false);
       }
       return;
@@ -129,17 +136,18 @@ export function CameraRig() {
 
     if (isTransitioning) {
       transitionTimer.current += delta;
-      // Smooth non-linear cubic easing
-      const lerpSpeed = Math.min(1, delta * 3.8);
+      const t = Math.min(transitionTimer.current / 1.1, 1.0);
+      // Smooth cubic ease-out
+      const ease = 1 - Math.pow(1 - t, 3);
 
-      camera.position.lerp(targetCamPos.current, lerpSpeed);
-      controlsRef.current.target.lerp(targetLookAt.current, lerpSpeed);
+      camera.position.lerp(targetCamPos.current, ease * 0.18);
+      controlsRef.current.target.lerp(targetLookAt.current, ease * 0.18);
       controlsRef.current.update();
 
-      const distPos = camera.position.distanceTo(targetCamPos.current);
-      const distTarget = controlsRef.current.target.distanceTo(targetLookAt.current);
-
-      if ((distPos < 0.08 && distTarget < 0.08) || transitionTimer.current > 3.0) {
+      if (
+        camera.position.distanceTo(targetCamPos.current) < 0.05 &&
+        controlsRef.current.target.distanceTo(targetLookAt.current) < 0.05
+      ) {
         camera.position.copy(targetCamPos.current);
         controlsRef.current.target.copy(targetLookAt.current);
         controlsRef.current.update();
@@ -153,10 +161,11 @@ export function CameraRig() {
       ref={controlsRef}
       enableDamping
       dampingFactor={0.06}
-      maxPolarAngle={Math.PI / 2.05}
-      minDistance={1.2}
+      maxPolarAngle={Math.PI / 2.05} // Do not dip below ground plate
+      minDistance={2.5}
       maxDistance={240}
-      target={[0, 2, 0]}
     />
   );
 }
+
+export default CameraRig;

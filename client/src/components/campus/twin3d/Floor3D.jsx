@@ -47,39 +47,39 @@ export function Floor3D({
       {/* 1. Volumetric Floor Base Slab (Solid & Opaque) */}
       {hasCourtyard ? (
         <group name="courtyard-floor-slabs">
-          {/* North Wing */}
+          {/* North Wing Corridor Floor */}
           <mesh position={[0, -0.14, -(cd / 2 + sideD / 2)]} receiveShadow>
             <boxGeometry args={[slabW, 0.28, sideD]} />
             <meshStandardMaterial
-              color={isSelectedFloor ? '#1e2538' : '#141824'}
-              roughness={0.7}
+              color={isSelectedFloor ? '#222938' : '#141824'}
+              roughness={0.65}
               metalness={0.15}
             />
           </mesh>
-          {/* South Wing */}
+          {/* South Wing Corridor Floor */}
           <mesh position={[0, -0.14, (cd / 2 + sideD / 2)]} receiveShadow>
             <boxGeometry args={[slabW, 0.28, sideD]} />
             <meshStandardMaterial
-              color={isSelectedFloor ? '#1e2538' : '#141824'}
-              roughness={0.7}
+              color={isSelectedFloor ? '#222938' : '#141824'}
+              roughness={0.65}
               metalness={0.15}
             />
           </mesh>
-          {/* West Wing */}
+          {/* West Wing Corridor Floor */}
           <mesh position={[-(cw / 2 + sideW / 2), -0.14, 0]} receiveShadow>
             <boxGeometry args={[sideW, 0.28, cd]} />
             <meshStandardMaterial
-              color={isSelectedFloor ? '#1e2538' : '#141824'}
-              roughness={0.7}
+              color={isSelectedFloor ? '#222938' : '#141824'}
+              roughness={0.65}
               metalness={0.15}
             />
           </mesh>
-          {/* East Wing */}
+          {/* East Wing Corridor Floor */}
           <mesh position={[(cw / 2 + sideW / 2), -0.14, 0]} receiveShadow>
             <boxGeometry args={[sideW, 0.28, cd]} />
             <meshStandardMaterial
-              color={isSelectedFloor ? '#1e2538' : '#141824'}
-              roughness={0.7}
+              color={isSelectedFloor ? '#222938' : '#141824'}
+              roughness={0.65}
               metalness={0.15}
             />
           </mesh>

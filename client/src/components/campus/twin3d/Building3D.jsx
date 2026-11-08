@@ -279,16 +279,26 @@ export function Building3D({ building, telemetry }) {
             metalness={0.1}
           />
         </mesh>
+        {/* Foundation Plinth Top Slab (Realistic architectural finish, no harsh cyan flood) */}
         <mesh position={[0, 0.42, 0]} receiveShadow>
           <boxGeometry args={[width + 0.6, 0.12, depth + 0.6]} />
           <meshStandardMaterial
-            color={isSelected ? '#006bff' : isBuildingHovered ? '#38bdf8' : '#1e293b'}
-            roughness={0.5}
-            metalness={0.4}
-            emissive={isSelected ? '#006bff' : isBuildingHovered ? '#38bdf8' : '#000000'}
-            emissiveIntensity={isSelected ? 0.6 : isBuildingHovered ? 0.3 : 0}
+            color={isInspectingFloor ? '#151922' : isSelected ? '#1e2538' : isBuildingHovered ? '#252f42' : '#121622'}
+            roughness={0.8}
+            metalness={0.15}
           />
         </mesh>
+        {/* Subtle Outer Perimeter Selection Ring */}
+        {isSelected && !isInspectingFloor && (
+          <mesh position={[0, 0.48, 0]}>
+            <boxGeometry args={[width + 0.64, 0.02, depth + 0.64]} />
+            <meshStandardMaterial
+              color="#006bff"
+              emissive="#006bff"
+              emissiveIntensity={0.8}
+            />
+          </mesh>
+        )}
       </group>
 
       {/* 2. SOLID OPAQUE EXTERIOR FAÇADE (Rendered when building is closed or at lower floors) */}

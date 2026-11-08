@@ -76,11 +76,11 @@ export default function BitCampus3D({
                 depth: true
               }}
               onCreated={({ gl }) => {
-                gl.setClearColor(new THREE.Color('#07080e'), 1);
+                gl.setClearColor(new THREE.Color('#0e1322'), 1);
               }}
             >
-              <color attach="background" args={['#07080e']} />
-              <fog attach="fog" args={['#07080e', 100, 260]} />
+              <color attach="background" args={['#0e1322']} />
+              <fog attach="fog" args={['#0e1322', 140, 360]} />
 
               {/* Core Architectural Campus 3D Scene */}
               <CampusScene telemetry={telemetry} />

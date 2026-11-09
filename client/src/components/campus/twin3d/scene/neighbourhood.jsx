@@ -26,10 +26,10 @@ export function Neighbourhood() {
 
   return (
     <group name="campus-neighbourhood">
-      {/* 1. Main Campus Terrain Base Plate */}
+      {/* 1. Main Campus Terrain Base Plate with Realistic Architectural Tone */}
       <mesh position={[0, -0.6, 0]} receiveShadow>
         <boxGeometry args={[190, 0.4, 190]} />
-        <meshStandardMaterial color="#080a11" roughness={0.9} />
+        <meshStandardMaterial color="#0c101a" roughness={0.88} metalness={0.12} />
       </mesh>
 
       {/* 2. Outer Perimeter Boundary Ring with Subtle Blueprint Trace */}

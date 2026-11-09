@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import * as THREE from 'three';
 import { WebGLErrorBoundary } from './WebGLErrorBoundary.jsx';
@@ -9,6 +9,7 @@ import { TwinNavigationBreadcrumb } from './TwinNavigationBreadcrumb.jsx';
 import { AddStudentModal } from './AddStudentModal.jsx';
 import { BulkImportModal } from './BulkImportModal.jsx';
 import { useTwin3DStore } from '../../store/useTwin3DStore.js';
+import { findClassroomHierarchy } from '../../config/buildings.config.js';
 
 // Safe WebGL context probe that immediately disposes its context to prevent leaking GPU context slots
 let _cachedWebGL = null;
@@ -44,7 +45,11 @@ export default function BitCampus3D({
   const [hasWebGL, setHasWebGL] = useState(() => isWebGLAvailable());
   const selectBuilding = useTwin3DStore((s) => s.selectBuilding);
   const selectCampus = useTwin3DStore((s) => s.selectCampus);
+  const selectFloor = useTwin3DStore((s) => s.selectFloor);
   const storeSelectedBuildingId = useTwin3DStore((s) => s.selectedBuildingId);
+  const selectedFloorLevel = useTwin3DStore((s) => s.selectedFloorLevel);
+  const selectedClassroomId = useTwin3DStore((s) => s.selectedClassroomId);
+  const students = useTwin3DStore((s) => s.students);
 
   // Sync external building selection with store if provided
   useEffect(() => {
@@ -52,6 +57,26 @@ export default function BitCampus3D({
       selectBuilding(selectedBuildingId);
     }
   }, [selectedBuildingId]);
+
+  // Selected Classroom Telemetry for Corner HUD
+  const classroomHierarchy = useMemo(
+    () => (selectedClassroomId ? findClassroomHierarchy(selectedClassroomId) : null),
+    [selectedClassroomId]
+  );
+  const selectedClassroom = classroomHierarchy?.classroom;
+
+  const roomStudents = useMemo(() => {
+    if (!selectedClassroomId) return [];
+    return students.filter((s) => s.classroomId === selectedClassroomId);
+  }, [students, selectedClassroomId]);
+
+  const totalSeats = selectedClassroom?.layout?.seats?.length || 24;
+  const occupiedCount = roomStudents.length;
+  const occupancyPct = totalSeats > 0 ? Math.round((occupiedCount / totalSeats) * 100) : 0;
+  const activePowerKw = useMemo(() => {
+    const watts = 350 + occupiedCount * 55;
+    return (watts / 1000).toFixed(2);
+  }, [occupiedCount]);
 
   return (
     <div className="relative w-full h-full overflow-y-auto overflow-x-hidden flex flex-col custom-scrollbar px-3 md:px-6 pt-16 md:pt-20 pb-16 select-none bg-transparent">
@@ -106,6 +131,56 @@ export default function BitCampus3D({
             <span>Reset View</span>
           </button>
         </div>
+
+        {/* Top-Right CORNER CLASSROOM HUD PANEL */}
+        {/* Docked neatly in the corner so it NEVER covers the classroom, glass windows, or fans! */}
+        {selectedClassroom && (
+          <div className="absolute top-12 right-3 z-20 w-[210px] p-2.5 rounded-2xl bg-[#131219]/95 border border-[#9ff0ec]/40 backdrop-blur-xl shadow-[0_16px_40px_rgba(0,0,0,0.85),0_0_20px_rgba(0,107,255,0.3)] flex flex-col gap-1.5 animate-fade-in text-white select-none">
+            {/* Header: Class Code & Power */}
+            <div className="flex items-center justify-between border-b border-white/10 pb-1">
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="font-bold font-classic text-xs text-white tracking-tight">
+                  {selectedClassroom.code || selectedClassroom.name}
+                </span>
+              </div>
+              <span className="px-1.5 py-0.5 rounded-md bg-amber-500/15 border border-amber-500/30 font-mono text-[9px] font-bold text-amber-300">
+                {activePowerKw} kW
+              </span>
+            </div>
+
+            {/* Metrics Grid */}
+            <div className="grid grid-cols-2 gap-1 text-[9px] font-mono">
+              <div className="p-1 rounded-md bg-white/5 border border-white/5 flex flex-col">
+                <span className="text-[#b9b8bb] text-[8px]">Dept</span>
+                <span className="text-white font-semibold truncate">{selectedClassroom.department || 'CSE'}</span>
+              </div>
+              <div className="p-1 rounded-md bg-white/5 border border-white/5 flex flex-col">
+                <span className="text-[#b9b8bb] text-[8px]">Fan</span>
+                <span className="text-cyan-300 font-semibold flex items-center gap-1">
+                  <span className="inline-block animate-spin text-[8px]">🌀</span> Active
+                </span>
+              </div>
+              <div className="p-1 rounded-md bg-white/5 border border-white/5 flex flex-col">
+                <span className="text-[#b9b8bb] text-[8px]">Attendance</span>
+                <span className="text-emerald-300 font-bold">{occupancyPct}%</span>
+              </div>
+              <div className="p-1 rounded-md bg-white/5 border border-white/5 flex flex-col">
+                <span className="text-[#b9b8bb] text-[8px]">Present</span>
+                <span className="text-white font-bold">{occupiedCount}/{totalSeats}</span>
+              </div>
+            </div>
+
+            {/* Exit Class View Button */}
+            <button
+              onClick={() => selectFloor(storeSelectedBuildingId, selectedFloorLevel)}
+              className="w-full mt-0.5 py-1 rounded-lg bg-white/10 hover:bg-[#006bff]/30 border border-white/15 hover:border-[#9ff0ec]/40 text-[9px] font-mono text-[#9ff0ec] flex items-center justify-center gap-1 transition-all cursor-pointer"
+              title="Exit Class View back to Floor View"
+            >
+              <span>← Back to Floor View</span>
+            </button>
+          </div>
+        )}
 
         {/* Bottom Navigation Legend & Gesture Hint */}
         <div className="absolute bottom-3 left-3 z-10 pointer-events-none px-3 py-1 rounded-xl bg-[#131219]/90 border border-white/[0.14] text-[10px] text-[#b9b8bb] font-mono flex items-center gap-2 shadow-lg backdrop-blur-md">

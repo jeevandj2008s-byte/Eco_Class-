@@ -75,12 +75,12 @@ export function CameraRig() {
         const roomWorldX = building.position[0] + classroom.offset[0];
         const roomWorldZ = building.position[2] + classroom.offset[2];
 
-        // Focus inside the classroom: unobstructed angle looking across benches to teacher and chalkboard
-        newLookAt.set(roomWorldX, floorY + 0.85, roomWorldZ - 0.3);
+        // Focus inside the classroom: unobstructed 3/4 dollhouse angle looking across benches, glass windows, teacher & fan
+        newLookAt.set(roomWorldX, floorY + 0.85, roomWorldZ - 0.2);
         newCamPos.set(
-          roomWorldX + (classroom.width || 7.5) * 0.2,
-          floorY + 3.2,
-          roomWorldZ + (classroom.depth || 6.5) * 0.72
+          roomWorldX + (classroom.width || 7.5) * 0.18,
+          floorY + 2.9,
+          roomWorldZ + (classroom.depth || 6.5) * 0.70
         );
       }
     } else if (selectedFloorLevel && selectedBuildingId) {

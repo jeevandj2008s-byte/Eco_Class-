@@ -58,11 +58,13 @@ Bangalore Institute of Technology (BIT) Energy Twin is an institutional microgri
   - Seated humanoid student figures with varied department attire, open notebooks, and glowing laptops.
   - Animated teacher figure gesturing at the green chalkboard with chalk stick and swivel motion.
   - Complete electrical infrastructure: Sub-Distribution Board (DB) with circuit breakers, Smart IoT Energy Meter with real-time digital kW readout and pulsing green LED, and EMT conduit pipe runs.
-  - Sleek, compact, non-overlapping room badges positioned at the rear wall cap (`distanceFactor={42}`).
+  - Architectural PBR glass windows with aluminum framing and vertical mullions.
+  - Ultra-compact floor view micro-pills (`~20px` height) that auto-hide completely during Class View, eliminating all 3D viewport obstruction.
 
-- **Dedicated Class View (`CameraRig.jsx`)**:
+- **Dedicated Class View & Corner HUD Panel (`BitCampus3D.jsx`, `CameraRig.jsx`)**:
   - Smooth cinematic camera transition directly into individual classrooms upon selection.
-  - One-click Class View switcher pills in `TwinNavigationBreadcrumb.jsx`.
+  - **Corner Telemetry HUD Card**: Docked non-intrusively in the viewport's top-right corner to display live power draw, department, fan status, attendance percentage, and head count while leaving 100% of the 3D scene, glass windows, and interior visible.
+  - One-click Class View switcher pills in `TwinNavigationBreadcrumb.jsx` and `CampusFunctionsDock.jsx`.
 
 - **Atmospheric Celestial Sun & Lighting (`scene/environment.jsx`)**:
   - Visible 3D Sun disc and radial golden solar corona at `[75, 110, 65]`.

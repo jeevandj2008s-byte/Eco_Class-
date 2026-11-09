@@ -25,13 +25,38 @@ export function Architecture({ telemetry }) {
                 <boxGeometry args={[br.width, 0.25, len]} />
                 <meshStandardMaterial color="#1e293b" roughness={0.6} />
               </mesh>
+              {/* Left Architectural Glass Curtain Wall */}
               <mesh position={[-br.width / 2, br.height / 2, 0]}>
-                <boxGeometry args={[0.06, br.height, len]} />
-                <meshStandardMaterial color="#60a5fa" transparent opacity={0.3} roughness={0.1} />
+                <boxGeometry args={[0.04, br.height, len]} />
+                <meshStandardMaterial
+                  color="#7dd3fc"
+                  transparent
+                  opacity={0.32}
+                  roughness={0.05}
+                  metalness={0.9}
+                />
               </mesh>
+              {/* Left Glass Railing Mullion */}
+              <mesh position={[-br.width / 2, br.height - 0.05, 0]}>
+                <boxGeometry args={[0.08, 0.06, len]} />
+                <meshStandardMaterial color="#64748b" metalness={0.85} roughness={0.2} />
+              </mesh>
+
+              {/* Right Architectural Glass Curtain Wall */}
               <mesh position={[br.width / 2, br.height / 2, 0]}>
-                <boxGeometry args={[0.06, br.height, len]} />
-                <meshStandardMaterial color="#60a5fa" transparent opacity={0.3} roughness={0.1} />
+                <boxGeometry args={[0.04, br.height, len]} />
+                <meshStandardMaterial
+                  color="#7dd3fc"
+                  transparent
+                  opacity={0.32}
+                  roughness={0.05}
+                  metalness={0.9}
+                />
+              </mesh>
+              {/* Right Glass Railing Mullion */}
+              <mesh position={[br.width / 2, br.height - 0.05, 0]}>
+                <boxGeometry args={[0.08, 0.06, len]} />
+                <meshStandardMaterial color="#64748b" metalness={0.85} roughness={0.2} />
               </mesh>
               <mesh position={[0, br.height, 0]} castShadow>
                 <boxGeometry args={[br.width + 0.2, 0.15, len]} />

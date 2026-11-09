@@ -84,24 +84,71 @@ export function Floor3D({
             />
           </mesh>
 
-          {/* Courtyard Railings when Cutaway */}
+          {/* Architectural Glass & Steel Balustrades around Courtyard */}
           {isSelectedFloor && (
             <group name="courtyard-railings">
-              <mesh position={[0, 0.5, -cd / 2]}>
-                <boxGeometry args={[cw, 1.0, 0.08]} />
-                <meshStandardMaterial color="#64748b" metalness={0.8} roughness={0.3} />
+              {/* North Railing */}
+              <mesh position={[0, 0.48, -cd / 2]}>
+                <boxGeometry args={[cw, 0.9, 0.04]} />
+                <meshStandardMaterial
+                  color="#7dd3fc"
+                  transparent
+                  opacity={0.35}
+                  roughness={0.05}
+                  metalness={0.9}
+                />
               </mesh>
-              <mesh position={[0, 0.5, cd / 2]}>
-                <boxGeometry args={[cw, 1.0, 0.08]} />
-                <meshStandardMaterial color="#64748b" metalness={0.8} roughness={0.3} />
+              <mesh position={[0, 0.95, -cd / 2]}>
+                <boxGeometry args={[cw + 0.05, 0.05, 0.06]} />
+                <meshStandardMaterial color="#94a3b8" metalness={0.9} roughness={0.2} />
               </mesh>
-              <mesh position={[-cw / 2, 0.5, 0]}>
-                <boxGeometry args={[0.08, 1.0, cd]} />
-                <meshStandardMaterial color="#64748b" metalness={0.8} roughness={0.3} />
+
+              {/* South Railing */}
+              <mesh position={[0, 0.48, cd / 2]}>
+                <boxGeometry args={[cw, 0.9, 0.04]} />
+                <meshStandardMaterial
+                  color="#7dd3fc"
+                  transparent
+                  opacity={0.35}
+                  roughness={0.05}
+                  metalness={0.9}
+                />
               </mesh>
-              <mesh position={[cw / 2, 0.5, 0]}>
-                <boxGeometry args={[0.08, 1.0, cd]} />
-                <meshStandardMaterial color="#64748b" metalness={0.8} roughness={0.3} />
+              <mesh position={[0, 0.95, cd / 2]}>
+                <boxGeometry args={[cw + 0.05, 0.05, 0.06]} />
+                <meshStandardMaterial color="#94a3b8" metalness={0.9} roughness={0.2} />
+              </mesh>
+
+              {/* West Railing */}
+              <mesh position={[-cw / 2, 0.48, 0]}>
+                <boxGeometry args={[0.04, 0.9, cd]} />
+                <meshStandardMaterial
+                  color="#7dd3fc"
+                  transparent
+                  opacity={0.35}
+                  roughness={0.05}
+                  metalness={0.9}
+                />
+              </mesh>
+              <mesh position={[-cw / 2, 0.95, 0]}>
+                <boxGeometry args={[0.06, 0.05, cd + 0.05]} />
+                <meshStandardMaterial color="#94a3b8" metalness={0.9} roughness={0.2} />
+              </mesh>
+
+              {/* East Railing */}
+              <mesh position={[cw / 2, 0.48, 0]}>
+                <boxGeometry args={[0.04, 0.9, cd]} />
+                <meshStandardMaterial
+                  color="#7dd3fc"
+                  transparent
+                  opacity={0.35}
+                  roughness={0.05}
+                  metalness={0.9}
+                />
+              </mesh>
+              <mesh position={[cw / 2, 0.95, 0]}>
+                <boxGeometry args={[0.06, 0.05, cd + 0.05]} />
+                <meshStandardMaterial color="#94a3b8" metalness={0.9} roughness={0.2} />
               </mesh>
             </group>
           )}

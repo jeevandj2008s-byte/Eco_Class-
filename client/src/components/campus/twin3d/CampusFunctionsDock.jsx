@@ -292,16 +292,33 @@ export function CampusFunctionsDock({ telemetry }) {
 
                     {expandedBuildings[b.id] &&
                       b.floors.map((fl) => (
-                        <button
-                          key={fl.level}
-                          onClick={() => selectFloor(b.id, fl.level)}
-                          className="w-full text-left py-1 px-2 rounded-lg hover:bg-white/5 text-[11px] font-mono text-[#c9c3da] hover:text-[#9ff0ec] flex items-center justify-between transition-colors"
-                        >
-                          <span>Floor {fl.level} Cutaway</span>
-                          <span className="text-[10px] text-white/40">
-                            {fl.classrooms?.length || 0} Rooms →
-                          </span>
-                        </button>
+                        <div key={fl.level} className="flex flex-col gap-0.5">
+                          <button
+                            onClick={() => selectFloor(b.id, fl.level)}
+                            className="w-full text-left py-1 px-2 rounded-lg hover:bg-white/5 text-[11px] font-mono text-[#c9c3da] hover:text-[#9ff0ec] flex items-center justify-between transition-colors"
+                          >
+                            <span>Floor {fl.level} Cutaway</span>
+                            <span className="text-[10px] text-white/40">
+                              {fl.classrooms?.length || 0} Rooms →
+                            </span>
+                          </button>
+                          {/* Quick Class View buttons */}
+                          <div className="flex flex-wrap gap-1 pl-3 pb-1">
+                            {fl.classrooms?.map((cr) => (
+                              <button
+                                key={cr.id}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  selectClassroom(cr.id);
+                                }}
+                                className="px-1.5 py-0.5 rounded-md bg-white/[0.04] hover:bg-[#006bff]/30 text-[9.5px] font-mono text-[#9ff0ec] border border-white/10 hover:border-[#9ff0ec]/40 transition-all cursor-pointer"
+                                title={`Open Class View: ${cr.code || cr.name}`}
+                              >
+                                {cr.code || cr.name}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
                       ))}
                   </div>
 

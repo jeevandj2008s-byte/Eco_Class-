@@ -94,17 +94,23 @@ export function TwinNavigationBreadcrumb() {
       {classroom && (
         <>
           <ChevronRight className="w-3.5 h-3.5 text-white/30" />
-          <button
-            onClick={() => selectClassroom(classroom.id)}
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition-colors cursor-pointer ${
-              selectedClassroomId && !selectedStudentId
-                ? 'bg-[#006bff]/30 text-[#9ff0ec] font-bold border border-[#9ff0ec]/50 shadow-[0_0_12px_rgba(0,107,255,0.4)]'
-                : 'hover:text-white hover:bg-white/5'
-            }`}
-          >
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#006bff]/30 text-[#9ff0ec] font-bold border border-[#9ff0ec]/50 shadow-[0_0_12px_rgba(0,107,255,0.4)]">
             <DoorOpen className="w-3.5 h-3.5" />
             <span>Class {classroom.code || classroom.name}</span>
-          </button>
+          </div>
+          {/* Quick peer classroom switchers */}
+          {floorClassrooms
+            .filter((c) => c.id !== classroom.id)
+            .map((c) => (
+              <button
+                key={c.id}
+                onClick={() => selectClassroom(c.id)}
+                className="px-1.5 py-0.5 rounded-md bg-white/5 hover:bg-white/15 text-[10px] font-mono text-[#b9b8bb] hover:text-[#9ff0ec] transition-colors cursor-pointer"
+                title={`Switch to ${c.code || c.name}`}
+              >
+                {c.code || c.name}
+              </button>
+            ))}
         </>
       )}
 

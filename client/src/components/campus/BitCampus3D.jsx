@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import * as THREE from 'three';
+import { Wind } from 'lucide-react';
 import { WebGLErrorBoundary } from './WebGLErrorBoundary.jsx';
 import { CampusScene } from './twin3d/CampusScene.jsx';
 import { IsometricCampus3D } from './IsometricCampus3D.jsx';
@@ -135,11 +136,11 @@ export default function BitCampus3D({
         {/* Top-Right CORNER CLASSROOM HUD PANEL */}
         {/* Docked neatly in the corner so it NEVER covers the classroom, glass windows, or fans! */}
         {selectedClassroom && (
-          <div className="absolute top-12 right-3 z-20 w-[210px] p-2.5 rounded-2xl bg-[#131219]/95 border border-[#9ff0ec]/40 backdrop-blur-xl shadow-[0_16px_40px_rgba(0,0,0,0.85),0_0_20px_rgba(0,107,255,0.3)] flex flex-col gap-1.5 animate-fade-in text-white select-none">
+          <div className="absolute top-12 right-3 z-20 w-[210px] p-2.5 rounded-xl bg-[#0e111a]/95 border border-white/15 backdrop-blur-md shadow-[0_12px_28px_rgba(0,0,0,0.7)] flex flex-col gap-1.5 animate-fade-in text-white select-none">
             {/* Header: Class Code & Power */}
             <div className="flex items-center justify-between border-b border-white/10 pb-1">
               <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-emerald-400" />
                 <span className="font-bold font-classic text-xs text-white tracking-tight">
                   {selectedClassroom.code || selectedClassroom.name}
                 </span>
@@ -158,7 +159,7 @@ export default function BitCampus3D({
               <div className="p-1 rounded-md bg-white/5 border border-white/5 flex flex-col">
                 <span className="text-[#b9b8bb] text-[8px]">Fan</span>
                 <span className="text-cyan-300 font-semibold flex items-center gap-1">
-                  <span className="inline-block animate-spin text-[8px]">🌀</span> Active
+                  <Wind className="w-2.5 h-2.5 text-cyan-300" /> Active
                 </span>
               </div>
               <div className="p-1 rounded-md bg-white/5 border border-white/5 flex flex-col">

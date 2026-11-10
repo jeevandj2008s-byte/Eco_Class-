@@ -15,7 +15,9 @@ import {
   CheckCircle2,
   Sliders,
   ShieldCheck,
-  UserCheck
+  UserCheck,
+  Mail,
+  Building2
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -148,9 +150,11 @@ export default function DashboardPage({ onOpenMasterSwitch, onOpenReportModal })
                 {user?.role || 'HOD'}
               </span>
             </div>
-            <span className="text-[11px] text-[#476788] font-mono truncate">
-              ✉️ {user?.email} • 🏛️ {user?.department}
-            </span>
+            <div className="flex items-center gap-2 text-[11px] text-[#476788] font-mono truncate">
+              <span className="flex items-center gap-1"><Mail className="w-3 h-3 text-white/50" /> {user?.email}</span>
+              <span className="text-white/20">•</span>
+              <span className="flex items-center gap-1"><Building2 className="w-3 h-3 text-white/50" /> {user?.department}</span>
+            </div>
           </div>
         </div>
 

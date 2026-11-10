@@ -314,7 +314,7 @@ export default function CarbonPage() {
             <div className="flex flex-wrap gap-2">
               {passport?.badges?.map((b) => (
                 <div key={b.id} className="p-2.5 rounded-xl bg-[#f8f9fb] border border-[#d4e0ed] text-xs flex items-center gap-2.5">
-                  <span className="text-base">🏅</span>
+                  <Award className="w-4 h-4 text-amber-400 shrink-0" />
                   <div>
                     <div className="font-bold text-[#0b3558] text-[11px]">{b.name}</div>
                     <div className="text-[9px] text-[#476788]">{b.desc}</div>
@@ -360,7 +360,7 @@ export default function CarbonPage() {
                   }}
                   className="px-2.5 py-1 rounded-xl bg-[#f8f9fb] hover:bg-[#e6f0ff] border border-[#d4e0ed] hover:border-[#006bff]/30 text-[11px] text-[#476788] hover:text-[#006bff] text-left transition"
                 >
-                  🌱 {quick}
+                  <span className="flex items-center gap-1.5"><Leaf className="w-3 h-3 text-emerald-400 shrink-0" /> <span>{quick}</span></span>
                 </button>
               ))}
             </div>

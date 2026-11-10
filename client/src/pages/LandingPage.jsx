@@ -278,9 +278,9 @@ return (
 
             {/* 3-Line Headline fading from white to soft grey */}
             <h1 className="text-4xl sm:text-6xl lg:text-[72px] font-display font-extrabold tracking-tight leading-[1.08] text-white max-w-2xl">
-              <span className="block bg-gradient-to-r from-white via-white to-[#d3d3d7] bg-clip-text text-transparent">Sustainable Energy.</span>
-              <span className="block bg-gradient-to-r from-white via-white to-[#b9b8bb] bg-clip-text text-transparent">Reimagined in</span>
-              <span className="block bg-gradient-to-r from-white via-[#bdf7ee] to-[#9ff0ec] bg-clip-text text-transparent">Real-Time.</span>
+              <span className="block text-white">Sustainable Energy.</span>
+              <span className="block text-white">Reimagined in</span>
+              <span className="block text-[#9ff0ec]">Real-Time.</span>
             </h1>
 
             {/* Subline in light grey */}
@@ -289,19 +289,19 @@ return (
               Uniting computer vision occupancy, synthetic IoT telemetry, and GenAI coaching to bust energy ghosts campus-wide.
             </p>
 
-            {/* Action Buttons: Violet Gradient Primary + Dark Glass Secondary */}
+            {/* Action Buttons: Solid Primary + Quiet Dark Glass Secondary */}
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Link
                 to="/dashboard"
-                className="btn-pop btn-shine flex items-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#4d19b1] to-[#6f5adc] hover:from-[#581dc7] hover:to-[#7d68e8] text-white font-semibold text-sm shadow-[0_0_25px_rgba(111,90,220,0.5)] border border-white/20"
+                className="flex items-center gap-2 px-6 py-3 rounded-lg bg-[#006bff] hover:bg-[#1a7aff] text-white font-semibold text-sm transition-colors shadow-sm"
               >
-                <Activity className="w-4 h-4 text-[#9ff0ec]" />
+                <Activity className="w-4 h-4 text-white" />
                 <span>Launch Command Center</span>
                 <ArrowRight className="w-4 h-4 ml-1" />
               </Link>
               <Link
                 to="/campus"
-                className="btn-pop flex items-center gap-2 px-7 py-3.5 rounded-full bg-white/[0.03] hover:bg-white/[0.08] text-white font-semibold text-sm border border-white/[0.16] backdrop-blur-md shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)]"
+                className="flex items-center gap-2 px-6 py-3 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-white font-medium text-sm border border-white/[0.14] transition-colors"
               >
                 <Layers className="w-4 h-4 text-[#9ff0ec]" />
                 <span>Explore BIT Campus Map</span>
@@ -412,7 +412,7 @@ return (
           <div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight leading-[1.15]">
               Explore All Campus<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#bdf7ee] to-[#9ff0ec]">
+              <span className="text-[#9ff0ec]">
                 Energy Twin Systems
               </span>
             </h2>
@@ -512,7 +512,7 @@ return (
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight leading-[1.15] mt-2">
               Fostering Sustainable<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#bdf7ee] to-[#9ff0ec]">
+              <span className="text-[#9ff0ec]">
                 Educational Ecosystems
               </span>
             </h2>
@@ -590,7 +590,7 @@ return (
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight leading-[1.15] mt-2">
               Engineered for<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#bdf7ee] to-[#9ff0ec]">
+              <span className="text-[#9ff0ec]">
                 Campus Net-Zero Goals
               </span>
             </h2>

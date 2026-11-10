@@ -74,7 +74,7 @@ export default function Footer() {
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight leading-[1.15] mt-2">
               AuraSync Campus<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#bdf7ee] to-[#9ff0ec]">
+              <span className="text-[#9ff0ec]">
                 Digital Twin Architecture
               </span>
             </h2>

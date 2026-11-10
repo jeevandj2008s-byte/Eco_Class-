@@ -70,3 +70,20 @@ Bangalore Institute of Technology (BIT) Energy Twin is an institutional microgri
   - Visible 3D Sun disc and radial golden solar corona at `[75, 110, 65]`.
   - Realistic atmospheric sky dome with horizon radiance.
   - 3-point architectural exterior lighting: warm sunlight (intensity `2.6`), sky ambient fill (`0.95`), cool bluish fill (`0.65`), and warm interior classroom point lights.
+
+## 4. Unslop Design System Guidelines
+
+Adheres to the architectural unslop methodology (`heydamir/unslop`):
+- **Core Philosophy**: Chrome is quiet; the real-time interactive 3D digital twin and precision microgrid power curves are the single bright moment.
+- **Palette**: Neutral graphite ramp (`#090a0f`, `#0d0c11`, `#131219`) with technical cyan (`#9ff0ec`) and institutional cobalt (`#006bff`) reserved strictly for active states, load heatmaps, and telemetry data. Artificial purple-to-violet gala gradients are strictly forbidden.
+- **Typography**: Solid, high-contrast typography (`text-white`, `#d3d3d7`, `#b9b8bb`). Zero gradient text masking (`bg-clip-text text-transparent`). Monospace (`font-mono`) with tabular figures for power (kW), energy (kWh), currency (₹), and occupancy counts.
+- **Elevation & Shadows**: Deep dark elevation shadows (`0 1px 3px rgba(0,0,0,0.4)` and `0 12px 32px rgba(0,0,0,0.6)`). Colored glowing box-shadow halos (`shadow-[0_0_...]`) eliminated across cards, buttons, and HUD panels.
+- **Border Radii Math**: Calibrated nested geometry:
+  - Outer Cards: `12px` to `16px` (`rounded-xl` / `rounded-2xl`)
+  - Controls & Inputs: `8px` (`rounded-lg`)
+  - Badges & Tags: `6px` (`rounded-md`)
+  - `rounded-full` reserved solely for circular avatar photos and status telemetry dots.
+- **Controls & Docking**: Zero organic SVG blob shapes. Crisp architectural cards, docked HUD panels, and predictable grid alignments.
+- **Motion & Micro-interactions**: Zero jittery hover scaling (`hover:scale-105`), bouncing alerts (`animate-bounce`), or rapid pinging (`animate-ping`). Transitions are subtle, predictable, and fast (`150ms`).
+- **Iconography**: Crisp line icons from Lucide. Zero decorative emojis in interface headers, labels, or navigation chrome.
+- **Institutional Copy**: Clear, factual, and dignified terminology representing Bangalore Institute of Technology microgrid telemetry without AI marketing buzzwords.

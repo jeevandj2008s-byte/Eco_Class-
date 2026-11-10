@@ -24,12 +24,6 @@ import {
 import { useTwin3DStore } from '../../../store/useTwin3DStore.js';
 import { PROCESSED_BUILDINGS, findClassroomHierarchy } from '../../../config/buildings.config.js';
 
-const BLOB_PATHS = [
-  'M 16,16 C 35,14 55,24 75,20 C 95,16 110,6 126,10 C 138,14 144,26 142,40 C 140,52 126,58 110,58 L 18,58 C 6,58 0,48 0,36 C 0,24 6,18 16,16 Z',
-  'M 18,22 C 32,22 46,26 62,24 C 76,22 88,2 108,2 C 128,2 142,14 142,30 C 142,46 128,56 112,56 L 20,56 C 8,56 0,46 0,34 C 0,22 8,22 18,22 Z',
-  'M 12,32 C 18,18 36,4 62,2 C 90,0 114,12 128,24 C 140,34 142,44 136,54 C 130,58 116,58 100,58 L 22,58 C 8,58 0,48 0,38 C 0,35 6,34 12,32 Z'
-];
-
 export function CampusFunctionsDock({ telemetry }) {
   const [activeTab, setActiveTab] = useState('hierarchy'); // 'hierarchy' | 'controls' | 'telemetry' | 'inspector'
   const [search, setSearch] = useState('');
@@ -104,21 +98,20 @@ export function CampusFunctionsDock({ telemetry }) {
   }, [relevantStudents, rosterSearch]);
 
   return (
-    <div className="w-full max-w-7xl mx-auto flex flex-col gap-8 select-none animate-fade-in relative z-10">
-      {/* Subtle Ambient Violet Glow Hairline at top */}
-      <div className="w-3/4 max-w-4xl h-[1px] bg-gradient-to-r from-transparent via-[#9ff0ec]/30 to-transparent mx-auto" />
-      <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-96 h-20 bg-[#6f5adc]/15 blur-3xl pointer-events-none rounded-full" />
+    <div className="w-full max-w-7xl mx-auto flex flex-col gap-8 select-none relative z-10">
+      {/* Subtle Hairline divider at top */}
+      <div className="w-full h-[1px] bg-white/[0.08]" />
 
       {/* Section Header: Matching AuraSync Digital Twin Architecture */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 px-1">
         <div>
-          <span className="text-xs font-bold text-[#bdf7ee] uppercase tracking-widest flex items-center gap-2">
+          <span className="text-xs font-bold text-[#9ff0ec] uppercase tracking-widest flex items-center gap-2">
             <Sparkles className="w-3.5 h-3.5 text-[#9ff0ec]" />
             <span>Digital Twin Operations</span>
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-[1.15] mt-2">
             AuraSync Campus<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#bdf7ee] to-[#9ff0ec]">
+            <span className="text-[#9ff0ec]">
               Digital Twin Architecture
             </span>
           </h2>
@@ -218,24 +211,21 @@ export function CampusFunctionsDock({ telemetry }) {
             </div>
           </div>
 
-          {/* Cards Grid: Matching the signature 420px tall cards */}
+          {/* Cards Grid: Architectural campus building cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
             {filteredBuildings.map((b, idx) => {
               const bStudents = students.filter((s) => s.buildingId === b.id);
               const isSelectedB = selectedBuildingId === b.id;
-              const blobPath = BLOB_PATHS[idx % BLOB_PATHS.length];
               const isEven = idx % 2 === 0;
 
               return (
                 <div
                   key={b.id}
-                  className={`w-full min-h-[420px] rounded-[28px] bg-[#131219]/80 border ${
+                  className={`w-full min-h-[420px] rounded-2xl bg-[#131219]/90 border ${
                     isSelectedB
-                      ? 'border-[#006bff] shadow-[0_0_35px_rgba(0,107,255,0.45)]'
-                      : isEven
-                      ? 'border-white/[0.12] hover:border-[#6f5adc]/60'
-                      : 'border-white/[0.12] hover:border-[#9ff0ec]/60'
-                  } shadow-[0_16px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.08)] p-7 sm:p-8 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:-translate-y-1.5 group select-none`}
+                      ? 'border-[#006bff] ring-1 ring-[#006bff]/50'
+                      : 'border-white/[0.12] hover:border-white/30'
+                  } shadow-[0_12px_28px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.06)] p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden transition-colors group select-none`}
                 >
                   {/* Top: Brand Logo / Module Identifier */}
                   <div>
@@ -322,25 +312,14 @@ export function CampusFunctionsDock({ telemetry }) {
                       ))}
                   </div>
 
-                  {/* Bottom: The signature organic blob button (Exact from Reference Image 2) */}
-                  <div
+                  {/* Bottom: Architectural Action Control */}
+                  <button
                     onClick={() => selectBuilding(b.id)}
-                    className="relative inline-flex items-center mt-auto self-start cursor-pointer"
+                    className="inline-flex items-center gap-2 mt-auto self-start px-4 py-2 rounded-lg bg-white/[0.06] hover:bg-[#006bff] text-white text-xs font-semibold border border-white/[0.14] hover:border-transparent transition-colors cursor-pointer"
                   >
-                    <svg
-                      viewBox="0 0 150 60"
-                      className={`w-[136px] h-[52px] ${
-                        isEven ? 'text-[#6f5adc]' : 'text-[#4d19b1]'
-                      } transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]`}
-                      fill="currentColor"
-                    >
-                      <path d={blobPath} />
-                    </svg>
-                    <span className="absolute inset-0 flex items-center justify-start pl-5 text-xs font-bold text-white gap-2 pointer-events-none tracking-tight">
-                      <span>Focus Block</span>
-                      <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
-                    </span>
-                  </div>
+                    <span>Focus Block</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-white/70 group-hover:text-white" />
+                  </button>
                 </div>
               );
             })}
@@ -354,7 +333,7 @@ export function CampusFunctionsDock({ telemetry }) {
       {activeTab === 'controls' && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
           {/* Card 1: X-Ray Cutaway */}
-          <div className="rounded-[28px] bg-[#131219]/80 border border-white/[0.12] hover:border-[#6f5adc]/60 shadow-[0_16px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.08)] p-7 sm:p-8 flex flex-col justify-between group">
+          <div className="rounded-2xl bg-[#131219]/90 border border-white/[0.12] hover:border-white/30 shadow-[0_12px_28px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.06)] p-6 sm:p-7 flex flex-col justify-between group">
             <div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
@@ -371,7 +350,7 @@ export function CampusFunctionsDock({ telemetry }) {
               </div>
 
               <div className="mt-8 mb-6">
-                <div className="text-4xl font-black tracking-tight text-white">
+                <div className="text-3xl font-bold tracking-tight text-white">
                   X-Ray Vision
                 </div>
                 <p className="mt-3 text-xs sm:text-sm text-[#d3d3d7] leading-relaxed">
@@ -382,7 +361,7 @@ export function CampusFunctionsDock({ telemetry }) {
 
             <button
               onClick={() => setXrayMode()}
-              className="px-6 py-3 rounded-full bg-[#6f5adc] hover:bg-[#5e48cb] text-white text-xs font-bold transition-all shadow-[0_8px_20px_rgba(111,90,220,0.4)] flex items-center gap-2 self-start cursor-pointer"
+              className="px-4 py-2 rounded-lg bg-[#006bff] hover:bg-[#1a7aff] text-white text-xs font-semibold transition-colors flex items-center gap-2 self-start cursor-pointer shadow-sm"
             >
               <span>{xrayMode ? 'Restore Solid Shell' : 'Enable X-Ray Mode'}</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -390,12 +369,12 @@ export function CampusFunctionsDock({ telemetry }) {
           </div>
 
           {/* Card 2: Exploded View Slider */}
-          <div className="rounded-[28px] bg-[#131219]/80 border border-white/[0.12] hover:border-[#9ff0ec]/60 shadow-[0_16px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.08)] p-7 sm:p-8 flex flex-col justify-between group">
+          <div className="rounded-2xl bg-[#131219]/90 border border-white/[0.12] hover:border-white/30 shadow-[0_12px_28px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.06)] p-6 sm:p-7 flex flex-col justify-between group">
             <div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.1] flex items-center justify-center">
-                    <Layers className="w-4 h-4 text-[#6f5adc]" />
+                    <Layers className="w-4 h-4 text-[#9ff0ec]" />
                   </div>
                   <span className="font-extrabold text-sm tracking-tight text-white uppercase">
                     Floor Exploder
@@ -407,7 +386,7 @@ export function CampusFunctionsDock({ telemetry }) {
               </div>
 
               <div className="mt-8 mb-4">
-                <div className="text-4xl font-black tracking-tight text-[#9ff0ec]">
+                <div className="text-3xl font-bold tracking-tight text-[#9ff0ec]">
                   Axonometric
                 </div>
                 <p className="mt-3 text-xs sm:text-sm text-[#d3d3d7] leading-relaxed">
@@ -451,14 +430,14 @@ export function CampusFunctionsDock({ telemetry }) {
 
             <button
               onClick={() => setShowLabels()}
-              className="px-6 py-3 rounded-full bg-[#4d19b1] hover:bg-[#401399] text-white text-xs font-bold transition-all shadow-md flex items-center gap-2 self-start cursor-pointer mt-2"
+              className="px-4 py-2 rounded-lg bg-white/[0.06] hover:bg-white/[0.12] text-white text-xs font-semibold border border-white/[0.14] transition-colors flex items-center gap-2 self-start cursor-pointer mt-2"
             >
               <span>{showLabels ? 'Hide Labels' : 'Show 3D Labels'}</span>
             </button>
           </div>
 
           {/* Card 3: Dataset Operations */}
-          <div className="rounded-[28px] bg-[#131219]/80 border border-white/[0.12] hover:border-[#bdf7ee]/60 shadow-[0_16px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.08)] p-7 sm:p-8 flex flex-col justify-between group">
+          <div className="rounded-2xl bg-[#131219]/90 border border-white/[0.12] hover:border-white/30 shadow-[0_12px_28px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.06)] p-6 sm:p-7 flex flex-col justify-between group">
             <div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
@@ -523,7 +502,7 @@ export function CampusFunctionsDock({ telemetry }) {
       {/* TAB 3: TELEMETRY & STUDENT ROSTER                              */}
       {/* ============================================================== */}
       {activeTab === 'telemetry' && (
-        <div className="rounded-[28px] bg-[#131219]/80 border border-white/[0.12] shadow-[0_16px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.08)] p-7 sm:p-8 backdrop-blur-xl">
+        <div className="rounded-2xl bg-[#131219]/90 border border-white/[0.12] shadow-[0_12px_28px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.06)] p-6 sm:p-7 backdrop-blur-xl">
           <div className="flex items-center justify-between flex-wrap gap-4 border-b border-white/[0.08] pb-5">
             <div>
               <span className="text-xs font-bold text-[#9ff0ec] uppercase tracking-widest">
@@ -541,7 +520,7 @@ export function CampusFunctionsDock({ telemetry }) {
                 placeholder="Search students by name or USN..."
                 value={rosterSearch}
                 onChange={(e) => setRosterSearch(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-xs rounded-2xl bg-white/5 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#9ff0ec]"
+                className="w-full pl-9 pr-3 py-2 text-xs rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#9ff0ec]"
               />
             </div>
           </div>
@@ -582,7 +561,7 @@ export function CampusFunctionsDock({ telemetry }) {
                     <td className="py-3 text-right">
                       <button
                         onClick={() => selectStudent(stu.id)}
-                        className="px-3 py-1.5 rounded-xl bg-[#6f5adc]/20 hover:bg-[#6f5adc] text-[#9ff0ec] hover:text-white border border-[#6f5adc]/40 text-xs font-mono transition-all cursor-pointer"
+                        className="px-3 py-1.5 rounded-lg bg-white/[0.06] hover:bg-[#006bff] text-[#9ff0ec] hover:text-white border border-white/10 text-xs font-mono transition-colors cursor-pointer"
                       >
                         Zoom to Desk →
                       </button>
@@ -599,7 +578,7 @@ export function CampusFunctionsDock({ telemetry }) {
       {/* TAB 4: ACTIVE FLOOR & ROOM CUTAWAY INSPECTOR                   */}
       {/* ============================================================== */}
       {activeTab === 'inspector' && (
-        <div className="rounded-[28px] bg-[#131219]/80 border border-white/[0.12] shadow-[0_16px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.08)] p-7 sm:p-8 backdrop-blur-xl">
+        <div className="rounded-2xl bg-[#131219]/90 border border-white/[0.12] shadow-[0_12px_28px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.06)] p-6 sm:p-7 backdrop-blur-xl">
           {selectedClassroom ? (
             <div>
               <div className="flex items-center justify-between border-b border-white/[0.08] pb-5">
@@ -617,7 +596,7 @@ export function CampusFunctionsDock({ telemetry }) {
 
                 <button
                   onClick={() => selectFloor(selectedBuildingId, selectedFloorLevel)}
-                  className="px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-xs font-semibold text-white transition-colors"
+                  className="px-3.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-xs font-semibold text-white transition-colors cursor-pointer"
                 >
                   ← Back to Floor Cutaway
                 </button>

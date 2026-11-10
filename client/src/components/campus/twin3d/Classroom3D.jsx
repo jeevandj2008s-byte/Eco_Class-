@@ -587,12 +587,12 @@ export function Classroom3D({ classroom, buildingId, floorLevel }) {
               e.stopPropagation();
               selectClassroom(id);
             }}
-            className={`cursor-pointer px-2 py-0.5 rounded-lg border backdrop-blur-md flex items-center gap-1.5 transition-all select-none shadow-md ${
+            className={`cursor-pointer px-2 py-0.5 rounded-md border backdrop-blur-md flex items-center gap-1.5 transition-colors select-none shadow-sm ${
               isSelected
-                ? 'bg-[#006bff]/95 border-[#9ff0ec] text-white ring-1 ring-[#9ff0ec]/50 scale-105'
+                ? 'bg-[#006bff]/95 border-[#9ff0ec] text-white ring-1 ring-[#9ff0ec]/50'
                 : hovered
-                ? 'bg-[#181d2c]/95 border-[#9ff0ec] text-white scale-105'
-                : 'bg-[#10131d]/90 border-white/20 text-[#c9c3da] hover:border-[#9ff0ec]'
+                ? 'bg-[#181d2c]/95 border-white/40 text-white'
+                : 'bg-[#10131d]/90 border-white/20 text-[#c9c3da] hover:border-white/40'
             }`}
             style={{ whiteSpace: 'nowrap' }}
             title={`Click to open ${code || name} Class View`}

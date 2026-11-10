@@ -175,7 +175,7 @@ export default function BitCampus3D({
             {/* Exit Class View Button */}
             <button
               onClick={() => selectFloor(storeSelectedBuildingId, selectedFloorLevel)}
-              className="w-full mt-0.5 py-1 rounded-lg bg-white/10 hover:bg-[#006bff]/30 border border-white/15 hover:border-[#9ff0ec]/40 text-[9px] font-mono text-[#9ff0ec] flex items-center justify-center gap-1 transition-all cursor-pointer"
+              className="w-full mt-1 py-1 rounded-md bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 text-[10px] font-mono text-white/80 hover:text-white flex items-center justify-center gap-1 transition-colors cursor-pointer"
               title="Exit Class View back to Floor View"
             >
               <span>← Back to Floor View</span>

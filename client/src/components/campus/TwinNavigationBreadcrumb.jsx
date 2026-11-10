@@ -23,13 +23,13 @@ export function TwinNavigationBreadcrumb() {
   const student = selectedStudentId ? students.find((s) => s.id === selectedStudentId) : null;
 
   return (
-    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#131219]/95 border border-white/[0.16] shadow-[0_12px_32px_rgba(0,0,0,0.7)] backdrop-blur-xl text-xs font-medium text-[#b9b8bb] select-none max-w-full overflow-x-auto">
+    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0e111a]/90 border border-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.6)] backdrop-blur-md text-xs font-medium text-[#b9b8bb] select-none max-w-full overflow-x-auto">
       {/* Root Campus */}
       <button
         onClick={selectCampus}
-        className={`flex items-center gap-1.5 px-2 py-1 rounded-lg transition-colors cursor-pointer ${
+        className={`flex items-center gap-1.5 px-2 py-1 rounded-md transition-colors cursor-pointer ${
           !selectedBuildingId
-            ? 'bg-[#006bff]/20 text-[#9ff0ec] font-semibold border border-[#9ff0ec]/30'
+            ? 'bg-white/[0.12] text-white font-semibold border border-white/20'
             : 'hover:text-white hover:bg-white/5'
         }`}
       >
@@ -43,9 +43,9 @@ export function TwinNavigationBreadcrumb() {
           <ChevronRight className="w-3.5 h-3.5 text-white/30" />
           <button
             onClick={() => selectBuilding(building.id)}
-            className={`flex items-center gap-1.5 px-2 py-1 rounded-lg transition-colors cursor-pointer ${
+            className={`flex items-center gap-1.5 px-2 py-1 rounded-md transition-colors cursor-pointer ${
               selectedBuildingId && !selectedFloorLevel && !selectedClassroomId
-                ? 'bg-[#006bff]/20 text-[#9ff0ec] font-semibold border border-[#9ff0ec]/30'
+                ? 'bg-white/[0.12] text-white font-semibold border border-white/20'
                 : 'hover:text-white hover:bg-white/5'
             }`}
           >
@@ -61,9 +61,9 @@ export function TwinNavigationBreadcrumb() {
           <ChevronRight className="w-3.5 h-3.5 text-white/30" />
           <button
             onClick={() => selectFloor(building.id, selectedFloorLevel)}
-            className={`flex items-center gap-1.5 px-2 py-1 rounded-lg transition-colors cursor-pointer ${
+            className={`flex items-center gap-1.5 px-2 py-1 rounded-md transition-colors cursor-pointer ${
               selectedFloorLevel && !selectedClassroomId
-                ? 'bg-[#006bff]/20 text-[#9ff0ec] font-semibold border border-[#9ff0ec]/30'
+                ? 'bg-white/[0.12] text-white font-semibold border border-white/20'
                 : 'hover:text-white hover:bg-white/5'
             }`}
           >
@@ -94,8 +94,8 @@ export function TwinNavigationBreadcrumb() {
       {classroom && (
         <>
           <ChevronRight className="w-3.5 h-3.5 text-white/30" />
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#006bff]/20 text-[#9ff0ec] font-bold border border-[#9ff0ec]/40 shadow-sm">
-            <DoorOpen className="w-3.5 h-3.5" />
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/[0.12] text-white font-semibold border border-white/20 shadow-sm">
+            <DoorOpen className="w-3.5 h-3.5 text-[#9ff0ec]" />
             <span>Class {classroom.code || classroom.name}</span>
           </div>
           {/* Quick peer classroom switchers */}
@@ -105,7 +105,7 @@ export function TwinNavigationBreadcrumb() {
               <button
                 key={c.id}
                 onClick={() => selectClassroom(c.id)}
-                className="px-1.5 py-0.5 rounded-md bg-white/5 hover:bg-white/15 text-[10px] font-mono text-[#b9b8bb] hover:text-[#9ff0ec] transition-colors cursor-pointer"
+                className="px-1.5 py-0.5 rounded-md bg-white/5 hover:bg-white/15 text-[10px] font-mono text-[#b9b8bb] hover:text-white transition-colors cursor-pointer"
                 title={`Switch to ${c.code || c.name}`}
               >
                 {c.code || c.name}
@@ -118,12 +118,12 @@ export function TwinNavigationBreadcrumb() {
       {student && (
         <>
           <ChevronRight className="w-3.5 h-3.5 text-white/30" />
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#006bff]/30 text-[#9ff0ec] font-semibold border border-[#9ff0ec]/40">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/[0.12] text-white font-semibold border border-white/20 shadow-sm">
             <span
               className="w-2 h-2 rounded-full"
               style={{ backgroundColor: student.avatarColor || '#38bdf8' }}
             />
-            <User className="w-3.5 h-3.5" />
+            <User className="w-3.5 h-3.5 text-[#9ff0ec]" />
             <span>{student.name}</span>
           </div>
         </>

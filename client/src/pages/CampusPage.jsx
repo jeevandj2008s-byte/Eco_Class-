@@ -41,19 +41,19 @@ export default function CampusPage() {
     {
       id: 'HEATMAP',
       label: 'Live Power Heatmap',
-      dotColor: 'bg-rose-400 shadow-[0_0_8px_rgba(244,63,94,0.6)]',
+      dotColor: 'bg-rose-500',
       textColor: 'text-rose-300'
     },
     {
       id: 'OCCUPANCY',
       label: 'Occupancy Flow',
-      dotColor: 'bg-[#9ff0ec] shadow-[0_0_8px_rgba(159,240,236,0.6)]',
+      dotColor: 'bg-[#9ff0ec]',
       textColor: 'text-[#9ff0ec]'
     },
     {
       id: 'SOLAR',
       label: 'Solar Generation',
-      dotColor: 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]',
+      dotColor: 'bg-amber-400',
       textColor: 'text-amber-300'
     }
   ];
@@ -115,17 +115,17 @@ export default function CampusPage() {
         <div className="blob-cyan -bottom-32 -right-20 opacity-30" />
       </div>
       {/* Top Floating Controls Strip: Mode Switch & Active Overlays in Campus Control Dark Glass */}
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 flex flex-wrap items-center justify-center gap-2.5 max-w-full px-2">
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 flex flex-wrap items-center justify-center gap-2 max-w-full px-2">
         {/* 2D / 3D Model Toggle */}
-        <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-[#131219]/90 border border-white/[0.14] backdrop-blur-md shadow-[0_16px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.08)]">
+        <div className="flex items-center gap-1 p-1 rounded-xl bg-[#0e111a]/90 border border-white/10 backdrop-blur-md shadow-[0_8px_24px_rgba(0,0,0,0.6)]">
           <button
             onClick={() => {
               setViewMode('2D');
               sounds.playChime('bubble');
             }}
-            className={`btn-pop px-3.5 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer ${
               viewMode === '2D'
-                ? 'bg-[#006bff] text-white font-bold shadow-[0_0_20px_rgba(0,107,255,0.45)] border border-white/20'
+                ? 'bg-[#006bff] text-white shadow-sm border border-white/10'
                 : 'text-[#b9b8bb] hover:text-white hover:bg-white/[0.06]'
             }`}
           >
@@ -137,9 +137,9 @@ export default function CampusPage() {
               setViewMode('3D');
               sounds.playChime('bubble');
             }}
-            className={`btn-pop px-3.5 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer ${
               viewMode === '3D'
-                ? 'bg-[#006bff] text-white font-bold shadow-[0_0_20px_rgba(0,107,255,0.45)] border border-white/20'
+                ? 'bg-[#006bff] text-white shadow-sm border border-white/10'
                 : 'text-[#b9b8bb] hover:text-white hover:bg-white/[0.06]'
             }`}
           >
@@ -149,7 +149,7 @@ export default function CampusPage() {
         </div>
 
         {/* Overlays Selector */}
-        <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-[#131219]/90 border border-white/[0.14] backdrop-blur-md shadow-[0_16px_36px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.08)]">
+        <div className="flex items-center gap-1 p-1 rounded-xl bg-[#0e111a]/90 border border-white/10 backdrop-blur-md shadow-[0_8px_24px_rgba(0,0,0,0.6)]">
           {overlays.map((o) => (
             <button
               key={o.id}
@@ -157,14 +157,14 @@ export default function CampusPage() {
                 setOverlay(o.id);
                 sounds.playChime('bubble');
               }}
-              className={`btn-pop px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 ${
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer ${
                 activeOverlay === o.id
-                  ? 'bg-white/[0.12] text-white font-bold border border-white/[0.2] shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]'
+                  ? 'bg-white/[0.12] text-white border border-white/20 shadow-sm'
                   : 'text-[#b9b8bb] hover:text-white hover:bg-white/[0.06]'
               }`}
             >
               <span className={`w-2 h-2 rounded-full ${o.dotColor}`} />
-              <span className={activeOverlay === o.id ? 'text-white' : o.textColor}>{o.label}</span>
+              <span className={activeOverlay === o.id ? 'text-white font-semibold' : o.textColor}>{o.label}</span>
             </button>
           ))}
         </div>
@@ -269,9 +269,9 @@ export default function CampusPage() {
 
                   <button
                     onClick={() => handleDeviceToggle(dev.id, dev.state)}
-                    className={`btn-pop px-3 py-1.5 rounded-lg font-bold text-xs flex items-center gap-1.5 transition ${
+                    className={`px-3 py-1.5 rounded-lg font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer ${
                       dev.state === 'on'
-                        ? 'bg-[#006bff] hover:bg-[#005be0] text-white shadow-[0_0_15px_rgba(0,107,255,0.4)]'
+                        ? 'bg-[#006bff] hover:bg-[#1a7aff] text-white shadow-sm'
                         : 'bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.14] text-[#b9b8bb] hover:text-white'
                     }`}
                   >

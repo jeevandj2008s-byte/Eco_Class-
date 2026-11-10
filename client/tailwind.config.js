@@ -19,8 +19,8 @@ export default {
           teal: '#9ff0ec',
           kicker: '#bdf7ee',
           logo: '#bcbcbf',
-          violet: '#6f5adc',
-          violetDark: '#4d19b1',
+          violet: '#006bff',
+          violetDark: '#0050c7',
           hairline: 'rgba(255, 255, 255, 0.16)',
           border: 'rgba(255, 255, 255, 0.12)'
         },
@@ -31,10 +31,10 @@ export default {
           light: '#b9b8bb'
         },
         signal: {
-          DEFAULT: '#6f5adc',
-          blue: '#6f5adc',
-          hover: '#826ff0',
-          active: '#5b44c8'
+          DEFAULT: '#006bff',
+          blue: '#006bff',
+          hover: '#1a7aff',
+          active: '#0058d6'
         },
         slate: {
           gray: '#d3d3d7',
@@ -69,34 +69,34 @@ export default {
         },
         cobalt: {
           DEFAULT: '#9ff0ec',
-          deep: '#6f5adc'
+          deep: '#006bff'
         },
         // Semantic bridge aliases
         aura: {
           dark: '#0d0c11',
           card: '#131219',
           border: 'rgba(255, 255, 255, 0.12)',
-          primary: '#6f5adc',
+          primary: '#006bff',
           cyan: '#9ff0ec',
           amber: '#f59e0b',
           rose: '#f43f5e',
-          purple: '#6f5adc'
+          purple: '#006bff'
         }
       },
       borderRadius: {
-        'card': '24px',
-        'product': '18px',
-        'btn': '9999px',
-        'input': '12px',
-        'badge': '9999px'
+        'card': '14px',
+        'product': '12px',
+        'btn': '8px',
+        'input': '8px',
+        'badge': '6px'
       },
       boxShadow: {
-        'strata-glow': '0 0 25px rgba(111, 90, 220, 0.45)',
-        'strata-teal': '0 0 20px rgba(159, 240, 236, 0.35)',
+        'strata-glow': '0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08)',
+        'strata-teal': '0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08)',
         'strata-card': 'inset 0 1px 1px 0 rgba(255, 255, 255, 0.08), 0 12px 32px -4px rgba(0, 0, 0, 0.6)',
         'cal-sm': '0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08)',
         'cal-card': '0 12px 32px -4px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08)',
-        'cal-btn': '0 0 25px rgba(111, 90, 220, 0.45)',
+        'cal-btn': '0 1px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
         'cal-product': '0 12px 32px -4px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08)'
       },
       fontFamily: {

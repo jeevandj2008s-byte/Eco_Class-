@@ -17,7 +17,7 @@
   --text-eyebrow-mint: #bdf7ee;
   --text-subtitle-lavender: #b9b8bb;
 
-  /* Strata AI Infrastructure Design Tokens */
+  /* Institutional Technical Design Tokens */
   --color-bg-deep: #0d0c11;
   --color-surface-dark: #131219;
   --color-ink: #ffffff;
@@ -27,8 +27,8 @@
   --color-teal-accent: #9ff0ec;
   --color-kicker-teal: #bdf7ee;
   --color-logo-grey: #bcbcbf;
-  --color-violet-dark: #4d19b1;
-  --color-violet-light: #6f5adc;
+  --color-violet-dark: #0050c7;
+  --color-violet-light: #006bff;
   --color-hairline: rgba(255, 255, 255, 0.16);
   --color-glass-border: rgba(255, 255, 255, 0.12);
   --color-glass-fill: rgba(255, 255, 255, 0.02);
@@ -38,16 +38,16 @@
   --bg-secondary: #131219;
   --text-primary: #ffffff;
   --text-secondary: #d3d3d7;
-  --accent-primary: #6f5adc;
-  --accent-glow: rgba(111, 90, 220, 0.45);
+  --accent-primary: #006bff;
+  --accent-glow: rgba(0, 107, 255, 0.25);
   --card-bg: rgba(255, 255, 255, 0.02);
   --card-border: rgba(255, 255, 255, 0.12);
   --glass-specular: rgba(255, 255, 255, 0.1);
 
-  /* Shadows */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  /* Shadows - Elevation based, zero artificial glow */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
   --shadow-sm-2: 0 12px 32px -4px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  --shadow-sm-3: 0 0 25px rgba(111, 90, 220, 0.45);
+  --shadow-sm-3: 0 4px 16px -2px rgba(0, 0, 0, 0.5);
 }
 
 /* Consistent theme override for dark aesthetic */
@@ -61,8 +61,8 @@
   --bg-secondary: #131219;
   --text-primary: #ffffff;
   --text-secondary: #d3d3d7;
-  --accent-primary: #6f5adc;
-  --accent-glow: rgba(111, 90, 220, 0.45);
+  --accent-primary: #006bff;
+  --accent-glow: rgba(0, 107, 255, 0.25);
   --card-bg: rgba(255, 255, 255, 0.02);
   --card-border: rgba(255, 255, 255, 0.12);
   --glass-specular: rgba(255, 255, 255, 0.1);
@@ -237,13 +237,13 @@ html, body {
   color: #9ff0ec !important;
 }
 .bg-cal-primary, .bg-signal-blue, .bg-strata-violet {
-  background-color: #6f5adc !important;
+  background-color: #006bff !important;
 }
 .text-cal-primary, .text-signal-blue, .text-strata-violet {
   color: #9ff0ec !important;
 }
 .border-cal-primary, .border-strata-violet {
-  border-color: #6f5adc !important;
+  border-color: #006bff !important;
 }
 
 /* White background / Dark text overrides */

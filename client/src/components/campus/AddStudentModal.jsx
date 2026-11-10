@@ -196,7 +196,7 @@ export function AddStudentModal() {
               <select
                 value={department}
                 onChange={(e) => setDepartment(e.target.value)}
-                className="w-full px-2.5 py-2 rounded-xl bg-black/40 border border-white/15 text-xs text-white focus:outline-none focus:border-[#9ff0ec]/50"
+                className="w-full px-2.5 py-2 rounded-lg bg-black/40 border border-white/15 text-xs text-white focus:outline-none focus:border-[#006bff]"
               >
                 <option value="Computer Science">CSE</option>
                 <option value="AI & Machine Learning">AIML</option>
@@ -210,7 +210,7 @@ export function AddStudentModal() {
               <select
                 value={year}
                 onChange={(e) => setYear(e.target.value)}
-                className="w-full px-2.5 py-2 rounded-xl bg-black/40 border border-white/15 text-xs text-white focus:outline-none focus:border-[#9ff0ec]/50"
+                className="w-full px-2.5 py-2 rounded-lg bg-black/40 border border-white/15 text-xs text-white focus:outline-none focus:border-[#006bff]"
               >
                 <option value="1st Year">1st Year</option>
                 <option value="2nd Year">2nd Year</option>
@@ -223,7 +223,7 @@ export function AddStudentModal() {
               <select
                 value={section}
                 onChange={(e) => setSection(e.target.value)}
-                className="w-full px-2.5 py-2 rounded-xl bg-black/40 border border-white/15 text-xs text-white focus:outline-none focus:border-[#9ff0ec]/50"
+                className="w-full px-2.5 py-2 rounded-lg bg-black/40 border border-white/15 text-xs text-white focus:outline-none focus:border-[#006bff]"
               >
                 <option value="A">Section A</option>
                 <option value="B">Section B</option>
@@ -237,7 +237,7 @@ export function AddStudentModal() {
             <select
               value={classroomId}
               onChange={(e) => setClassroomId(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/15 text-xs text-white focus:outline-none focus:border-[#9ff0ec]/50"
+              className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/15 text-xs text-white focus:outline-none focus:border-[#006bff]"
             >
               {allClassrooms.map((c) => (
                 <option key={c.id} value={c.id}>
@@ -281,8 +281,8 @@ export function AddStudentModal() {
                   type="button"
                   key={c}
                   onClick={() => setAvatarColor(c)}
-                  className={`w-7 h-7 rounded-xl transition-all cursor-pointer flex items-center justify-center ${
-                    avatarColor === c ? 'ring-2 ring-white ring-offset-2 ring-offset-[#131219] scale-110' : 'hover:scale-105'
+                  className={`w-7 h-7 rounded-md transition-all cursor-pointer flex items-center justify-center ${
+                    avatarColor === c ? 'ring-2 ring-white ring-offset-2 ring-offset-[#131219]' : 'opacity-80 hover:opacity-100'
                   }`}
                   style={{ backgroundColor: c }}
                 >
@@ -297,14 +297,14 @@ export function AddStudentModal() {
             <button
               type="button"
               onClick={closeAddModal}
-              className="px-4 py-2 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-[#c9c3da] text-xs font-semibold transition-all cursor-pointer"
+              className="px-4 py-2 rounded-lg bg-white/[0.06] hover:bg-white/[0.12] text-[#c9c3da] text-xs font-semibold transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={availableSeats.length === 0}
-              className="px-5 py-2 rounded-xl bg-[#006bff] hover:bg-[#0058d4] disabled:opacity-50 text-white text-xs font-semibold transition-all shadow-[0_4px_16px_rgba(0,107,255,0.4)] cursor-pointer"
+              className="px-5 py-2 rounded-lg bg-[#006bff] hover:bg-[#1a7aff] disabled:opacity-50 text-white text-xs font-semibold transition-colors shadow-sm cursor-pointer"
             >
               Seat Student
             </button>

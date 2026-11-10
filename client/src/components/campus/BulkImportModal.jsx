@@ -167,7 +167,7 @@ export function BulkImportModal() {
           <button
             type="button"
             onClick={closeImportModal}
-            className="px-4 py-2 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-[#c9c3da] text-xs font-semibold transition-all cursor-pointer"
+            className="px-4 py-2 rounded-lg bg-white/[0.06] hover:bg-white/[0.12] text-[#c9c3da] text-xs font-semibold transition-colors cursor-pointer"
           >
             Cancel
           </button>
@@ -175,7 +175,7 @@ export function BulkImportModal() {
             type="button"
             onClick={handleImport}
             disabled={!parseResult || parseResult.students.length === 0}
-            className="px-5 py-2 rounded-xl bg-[#006bff] hover:bg-[#0058d4] disabled:opacity-50 text-white text-xs font-semibold transition-all shadow-[0_4px_16px_rgba(0,107,255,0.4)] cursor-pointer flex items-center gap-1.5"
+            className="px-5 py-2 rounded-lg bg-[#006bff] hover:bg-[#1a7aff] disabled:opacity-50 text-white text-xs font-semibold transition-colors shadow-sm cursor-pointer flex items-center gap-1.5"
           >
             <Upload className="w-3.5 h-3.5" />
             <span>Import {parseResult?.students?.length || 0} Students</span>

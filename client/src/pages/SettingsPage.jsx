@@ -75,7 +75,7 @@ export default function SettingsPage() {
         <div className="flex items-center gap-2">
           <Link
             to="/admin"
-            className="px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#4d19b1] to-[#6f5adc] hover:from-[#581dc7] hover:to-[#7d68e8] text-white font-semibold text-xs flex items-center gap-1.5 transition shadow-[0_0_15px_rgba(111,90,220,0.4)] border border-white/20"
+            className="px-4 py-2.5 rounded-lg bg-[#006bff] hover:bg-[#1a7aff] text-white font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-sm border border-white/20"
           >
             <Shield className="w-4 h-4" />
             <span>Theme & HOD Console</span>

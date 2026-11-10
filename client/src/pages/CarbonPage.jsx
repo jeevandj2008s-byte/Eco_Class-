@@ -172,9 +172,9 @@ export default function CarbonPage() {
         <button
           onClick={generateEsgPdf}
           disabled={isGeneratingPdf}
-          className="btn-pop btn-shine px-5 py-3 rounded-lg bg-gradient-to-r from-[#4d19b1] to-[#6f5adc] hover:from-[#581dc7] hover:to-[#7d68e8] text-white font-semibold text-xs shadow-[0_0_20px_rgba(111,90,220,0.45)] border border-white/20 flex items-center gap-2 disabled:opacity-50"
+          className="px-4 py-2.5 rounded-lg bg-[#006bff] hover:bg-[#1a7aff] text-white font-semibold text-xs shadow-sm flex items-center gap-2 disabled:opacity-50 transition-colors cursor-pointer"
         >
-          <Download className="w-4 h-4 text-[#9ff0ec]" />
+          <Download className="w-4 h-4 text-white" />
           <span>{isGeneratingPdf ? 'Compiling PDF Report...' : 'Download Green Audit PDF'}</span>
         </button>
       </div>
@@ -394,7 +394,7 @@ export default function CarbonPage() {
             />
             <button
               type="submit"
-              className="btn-pop btn-shine w-full py-2.5 rounded-lg bg-[#006bff] hover:bg-[#005be0] text-white font-semibold text-xs shadow-cal-btn"
+              className="w-full py-2.5 rounded-lg bg-[#006bff] hover:bg-[#1a7aff] text-white font-semibold text-xs shadow-sm transition-colors cursor-pointer"
             >
               Commit Eco Pledge (+25 Points)
             </button>

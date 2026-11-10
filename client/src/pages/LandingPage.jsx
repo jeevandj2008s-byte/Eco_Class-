@@ -270,23 +270,23 @@ return (
           
           {/* Left Column: Headlines, Subline, CTAs & Stats */}
           <div className="lg:col-span-7 flex flex-col items-start text-left">
-            {/* Hackathon Status Pill */}
-            <div className="badge-live-pulse inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.16] text-[#bdf7ee] text-xs font-semibold mb-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] backdrop-blur-md">
-              <Sparkles className="w-3.5 h-3.5 text-[#9ff0ec]" />
-              <span>BIT Hackathon 2026 • AI-Powered Campus Microgrid Digital Twin</span>
+            {/* Institution Status Tag */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white/[0.04] border border-white/[0.12] text-[#9ff0ec] text-xs font-medium mb-6 backdrop-blur-md">
+              <Activity className="w-3.5 h-3.5 text-[#9ff0ec]" />
+              <span>Bangalore Institute of Technology • Institutional Microgrid Digital Twin</span>
             </div>
 
-            {/* 3-Line Headline fading from white to soft grey */}
+            {/* 3-Line Headline */}
             <h1 className="text-4xl sm:text-6xl lg:text-[72px] font-display font-extrabold tracking-tight leading-[1.08] text-white max-w-2xl">
               <span className="block text-white">Sustainable Energy.</span>
-              <span className="block text-white">Reimagined in</span>
+              <span className="block text-white">Monitored in</span>
               <span className="block text-[#9ff0ec]">Real-Time.</span>
             </h1>
 
             {/* Subline in light grey */}
             <p className="mt-6 text-sm sm:text-base lg:text-lg text-[#d3d3d7] max-w-xl leading-relaxed font-normal">
-              AuraSync creates a living digital twin of <span className="text-white font-semibold">{institutionData.institutionName}</span>.
-              Uniting computer vision occupancy, synthetic IoT telemetry, and GenAI coaching to bust energy ghosts campus-wide.
+              AuraSync provides an interactive digital twin of <span className="text-white font-semibold">{institutionData.institutionName}</span>,
+              uniting spatial occupancy data, precision IoT telemetry, and automated controls to eliminate idle electrical waste campus-wide.
             </p>
 
             {/* Action Buttons: Solid Primary + Quiet Dark Glass Secondary */}

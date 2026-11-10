@@ -81,7 +81,7 @@ export function TwinNavigationBreadcrumb() {
             <button
               key={cr.id}
               onClick={() => selectClassroom(cr.id)}
-              className="px-2 py-0.5 rounded-lg bg-white/5 hover:bg-[#006bff]/30 text-[10px] font-mono text-[#9ff0ec] border border-white/10 hover:border-[#9ff0ec]/50 transition-all cursor-pointer shadow-sm hover:scale-105"
+              className="px-2 py-0.5 rounded-md bg-white/5 hover:bg-[#006bff]/20 text-[10px] font-mono text-[#9ff0ec] border border-white/10 hover:border-[#9ff0ec]/30 transition-colors cursor-pointer shadow-sm"
               title={`Switch to Class View: ${cr.code || cr.name}`}
             >
               {cr.code || cr.name}
@@ -94,7 +94,7 @@ export function TwinNavigationBreadcrumb() {
       {classroom && (
         <>
           <ChevronRight className="w-3.5 h-3.5 text-white/30" />
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#006bff]/30 text-[#9ff0ec] font-bold border border-[#9ff0ec]/50 shadow-[0_0_12px_rgba(0,107,255,0.4)]">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#006bff]/20 text-[#9ff0ec] font-bold border border-[#9ff0ec]/40 shadow-sm">
             <DoorOpen className="w-3.5 h-3.5" />
             <span>Class {classroom.code || classroom.name}</span>
           </div>

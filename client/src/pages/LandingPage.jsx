@@ -427,14 +427,14 @@ return (
             <button
               onClick={() => scrollCarousel('left')}
               aria-label="Previous modules"
-              className="w-10 h-10 rounded-full border border-white/[0.16] bg-white/[0.04] hover:bg-white/[0.1] flex items-center justify-center text-white backdrop-blur-md shadow-lg transition-all hover:scale-105 active:scale-95"
+              className="w-9 h-9 rounded-lg border border-white/[0.14] bg-white/[0.04] hover:bg-white/[0.08] flex items-center justify-center text-white backdrop-blur-md transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
             <button
               onClick={() => scrollCarousel('right')}
               aria-label="Next modules"
-              className="w-10 h-10 rounded-full border border-white/[0.16] bg-white/[0.04] hover:bg-white/[0.1] flex items-center justify-center text-white backdrop-blur-md shadow-lg transition-all hover:scale-105 active:scale-95"
+              className="w-9 h-9 rounded-lg border border-white/[0.14] bg-white/[0.04] hover:bg-white/[0.08] flex items-center justify-center text-white backdrop-blur-md transition-colors"
             >
               <ArrowRight className="w-4 h-4" />
             </button>

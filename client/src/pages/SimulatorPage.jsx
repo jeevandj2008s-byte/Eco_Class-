@@ -433,9 +433,9 @@ export default function SimulatorPage() {
 
             {/* Grid vs DG Failover Status Indicator */}
             {computed.dgActive ? (
-              <div className="p-3 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-900 flex items-center justify-between">
+              <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-200 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Flame className="w-4 h-4 text-amber-600 animate-bounce" />
+                  <Flame className="w-4 h-4 text-amber-400" />
                   <span>
                     <strong>DG Failover Engaged:</strong> 500 kVA Diesel Generator supplying {computed.dgKw} kW.
                   </span>

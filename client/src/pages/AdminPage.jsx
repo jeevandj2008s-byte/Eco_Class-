@@ -185,7 +185,7 @@ export default function AdminPage() {
     <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-20 right-6 z-50 p-4 rounded-2xl bg-[#006bff] text-white font-bold text-xs shadow-2xl flex items-center gap-2 border border-[#b8d5ff] backdrop-blur-md animate-bounce">
+        <div className="fixed top-20 right-6 z-50 px-4 py-3 rounded-lg bg-[#006bff] text-white font-medium text-xs shadow-lg flex items-center gap-2 border border-white/20 backdrop-blur-md">
           <CheckCircle2 className="w-4 h-4 text-white" />
           <span>{toastMessage}</span>
         </div>

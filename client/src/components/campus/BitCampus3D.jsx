@@ -185,7 +185,7 @@ export default function BitCampus3D({
 
         {/* Bottom Navigation Legend & Gesture Hint */}
         <div className="absolute bottom-3 left-3 z-10 pointer-events-none px-3 py-1 rounded-xl bg-[#131219]/90 border border-white/[0.14] text-[10px] text-[#b9b8bb] font-mono flex items-center gap-2 shadow-lg backdrop-blur-md">
-          <span className="w-2 h-2 rounded-full bg-[#9ff0ec] animate-ping" />
+          <span className="w-2 h-2 rounded-full bg-[#9ff0ec]" />
           <span className="hidden sm:inline">Orbit: Drag • Zoom: Scroll • Tap Building to focus</span>
           <span className="sm:hidden">Touch: Drag to Orbit & Pinch to Zoom</span>
         </div>

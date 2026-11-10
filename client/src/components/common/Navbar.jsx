@@ -96,15 +96,15 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
       <div className="w-full max-w-[1720px] mx-auto flex items-center justify-between gap-2 lg:gap-4">
         {/* Logo and Institution Badge */}
         <Link to="/" onClick={closeMobile} className="flex items-center gap-2.5 group shrink-0">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#4d19b1] to-[#6f5adc] p-0.5 shadow-[0_0_20px_rgba(111,90,220,0.5)] group-hover:scale-105 transition-transform flex items-center justify-center border border-white/20">
-            <Zap className="w-5 h-5 text-white fill-white/20" />
+          <div className="w-8 h-8 rounded-lg bg-[#006bff] flex items-center justify-center border border-white/20 shadow-sm transition-transform">
+            <Zap className="w-4 h-4 text-white fill-white/20" />
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-1.5">
               <span className="font-bold text-sm tracking-tight text-white group-hover:text-white transition">
                 AuraSync
               </span>
-              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-[#9ff0ec]/15 text-[#9ff0ec] border border-[#9ff0ec]/30 font-semibold shadow-[0_0_10px_rgba(159,240,236,0.3)]">
+              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-md bg-[#9ff0ec]/10 text-[#9ff0ec] border border-[#9ff0ec]/25 font-semibold">
                 BIT
               </span>
             </div>
@@ -113,7 +113,7 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
         </Link>
 
         {/* Navigation Items (Responsive Horizontal Glass Bar) */}
-        <nav className="hidden xl:flex items-center gap-1 bg-white/[0.02] p-1 rounded-full border border-white/[0.12] backdrop-blur-md overflow-x-auto max-w-[650px] 2xl:max-w-none shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]">
+        <nav className="hidden xl:flex items-center gap-1 bg-white/[0.03] p-1 rounded-xl border border-white/[0.12] backdrop-blur-md overflow-x-auto max-w-[650px] 2xl:max-w-none">
           {navLinks.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.to || (item.to !== '/' && location.pathname.startsWith(item.to));
@@ -121,9 +121,9 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
               <Link
                 key={item.to}
                 to={item.to}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
                   isActive
-                    ? 'bg-gradient-to-r from-[#4d19b1]/60 to-[#6f5adc]/60 text-white shadow-[0_0_15px_rgba(111,90,220,0.4)] border border-white/20'
+                    ? 'bg-white/[0.12] text-white border border-white/20 shadow-sm'
                     : 'text-[#b9b8bb] hover:text-white hover:bg-white/[0.05]'
                 }`}
               >
@@ -135,13 +135,13 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
         </nav>
 
         {/* Live Campus Telemetry Pill (Desktop) */}
-        <div className="hidden 2xl:flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-white/[0.02] border border-white/[0.12] backdrop-blur-md text-xs shrink-0 badge-live-pulse shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]">
-          <div className="flex items-center gap-1.5 font-mono">
-            <span className="w-2 h-2 rounded-full bg-[#9ff0ec] animate-pulse shadow-[0_0_8px_#9ff0ec]" />
+        <div className="hidden 2xl:flex items-center gap-3 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/[0.12] backdrop-blur-md text-xs shrink-0 font-mono">
+          <div className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-[#9ff0ec]" />
             <span className="text-white font-bold">{formatKw(telemetry?.campus?.totalRealKw || 142)}</span>
           </div>
           <span className="text-white/20">|</span>
-          <div className="text-[11px] text-[#9ff0ec] font-mono font-semibold">
+          <div className="text-[11px] text-[#9ff0ec] font-semibold">
             {formatINR(telemetry?.savingsTracker?.savedTodayRs || 4850)} saved
           </div>
         </div>
@@ -151,7 +151,7 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
           {/* Quick Report Issue Button */}
           <button
             onClick={onOpenReportModal}
-            className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#4d19b1] to-[#6f5adc] hover:from-[#581dc7] hover:to-[#7d68e8] text-white font-semibold text-xs shadow-[0_0_20px_rgba(111,90,220,0.45)] border border-white/20 btn-pop btn-shine"
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#006bff] hover:bg-[#1a7aff] text-white font-semibold text-xs border border-white/20 transition-colors shadow-sm"
           >
             <PlusCircle className="w-3.5 h-3.5" />
             <span>Report Waste</span>
@@ -160,7 +160,7 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
           {/* Command Palette Trigger */}
           <button
             onClick={onOpenCommandPalette}
-            className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.16] text-[#b9b8bb] hover:text-white text-xs transition backdrop-blur-md"
+            className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.14] text-[#b9b8bb] hover:text-white text-xs transition-colors backdrop-blur-md"
             title="Command Palette (Ctrl+K)"
           >
             <Command className="w-3.5 h-3.5 text-[#9ff0ec]" />
@@ -171,11 +171,11 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
           <div className="relative">
             <button
               onClick={() => setShowRoleMenu(!showRoleMenu)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.16] text-left transition backdrop-blur-md group shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]"
+              className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.14] text-left transition-colors backdrop-blur-md group"
               title="Click to view credentials and session details"
             >
-              {/* User Avatar Circle */}
-              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#4d19b1] to-[#6f5adc] flex items-center justify-center font-bold text-white text-[10px] shrink-0 border border-white/20 shadow-[0_0_10px_rgba(111,90,220,0.4)]">
+              {/* User Avatar */}
+              <div className="w-6 h-6 rounded-md bg-[#1e293b] flex items-center justify-center font-bold text-white text-[10px] shrink-0 border border-white/20">
                 {user?.name ? user.name.slice(0, 2).toUpperCase() : 'AU'}
               </div>
 
@@ -185,7 +185,7 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
                   <span className="font-bold text-xs text-white truncate max-w-[110px] sm:max-w-[150px]">
                     {user?.name || 'Demo HOD'}
                   </span>
-                  <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded-full border uppercase font-extrabold ${roleStyle.color}`}>
+                  <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded-md border uppercase font-extrabold ${roleStyle.color}`}>
                     {user?.role || 'HOD'}
                   </span>
                 </div>
@@ -353,7 +353,7 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
                 closeMobile();
                 onOpenReportModal();
               }}
-              className="flex-1 py-2 rounded-full bg-gradient-to-r from-[#4d19b1] to-[#6f5adc] text-white text-xs font-bold text-center shadow-[0_0_20px_rgba(111,90,220,0.45)] border border-white/20"
+              className="flex-1 py-2 rounded-lg bg-[#006bff] hover:bg-[#1a7aff] text-white text-xs font-bold text-center border border-white/20 transition-colors shadow-sm"
             >
               Report Waste
             </button>
@@ -362,7 +362,7 @@ export default function Navbar({ onOpenCommandPalette, onOpenReportModal }) {
                 closeMobile();
                 onOpenCommandPalette();
               }}
-              className="px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.16] text-white text-xs font-semibold hover:bg-white/[0.08]"
+              className="px-4 py-2 rounded-lg bg-white/[0.04] border border-white/[0.16] text-white text-xs font-semibold hover:bg-white/[0.08] transition-colors"
             >
               ⌘K Search
             </button>
